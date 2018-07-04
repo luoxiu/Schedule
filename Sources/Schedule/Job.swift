@@ -20,6 +20,7 @@ public class Job {
     
     init(schedule: Schedule,
          queue: DispatchQueue? = nil,
+         tag: String? = nil,
          onElapse: @escaping (Job) -> Void) {
         self.iterator = Atomic(schedule.makeIterator())
         self.onElapse = onElapse
@@ -31,7 +32,7 @@ public class Job {
             self?.elapse()
         }
         self.timer.resume()
-        JobCenter.shared.add(self)
+        JobCenter.shared.add(self, tag: tag)
     }
     
     private func elapse() {
@@ -85,15 +86,15 @@ public class Job {
         JobCenter.shared.remove(self)
     }
     
-    public func cancel(_ tag: String) {
+    public static func cancel(_ tag: String) {
         JobCenter.shared.jobs(for: tag).forEach { $0.cancel() }
     }
     
-    public func suspend(_ tag: String) {
+    public static func suspend(_ tag: String) {
         JobCenter.shared.jobs(for: tag).forEach { $0.suspend() }
     }
     
-    public func resume(_ tag: String) {
+    public static func resume(_ tag: String) {
         JobCenter.shared.jobs(for: tag).forEach { $0.resume() }
     }
     

@@ -20,14 +20,16 @@ public struct Schedule {
     
     @discardableResult
     public func `do`(queue: DispatchQueue? = nil,
+                     tag: String? = nil,
                      onElapse: @escaping (Job) -> Void) -> Job {
-        return Job(schedule: self, queue: queue, onElapse: onElapse)
+        return Job(schedule: self, queue: queue, tag: tag, onElapse: onElapse)
     }
     
     @discardableResult
     public func `do`(queue: DispatchQueue? = nil,
+                     tag: String? = nil,
                      onElapse: @escaping () -> Void) -> Job {
-        return self.do(queue: queue, onElapse: { (_) in onElapse() })
+        return self.do(queue: queue, tag: tag, onElapse: { (_) in onElapse() })
     }
     
     public static func make<I>(_ makeIterator: @escaping () -> I) -> Schedule where I: IteratorProtocol, I.Element == Interval {
@@ -64,10 +66,6 @@ extension Schedule {
     
     public static func of(_ dates: Date...) -> Schedule {
         return Schedule.from(dates)
-    }
-    
-    public static func at(_ date: Date) -> Schedule {
-        return Schedule.of(date)
     }
     
     public var dates: AnySequence<Date> {
@@ -177,9 +175,10 @@ extension Schedule {
             AnyIterator { interval }
         }
     }
-}
-
-extension Schedule {
+    
+    public static func at(_ date: Date) -> Schedule {
+        return Schedule.of(date)
+    }
     
     public static func after(_ delay: Interval, repeating interval: Interval) -> Schedule {
         return Schedule.after(delay).concat(Schedule.every(interval))
@@ -249,7 +248,7 @@ extension Schedule {
                 if date == nil {
                     date = calendar.nextDate(after: Date(), matching: components, matchingPolicy: .strict)
                 } else {
-                    date = calendar.date(byAdding: .year, value: 1, to: date)
+                    date = calendar.date(byAdding: .day, value: 7, to: date)
                 }
                 return date
             }

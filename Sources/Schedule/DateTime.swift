@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// `Interval` represents a length of time, it's contextless.
 public struct Interval {
     
     public let nanoseconds: Double
@@ -58,7 +59,7 @@ extension Interval: Hashable {
 
 extension Interval: Comparable {
     
-    public static func < (lhs: Interval, rhs: Interval) -> Bool {
+    public static func <(lhs: Interval, rhs: Interval) -> Bool {
         return lhs.nanoseconds.magnitude < rhs.nanoseconds.magnitude
     }
 }
@@ -174,6 +175,7 @@ public enum Weekday: Int {
     case sunday = 1, monday, tuesday, wednesday, thursday, friday, saturday
 }
 
+/// `Time` represents a time without a date.
 public struct Time {
     
     public let hour: Int
@@ -193,10 +195,12 @@ public struct Time {
         self.nanosecond = nanosecond
     }
     
-    /// "11"
-    /// "11:12"
-    /// "11:12:12"
-    /// "11:12:13.123"
+    /// For example:
+    ///
+    ///     "11"
+    ///     "11:12"
+    ///     "11:12:12"
+    ///     "11:12:13.123"
     public init?(timing: String) {
         let args = timing.split(separator: ":")
         var h = 0, m = 0, s = 0, ns = 0
@@ -229,6 +233,15 @@ public struct Time {
     }
 }
 
+
+/// `Period` represents a period of time defined in terms of fields.
+///
+/// It's a littl different from `Interval`, for example:
+///
+/// If you add a period `1.month` to the 1st January, you will get the 1st February.
+/// If you add the same period to the 1st February, you will get the 1st March.
+/// But the intervals(`31.days` in case 1, `28.days` or `29.days` in case 2)
+/// in these two cases are quite different.
 public struct Period {
     
     public let years: Int
@@ -267,64 +280,35 @@ public struct Period {
     func asDateComponents() -> DateComponents {
         return DateComponents(year: years, month: months, day: days, hour: hours, minute: minutes, second: seconds, nanosecond: nanoseconds)
     }
+    
+    public static func +(lhs: Date, rhs: Period) -> Date {
+        return Calendar.autoupdatingCurrent.date(byAdding: rhs.asDateComponents(), to: lhs) ?? .distantFuture
+    }
 }
 
-extension Int {
+extension Period {
     
-    public var nanosecond: Period {
-        return nanoseconds
+    public static func years(_ n: Int) -> Period {
+        return Period(years: n)
     }
     
-    public var nanoseconds: Period {
-        return Period(nanoseconds: self)
+    public static func months(_ n: Int) -> Period {
+        return Period(months: n)
     }
-    
-    public var second: Period {
-        return seconds
+    public static func days(_ n: Int) -> Period {
+        return Period(days: n)
     }
-    
-    public var seconds: Period {
-        return Period(seconds: self)
+    public static func hours(_ n: Int) -> Period {
+        return Period(hours: n)
     }
-    
-    public var minute: Period {
-        return minutes
+    public static func minutes(_ n: Int) -> Period {
+        return Period(minutes: n)
     }
-    
-    public var minutes: Period {
-        return Period(minutes: self)
+    public static func seconds(_ n: Int) -> Period {
+        return Period(seconds: n)
     }
-    
-    public var hour: Period {
-        return hours
-    }
-    
-    public var hours: Period {
-        return Period(hours: self)
-    }
-    
-    public var day: Period {
-        return days
-    }
-    
-    public var days: Period {
-        return Period(days: self)
-    }
-    
-    public var month: Period {
-        return months
-    }
-    
-    public var months: Period {
-        return Period(months: self)
-    }
-    
-    public var year: Period {
-        return years
-    }
-    
-    public var years: Period {
-        return Period(years: self)
+    public static func nanoseconds(_ n: Int) -> Period {
+        return Period(nanoseconds: n)
     }
 }
 

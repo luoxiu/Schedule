@@ -82,7 +82,8 @@ final class ScheduleTests: XCTestCase {
     }
     
     func testEveryPeriod() {
-        let s = Schedule.every(1.year).count(10)
+        
+        let s = Schedule.every(.years(1)).count(10)
         
         var date = Date()
         for i in s.dates {
@@ -95,7 +96,6 @@ final class ScheduleTests: XCTestCase {
     
     func testEveryWeekday() {
         let s = Schedule.every(.friday).at("11:11:00").count(5)
-        
         for i in s.dates {
             XCTAssertEqual(i.dateComponents.weekday, 6)
             XCTAssertEqual(i.dateComponents.hour, 11)
@@ -105,8 +105,6 @@ final class ScheduleTests: XCTestCase {
     func testEveryMonthday() {
         let s = Schedule.every(.april(2)).at(11, 11).count(5)
         for i in s.dates {
-            print(i.localizedDescription)
-            print(i.dateComponents)
             XCTAssertEqual(i.dateComponents.month, 4)
             XCTAssertEqual(i.dateComponents.day, 2)
             XCTAssertEqual(i.dateComponents.hour, 11)
@@ -114,6 +112,16 @@ final class ScheduleTests: XCTestCase {
     }
 
     static var allTests = [
-        ("testExample", testMakeSchedule),
+        ("testMakeSchedule", testMakeSchedule),
+        ("testDates", testDates),
+        ("testNever", testNever),
+        ("testConcat", testConcat),
+        ("testAt", testAt),
+        ("testCount", testCount),
+        ("testUntil", testUntil),
+        ("testMerge", testMerge),
+        ("testEveryPeriod", testEveryPeriod),
+        ("testEveryWeekday", testEveryWeekday),
+        ("testEveryMonthday", testEveryMonthday)
     ]
 }

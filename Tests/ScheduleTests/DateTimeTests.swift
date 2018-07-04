@@ -42,7 +42,7 @@ final class DateTimeTests: XCTestCase {
     }
     
     func testPeriodAnd() {
-        let dateComponents = 1.year + 2.months + 3.days
+        let dateComponents: Period = .years(1) + .months(2) + .days(3)
         XCTAssertEqual(dateComponents.years, 1)
         XCTAssertEqual(dateComponents.months, 2)
         XCTAssertEqual(dateComponents.days, 3)
