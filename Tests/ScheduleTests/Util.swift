@@ -34,8 +34,8 @@ extension Sequence where Element == Interval {
         var i0 = self.makeIterator()
         var i1 = sequence.makeIterator()
         while let l = i0.next(), let r = i1.next() {
-            let diff = Swift.max(l, r) - Swift.min(l, r)
-            if diff < leeway { continue }
+            let diff = Interval.longest(l, r) - Interval.shortest(l, r)
+            if diff.isShorter(than: leeway) { continue }
             return false
         }
         return i0.next() == i1.next()
@@ -45,8 +45,8 @@ extension Sequence where Element == Interval {
 extension Interval {
     
     func isEqual(to interval: Interval, leeway: Interval) -> Bool {
-        let diff = Swift.max(self, interval) - Swift.min(self, interval)
-        return diff < leeway
+        let diff = Interval.longest(self, interval) - Interval.shortest(self, interval)
+        return diff.isShorter(than: leeway)
     }
 }
 

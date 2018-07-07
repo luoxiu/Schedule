@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Atomic<Wrapped> {
+class AtomicBox<Wrapped> {
     
     private var lock = NSLock()
     
@@ -41,3 +41,15 @@ extension String {
     }
 }
 
+extension Int {
+    
+    func clampedAdding(_ other: Int) -> Int {
+        let r = addingReportingOverflow(other)
+        return r.overflow ? (other > 0 ? .max : .min) : r.partialValue
+    }
+    
+    func clampedSubtracting(_ other: Int) -> Int {
+        let r = subtractingReportingOverflow(other)
+        return r.overflow ? (other > 0 ? .max : .min) : r.partialValue
+    }
+}

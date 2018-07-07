@@ -12,10 +12,10 @@ final class DateTimeTests: XCTestCase {
     
     func testInterval2DispatchInterval() {
         let i0 = 1.23.seconds
-        XCTAssertEqual(i0.dispatchInterval, DispatchTimeInterval.nanoseconds(Int(i0.nanoseconds)))
+        XCTAssertEqual(i0.asDispatchTimeInterval(), DispatchTimeInterval.nanoseconds(Int(i0.nanoseconds)))
         
         let i1 = 4.56.minutes + 7.89.hours
-        XCTAssertEqual(i1.dispatchInterval, DispatchTimeInterval.nanoseconds(Int(i1.nanoseconds)))
+        XCTAssertEqual(i1.asDispatchTimeInterval(), DispatchTimeInterval.nanoseconds(Int(i1.nanoseconds)))
     }
     
     func testIntervalConvertible() {
@@ -42,7 +42,7 @@ final class DateTimeTests: XCTestCase {
     }
     
     func testPeriodAnd() {
-        let dateComponents: Period = .years(1) + .months(2) + .days(3)
+        let dateComponents: Period = 1.year + 2.months + 3.days
         XCTAssertEqual(dateComponents.years, 1)
         XCTAssertEqual(dateComponents.months, 2)
         XCTAssertEqual(dateComponents.days, 3)
