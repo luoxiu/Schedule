@@ -8,7 +8,7 @@
 import Foundation
 
 /// `Job` represents an action that to be invoke.
-public final class Job {
+public class Job {
     
     /// Last time this job was invoked at.
     public private(set) var lastTime: Date?
@@ -31,10 +31,10 @@ public final class Job {
         self.timer = DispatchSource.makeTimerSource(queue: queue)
         
         let interval = self.iterator.withLock({ $0.next() })?.asDispatchTimeInterval() ?? DispatchTimeInterval.never
-        self.timer.schedule(wallDeadline: .now() + interval)
         self.timer.setEventHandler { [weak self] in
             self?.elapse()
         }
+        self.timer.schedule(wallDeadline: .now() + interval)
         self.timer.resume()
         JobCenter.shared.add(self, tag: tag)
     }
@@ -152,43 +152,3 @@ extension Optional: Hashable where Wrapped: Job {
         return lhs.hashValue == rhs.hashValue
     }
 }
-
-private final class JobCenter {
-    
-    static let shared = JobCenter()
-    
-    private var lock = NSLock()
-    
-    private var jobs: [Int: Job] = [:]
-    private var tags: [String: Set<Job?>] = [:]
-    
-    func add(_ job: Job, tag: String? = nil) {
-        lock.lock()
-        defer { lock.unlock() }
-        
-        jobs[job.hashValue] = job
-        if let tag = tag {
-            if tags[tag] == nil { tags[tag] = [] }
-            weak var j = job
-            tags[tag]?.insert(j)
-        }
-    }
-    
-    func remove(_ job: Job) {
-        lock.lock()
-        defer { lock.unlock() }
-        
-        jobs[job.hashValue] = nil
-    }
-    
-    func jobs(for tag: String) -> [Job] {
-        lock.lock()
-        defer { lock.unlock() }
-        
-        if let jobs = tags[tag] {
-            return jobs.compactMap({ $0 })
-        }
-        return []
-    }
-}
-
