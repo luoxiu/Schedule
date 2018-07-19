@@ -118,6 +118,14 @@ Job.resume("log")
 Job.cancel("log")
 ```
 
+There is also a more elegant way to deal with job's lifecycle:
+
+```swift
+Schedule.every(1.second).do(dependOn: self) {
+    // do something, and cancel the job when `self` is deallocated.
+}
+```
+
 ## Install
 
 Schedul supports all popular dependency managers.

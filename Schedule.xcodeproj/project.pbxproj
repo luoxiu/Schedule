@@ -64,6 +64,7 @@
 		669D215720FE1BC000AFFDF7 /* Monthday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Monthday.swift; sourceTree = "<group>"; };
 		669D215A20FE1C0E00AFFDF7 /* JobCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobCenter.swift; sourceTree = "<group>"; };
 		669D215C20FE1D1800AFFDF7 /* DependentJob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependentJob.swift; sourceTree = "<group>"; };
+		669D21622100E3E300AFFDF7 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		OBJ_10 /* Job.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Job.swift; sourceTree = "<group>"; };
 		OBJ_11 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		OBJ_12 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
@@ -107,6 +108,14 @@
 			name = DateTime;
 			sourceTree = "<group>";
 		};
+		669D21612100E3C600AFFDF7 /* Related */ = {
+			isa = PBXGroup;
+			children = (
+				669D21622100E3E300AFFDF7 /* README.md */,
+			);
+			name = Related;
+			sourceTree = "<group>";
+		};
 		OBJ_13 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -139,6 +148,7 @@
 		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
+				669D21612100E3C600AFFDF7 /* Related */,
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
 				OBJ_13 /* Tests */,
