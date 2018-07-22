@@ -11,6 +11,8 @@ final class JobCenter {
     
     static let shared = JobCenter()
     
+    private init() { }
+    
     private var lock = NSLock()
     
     private var jobs: [Int: Job] = [:]

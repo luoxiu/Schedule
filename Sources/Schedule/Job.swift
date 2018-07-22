@@ -7,82 +7,120 @@
 
 import Foundation
 
+public protocol TaskKey {
+    var underlying: UInt64 { get }
+}
+
+extension BucketKey: TaskKey {
+    var underlying: UInt64 {
+        return rawValue
+    }
+}
+
 /// `Job` represents an action that to be invoke.
 public class Job {
     
     /// Last time this job was invoked at.
-    public private(set) var lastTime: Date?
+    public private(set) var lastFire: Date?
     
     /// Next time this job will be invoked at.
-    public private(set) var nextTime: Date?
+    public var nextFire: Date? { return deadline }
     
-    private var iterator: AtomicBox<AnyIterator<Interval>>
-    private let onElapse: (Job) -> Void
-    private let timer: DispatchSourceTimer
+    private lazy var lock = NSRecursiveLock()
     
-    private var suspensions = AtomicBox<UInt>(0)
+    private var iterator: AnyIterator<Interval>
+    
+    private var deadline: Date!
+    
+    private typealias Task = (Job) -> Void
+    private var tasks = Bucket<Task>.empty
+
+    private var timer: DispatchSourceTimer!
+    
+    private var suspensions: UInt64 = 0
     
     init(schedule: Schedule,
          queue: DispatchQueue? = nil,
          tag: String? = nil,
          onElapse: @escaping (Job) -> Void) {
-        self.iterator = AtomicBox(schedule.makeIterator())
-        self.onElapse = onElapse
-        self.timer = DispatchSource.makeTimerSource(queue: queue)
         
-        let interval = self.iterator.withLock({ $0.next() })?.asDispatchTimeInterval() ?? DispatchTimeInterval.never
+        self.iterator = schedule.makeIterator()
+        guard let interval = self.iterator.next() else {
+            return
+        }
+        self.deadline = Date() + interval
+        self.tasks.put(onElapse)
+        self.timer = DispatchSource.makeTimerSource(queue: queue)
         self.timer.setEventHandler { [weak self] in
             self?.elapse()
         }
-        self.timer.schedule(wallDeadline: .now() + interval)
+        self.timer.schedule(after: interval)
         self.timer.resume()
         JobCenter.shared.add(self, tag: tag)
     }
     
     private func elapse() {
         let now = Date()
-        self.lastTime = now
-        
-        let interval = iterator.withLock({ $0.next() })
-        
-        guard let i = interval, !i.isNegative else {
-            nextTime = nil
-            onElapse(self)
+        lock.lock()
+        lastFire = now
+        guard let interval = iterator.next(), !interval.isNegative else {
+            deadline = nil
+            tasks.forEach { $0(self) }
             return
         }
+        deadline = deadline.addingInterval(interval)
+        tasks.forEach { $0(self) }
+        lock.unlock()
         
-        nextTime = now.addingTimeInterval(i.nanoseconds / pow(10, 9))
-        onElapse(self)
-        timer.schedule(wallDeadline: .now() + i.asDispatchTimeInterval())
+        timer.schedule(after: interval)
     }
+    
+    // MARK: Reschedule
     
     /// Reschedule this job with the schedule.
     public func reschedule(_ schedule: Schedule) {
-        iterator.withLock {
-            $0 = schedule.makeIterator()
-        }
+        lock.lock()
+        iterator = schedule.makeIterator()
+        lock.unlock()
     }
+    
+    // MARK: Tasks
+    public func add(_ task: @escaping (Job) -> Void) -> TaskKey {
+        lock.lock()
+        let key = tasks.put(task)
+        lock.unlock()
+        return key
+    }
+    
+    public func remove(_ key: TaskKey) {
+        lock.lock()
+        tasks.delete(BucketKey(rawValue: key.underlying))
+        lock.unlock()
+    }
+    
+    public func removeAllTasks() {
+        lock.lock()
+        tasks.clear()
+        lock.unlock()
+    }
+    
+    // MARK: Jobs
     
     /// Suspend this job.
     public func suspend() {
-        let canSuspend = suspensions.withLock { (n) -> Bool in
-            guard n < UInt.max else { return false }
-            n += 1
-            return true
-        }
-        
-        if canSuspend {
-            timer.suspend()
-        }
+        lock.lock()
+        suspensions = suspensions.clampedAdding(1)
+        lock.unlock()
+        timer.suspend()
     }
     
     /// Resume this job.
     public func resume() {
-        let canResume = suspensions.withLock { (n) -> Bool in
-            guard n > 0 else { return false }
-            n -= 1
-            return true
-        }
+        lock.lock()
+        let canResume = suspensions > 0
+        suspensions -= 1
+        lock.unlock()
+        
         if canResume {
             timer.resume()
         }
@@ -110,12 +148,12 @@ public class Job {
     }
     
     deinit {
-        suspensions.withLock { (n) in
-            while n > 0 {
-                timer.resume()
-                n -= 1
-            }
+        lock.lock()
+        while suspensions > 0 {
+            timer.resume()
+            suspensions -= 1
         }
+        lock.unlock()
         timer.cancel()
     }
 }

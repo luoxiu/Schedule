@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		6624104A2104A42C00013B00 /* Bucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662410492104A42C00013B00 /* Bucket.swift */; };
+		6624104E2104AF2100013B00 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6624104D2104AF2100013B00 /* Extensions.swift */; };
 		669D215020FE1B7300AFFDF7 /* Interval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669D214F20FE1B7300AFFDF7 /* Interval.swift */; };
 		669D215220FE1B8A00AFFDF7 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669D215120FE1B8A00AFFDF7 /* Time.swift */; };
 		669D215420FE1BA600AFFDF7 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669D215320FE1BA600AFFDF7 /* Period.swift */; };
@@ -30,7 +32,6 @@
 		669D215D20FE1D1800AFFDF7 /* DependentJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669D215C20FE1D1800AFFDF7 /* DependentJob.swift */; };
 		OBJ_28 /* Job.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Job.swift */; };
 		OBJ_29 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Schedule.swift */; };
-		OBJ_30 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Util.swift */; };
 		OBJ_37 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_48 /* DateTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* DateTimeTests.swift */; };
 		OBJ_49 /* ScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* ScheduleTests.swift */; };
@@ -57,6 +58,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		662410492104A42C00013B00 /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
+		6624104D2104AF2100013B00 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		669D214F20FE1B7300AFFDF7 /* Interval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interval.swift; sourceTree = "<group>"; };
 		669D215120FE1B8A00AFFDF7 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		669D215320FE1BA600AFFDF7 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
@@ -67,7 +70,6 @@
 		669D21622100E3E300AFFDF7 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		OBJ_10 /* Job.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Job.swift; sourceTree = "<group>"; };
 		OBJ_11 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
-		OBJ_12 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		OBJ_15 /* DateTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeTests.swift; sourceTree = "<group>"; };
 		OBJ_16 /* ScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTests.swift; sourceTree = "<group>"; };
 		OBJ_17 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
@@ -96,6 +98,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		662410462104A0EC00013B00 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				662410492104A42C00013B00 /* Bucket.swift */,
+				6624104D2104AF2100013B00 /* Extensions.swift */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
 		669D214E20FE1B5500AFFDF7 /* DateTime */ = {
 			isa = PBXGroup;
 			children = (
@@ -167,12 +178,12 @@
 		OBJ_8 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
-				669D215C20FE1D1800AFFDF7 /* DependentJob.swift */,
 				669D214E20FE1B5500AFFDF7 /* DateTime */,
+				669D215C20FE1D1800AFFDF7 /* DependentJob.swift */,
 				OBJ_10 /* Job.swift */,
-				OBJ_11 /* Schedule.swift */,
-				OBJ_12 /* Util.swift */,
 				669D215A20FE1C0E00AFFDF7 /* JobCenter.swift */,
+				OBJ_11 /* Schedule.swift */,
+				662410462104A0EC00013B00 /* Utils */,
 			);
 			name = Schedule;
 			path = Sources/Schedule;
@@ -269,7 +280,8 @@
 				669D215820FE1BC000AFFDF7 /* Monthday.swift in Sources */,
 				669D215B20FE1C0E00AFFDF7 /* JobCenter.swift in Sources */,
 				669D215D20FE1D1800AFFDF7 /* DependentJob.swift in Sources */,
-				OBJ_30 /* Util.swift in Sources */,
+				6624104E2104AF2100013B00 /* Extensions.swift in Sources */,
+				6624104A2104A42C00013B00 /* Bucket.swift in Sources */,
 				669D215420FE1BA600AFFDF7 /* Period.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

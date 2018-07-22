@@ -47,14 +47,6 @@ public struct Interval {
         return Int(nanoseconds)
     }
     
-    /// Returns a dispatchTimeInterval created from this interval.
-    ///
-    /// The returned value will be clamped to the `DispatchTimeInterval`'s
-    /// usable range [`.nanoseconds(.min)....nanoseconds(.max)`].
-    public func asDispatchTimeInterval() -> DispatchTimeInterval {
-        return .nanoseconds(ns)
-    }
-    
     /// Returns a boolean value indicating whether this interval is longer than the given value.
     public func isLonger(than other: Interval) -> Bool {
         return magnitude > other.magnitude
@@ -160,13 +152,25 @@ extension Date {
     }
     
     /// Return a new date by adding an interval to the date.
+    public func addingInterval(_ interval: Interval) -> Date {
+        return addingTimeInterval(interval.seconds)
+    }
+    
+    /// Return a new date by adding an interval to the date.
     public static func +(lhs: Date, rhs: Interval) -> Date {
-        return lhs.addingTimeInterval(rhs.seconds)
+        return lhs.addingInterval(rhs)
     }
     
     /// Add an interval to the date.
     public static func +=(lhs: inout Date, rhs: Interval) {
         lhs = lhs + rhs
+    }
+}
+
+extension DispatchSourceTimer {
+    
+    func schedule(after interval: Interval) {
+        schedule(wallDeadline: .now() + DispatchTimeInterval.nanoseconds(interval.ns))
     }
 }
 
