@@ -15,18 +15,21 @@ final class JobCenter {
     
     private var lock = NSLock()
     
-    private var jobs: [Int: Job] = [:]
-    private var tags: [String: Set<Job?>] = [:]
+    private var jobs: Set<Job> = []
+    private var tags: [String: NSHashTable<Job>] = [:]
     
-    func add(_ job: Job, tag: String? = nil) {
+    func add(_ job: Job, withTag tag: String? = nil) {
         lock.lock()
         defer { lock.unlock() }
         
-        jobs[job.hashValue] = job
+        jobs.insert(job)
+        
         if let tag = tag {
-            if tags[tag] == nil { tags[tag] = [] }
+            if tags[tag] == nil {
+                tags[tag] = NSHashTable<Job>(options: .weakMemory)
+            }
             weak var j = job
-            tags[tag]?.insert(j)
+            tags[tag]?.add(j)
         }
     }
     
@@ -34,17 +37,32 @@ final class JobCenter {
         lock.lock()
         defer { lock.unlock() }
         
-        jobs[job.hashValue] = nil
+        jobs.remove(job)
     }
     
-    func jobs(for tag: String) -> [Job] {
+    func add(tag: String, for job: Job) {
         lock.lock()
         defer { lock.unlock() }
         
-        if let jobs = tags[tag] {
-            return jobs.compactMap({ $0 })
+        if tags[tag] == nil {
+            tags[tag] = NSHashTable<Job>(options: .weakMemory)
         }
-        return []
+        weak var j = job
+        tags[tag]?.add(j)
+    }
+    
+    func remove(tag: String, from job: Job) {
+        lock.lock()
+        defer { lock.unlock() }
+        
+        tags[tag]?.remove(job)
+    }
+    
+    func jobs(forTag tag: String) -> [Job] {
+        lock.lock()
+        defer { lock.unlock() }
+        
+        return tags[tag]?.allObjects ?? []
     }
 }
 

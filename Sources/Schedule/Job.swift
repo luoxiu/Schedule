@@ -21,10 +21,26 @@ extension BucketKey: TaskKey {
 public class Job {
     
     /// Last time this job was invoked at.
-    public private(set) var lastFire: Date?
+    public var lastFire: Date? {
+        lock.lock()
+        defer { lock.unlock() }
+        return _lastFire
+    }
+    private var _lastFire: Date?
     
     /// Next time this job will be invoked at.
-    public var nextFire: Date? { return deadline }
+    public var nextFire: Date? {
+        lock.lock()
+        defer { lock.unlock() }
+        return deadline
+    }
+    
+    public var tags: Set<String> {
+        lock.lock()
+        defer { lock.unlock() }
+        return _tags
+    }
+    private var _tags: Set<String> = []
     
     private lazy var lock = NSRecursiveLock()
     
@@ -49,20 +65,20 @@ public class Job {
             return
         }
         self.deadline = Date() + interval
-        self.tasks.put(onElapse)
+        self.tasks.insert(onElapse)
         self.timer = DispatchSource.makeTimerSource(queue: queue)
         self.timer.setEventHandler { [weak self] in
             self?.elapse()
         }
         self.timer.schedule(after: interval)
         self.timer.resume()
-        JobCenter.shared.add(self, tag: tag)
+        JobCenter.shared.add(self, withTag: tag)
     }
     
     private func elapse() {
         let now = Date()
         lock.lock()
-        lastFire = now
+        _lastFire = now
         guard let interval = iterator.next(), !interval.isNegative else {
             deadline = nil
             tasks.forEach { $0(self) }
@@ -84,46 +100,26 @@ public class Job {
         lock.unlock()
     }
     
-    // MARK: Tasks
-    public func add(_ task: @escaping (Job) -> Void) -> TaskKey {
-        lock.lock()
-        let key = tasks.put(task)
-        lock.unlock()
-        return key
-    }
-    
-    public func remove(_ key: TaskKey) {
-        lock.lock()
-        tasks.delete(BucketKey(rawValue: key.underlying))
-        lock.unlock()
-    }
-    
-    public func removeAllTasks() {
-        lock.lock()
-        tasks.clear()
-        lock.unlock()
-    }
-    
-    // MARK: Jobs
-    
     /// Suspend this job.
     public func suspend() {
         lock.lock()
-        suspensions = suspensions.clampedAdding(1)
+        let canSuspend = suspensions < UInt64.max
+        if canSuspend {
+            suspensions += 1
+            timer.suspend()
+        }
         lock.unlock()
-        timer.suspend()
     }
     
     /// Resume this job.
     public func resume() {
         lock.lock()
         let canResume = suspensions > 0
-        suspensions -= 1
-        lock.unlock()
-        
         if canResume {
+            suspensions -= 1
             timer.resume()
         }
+        lock.unlock()
     }
     
     /// Cancel this job.
@@ -132,31 +128,113 @@ public class Job {
         JobCenter.shared.remove(self)
     }
     
+    deinit {
+        lock.lock()
+        while suspensions > 0 {
+            suspensions -= 1
+            timer.resume()
+        }
+        lock.unlock()
+        cancel()
+    }
+}
+
+
+extension Job {
+    
+    public func addTask(_ task: @escaping (Job) -> Void) -> TaskKey {
+        lock.lock()
+        let key = tasks.insert(task)
+        lock.unlock()
+        return key
+    }
+    
+    public func removeTask(for key: TaskKey) {
+        lock.lock()
+        tasks.removeElement(for: BucketKey(rawValue: key.underlying))
+        lock.unlock()
+    }
+    
+    public func removeAllTasks() {
+        lock.lock()
+        tasks.removeAll()
+        lock.unlock()
+    }
+}
+
+extension Job {
+    
+    public func addTags(_ tags: [String]) {
+        let set = Set(tags)
+        
+        lock.lock()
+        let intersection = set.intersection(self._tags)
+        guard intersection.count > 0 else {
+            lock.unlock()
+            return
+        }
+        self._tags.formUnion(intersection)
+        lock.unlock()
+        
+        for tag in intersection {
+            JobCenter.shared.add(tag: tag, for: self)
+        }
+    }
+    
+    public func addTags(_ tags: String...) {
+        addTags(tags)
+    }
+    
+    public func addTag(_ tag: String) {
+        addTags(tag)
+    }
+    
+    public func removeTags(_ tags: [String]) {
+        let set = Set(tags)
+        lock.lock()
+        let intersection = set.intersection(self._tags)
+        guard intersection.count > 0 else {
+            lock.unlock()
+            return
+        }
+        for tag in intersection {
+            self._tags.insert(tag)
+        }
+        lock.unlock()
+        
+        for tag in intersection {
+            JobCenter.shared.remove(tag: tag, from: self)
+        }
+    }
+    
+    public func removeTags(_ tags: String...) {
+        removeTags(tags)
+    }
+    
+    public func removeTag(_ tag: String) {
+        removeTags(tag)
+    }
+}
+
+
+extension Job {
+    
     /// Suspend all job that attach the tag.
     public static func suspend(_ tag: String) {
-        JobCenter.shared.jobs(for: tag).forEach { $0.suspend() }
+        JobCenter.shared.jobs(forTag: tag).forEach { $0.suspend() }
     }
     
     /// Resume all job that attach the tag.
     public static func resume(_ tag: String) {
-        JobCenter.shared.jobs(for: tag).forEach { $0.resume() }
+        JobCenter.shared.jobs(forTag: tag).forEach { $0.resume() }
     }
     
     /// Cancel all job that attach the tag.
     public static func cancel(_ tag: String) {
-        JobCenter.shared.jobs(for: tag).forEach { $0.cancel() }
-    }
-    
-    deinit {
-        lock.lock()
-        while suspensions > 0 {
-            timer.resume()
-            suspensions -= 1
-        }
-        lock.unlock()
-        timer.cancel()
+        JobCenter.shared.jobs(forTag: tag).forEach { $0.cancel() }
     }
 }
+
 
 extension Job: Hashable {
     
@@ -167,26 +245,6 @@ extension Job: Hashable {
     
     /// Returns a boolean value indicating whether the job is equal to another job.
     public static func ==(lhs: Job, rhs: Job) -> Bool {
-        return lhs.hashValue == rhs.hashValue
-    }
-}
-
-extension Optional: Hashable where Wrapped: Job {
-    
-    /// The hashValue of this job.
-    ///
-    /// If job is nil, then return 0.
-    public var hashValue: Int {
-        if case .some(let wrapped) = self {
-            return wrapped.hashValue
-        }
-        return 0
-    }
-    
-    /// Returns a boolean value indicating whether the job is equal to another job.
-    ///
-    /// If both of these two are nil, then return true.
-    public static func ==(lhs: Optional<Job>, rhs: Optional<Job>) -> Bool {
         return lhs.hashValue == rhs.hashValue
     }
 }

@@ -29,10 +29,8 @@ extension String {
         let matches = regex.matches(in: self, options: [], range: NSRange(location: 0, length: count))
         guard let match = matches.first else { return [] }
         
-        var results: [String] = []
-        for i in 0..<match.numberOfRanges {
-            results.append((self as NSString).substring(with: match.range(at: i)))
+        return (0..<match.numberOfRanges).reduce(into: [String]()) { (r, i) in
+            r.append((self as NSString).substring(with: match.range(at: i)))
         }
-        return results
     }
 }

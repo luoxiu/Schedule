@@ -27,19 +27,19 @@ struct Bucket<Element> {
     private var elements: [BucketKey: Element] = [:]
     
     @discardableResult
-    mutating func put(_ element: Element) -> BucketKey {
+    mutating func insert(_ new: Element) -> BucketKey {
         let key = nextKey
         nextKey = BucketKey(rawValue: nextKey.rawValue &+ 1)
-        elements[key] = element
+        elements[key] = new
         return key
     }
     
     @discardableResult
-    mutating func delete(_ key: BucketKey) -> Element? {
+    mutating func removeElement(for key: BucketKey) -> Element? {
         return elements.removeValue(forKey: key)
     }
     
-    mutating func clear() {
+    mutating func removeAll() {
         elements.removeAll()
     }
     
