@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// `MonthDay` represents a day in the month, without a time.
+/// `MonthDay` represents a day in month, without a time.
 public enum MonthDay {
     
     case january(Int)
@@ -34,7 +34,7 @@ public enum MonthDay {
     
     case december(Int)
     
-    internal func asDateComponents() -> DateComponents {
+    func asDateComponents() -> DateComponents {
         switch self {
         case .january(let day):     return DateComponents(month: 1, day: day)
         case .february(let day):    return DateComponents(month: 2, day: day)

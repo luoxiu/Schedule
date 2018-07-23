@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// `Weekday` represents a day of the week, without a time.
+/// `Weekday` represents a day of week, without a time.
 public enum Weekday: Int {
     case sunday = 1, monday, tuesday, wednesday, thursday, friday, saturday
 }

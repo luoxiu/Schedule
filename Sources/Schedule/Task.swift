@@ -1,5 +1,5 @@
 //
-//  Job.swift
+//  Task.swift
 //  Schedule
 //
 //  Created by Quentin Jin on 2018/7/2.
@@ -7,34 +7,35 @@
 
 import Foundation
 
-public protocol TaskKey {
+public protocol ActionKey {
     var underlying: UInt64 { get }
 }
 
-extension BucketKey: TaskKey {
+extension BucketKey: ActionKey {
     var underlying: UInt64 {
         return rawValue
     }
 }
 
-/// `Job` represents an action that to be invoke.
-public class Job {
+/// `Task` represents a series of actions to be scheduled.
+public class Task {
     
-    /// Last time this job was invoked at.
-    public var lastFire: Date? {
+    /// The timstamp last time this task was scheduled at.
+    public var lastSchedule: Date? {
         lock.lock()
         defer { lock.unlock() }
-        return _lastFire
+        return _lastSchedule
     }
-    private var _lastFire: Date?
+    private var _lastSchedule: Date?
     
-    /// Next time this job will be invoked at.
-    public var nextFire: Date? {
+    /// The timestamp next time this task will be scheduled at.
+    public var nextSchedule: Date? {
         lock.lock()
         defer { lock.unlock() }
         return deadline
     }
     
+    /// All tags associate with this task.
     public var tags: Set<String> {
         lock.lock()
         defer { lock.unlock() }
@@ -48,8 +49,8 @@ public class Job {
     
     private var deadline: Date!
     
-    private typealias Task = (Job) -> Void
-    private var tasks = Bucket<Task>.empty
+    private typealias Action = (Task) -> Void
+    private var actions = Bucket<Action>.empty
 
     private var timer: DispatchSourceTimer!
     
@@ -58,74 +59,76 @@ public class Job {
     init(schedule: Schedule,
          queue: DispatchQueue? = nil,
          tag: String? = nil,
-         onElapse: @escaping (Job) -> Void) {
+         onElapse: @escaping (Task) -> Void) {
         
         self.iterator = schedule.makeIterator()
         guard let interval = self.iterator.next() else {
             return
         }
         self.deadline = Date() + interval
-        self.tasks.insert(onElapse)
+        self.actions.insert(onElapse)
         self.timer = DispatchSource.makeTimerSource(queue: queue)
         self.timer.setEventHandler { [weak self] in
             self?.elapse()
         }
         self.timer.schedule(after: interval)
         self.timer.resume()
-        JobCenter.shared.add(self, withTag: tag)
+        TaskCenter.shared.add(self, withTag: tag)
     }
     
     private func elapse() {
         let now = Date()
+        
         lock.lock()
-        _lastFire = now
+        _lastSchedule = now
         guard let interval = iterator.next(), !interval.isNegative else {
             deadline = nil
-            tasks.forEach { $0(self) }
+            let _actions = actions
+            lock.unlock()
+            _actions.forEach { $0(self) }
             return
         }
         deadline = deadline.addingInterval(interval)
-        tasks.forEach { $0(self) }
+        let _actions = actions
+        timer.schedule(after: interval)
         lock.unlock()
         
-        timer.schedule(after: interval)
+        _actions.forEach { $0(self) }
     }
     
-    // MARK: Reschedule
-    
-    /// Reschedule this job with the schedule.
-    public func reschedule(_ schedule: Schedule) {
+    /// Reschedules this task with the new schedule.
+    public func reschedule(_ new: Schedule) {
         lock.lock()
-        iterator = schedule.makeIterator()
+        iterator = new.makeIterator()
         lock.unlock()
     }
     
-    /// Suspend this job.
+    /// Suspends this task.
     public func suspend() {
         lock.lock()
-        let canSuspend = suspensions < UInt64.max
-        if canSuspend {
+        if suspensions < UInt64.max {
             suspensions += 1
             timer.suspend()
         }
         lock.unlock()
     }
     
-    /// Resume this job.
+    /// Resumes this task.
     public func resume() {
         lock.lock()
-        let canResume = suspensions > 0
-        if canResume {
+        if suspensions > 0 {
             suspensions -= 1
             timer.resume()
         }
         lock.unlock()
     }
     
-    /// Cancel this job.
+    /// Cancels this task.
     public func cancel() {
+        lock.lock()
         timer.cancel()
-        JobCenter.shared.remove(self)
+        lock.unlock()
+        TaskCenter.shared.remove(self)
     }
     
     deinit {
@@ -140,30 +143,35 @@ public class Job {
 }
 
 
-extension Job {
+extension Task {
     
-    public func addTask(_ task: @escaping (Job) -> Void) -> TaskKey {
+    /// Adds an action to this task.
+    @discardableResult
+    public func addAction(_ action: @escaping (Task) -> Void) -> ActionKey {
         lock.lock()
-        let key = tasks.insert(task)
+        let key = actions.insert(action)
         lock.unlock()
         return key
     }
     
-    public func removeTask(for key: TaskKey) {
+    /// Removes the key's corresponding action from this task.
+    public func removeAction(byKey key: ActionKey) {
         lock.lock()
-        tasks.removeElement(for: BucketKey(rawValue: key.underlying))
+        actions.removeElement(byKey: BucketKey(rawValue: key.underlying))
         lock.unlock()
     }
     
-    public func removeAllTasks() {
+    /// Removes all actions from this task.
+    public func removeAllActions() {
         lock.lock()
-        tasks.removeAll()
+        actions.removeAll()
         lock.unlock()
     }
 }
 
-extension Job {
+extension Task {
     
+    /// Adds tags to this task.
     public func addTags(_ tags: [String]) {
         let set = Set(tags)
         
@@ -177,18 +185,21 @@ extension Job {
         lock.unlock()
         
         for tag in intersection {
-            JobCenter.shared.add(tag: tag, for: self)
+            TaskCenter.shared.add(tag: tag, to: self)
         }
     }
     
+    /// Adds tags to this task.
     public func addTags(_ tags: String...) {
         addTags(tags)
     }
     
+    /// Adds the tag to this task.
     public func addTag(_ tag: String) {
         addTags(tag)
     }
     
+    /// Removes tags from this task.
     public func removeTags(_ tags: [String]) {
         let set = Set(tags)
         lock.lock()
@@ -203,48 +214,50 @@ extension Job {
         lock.unlock()
         
         for tag in intersection {
-            JobCenter.shared.remove(tag: tag, from: self)
+            TaskCenter.shared.remove(tag: tag, from: self)
         }
     }
     
+    /// Removes tags from this task.
     public func removeTags(_ tags: String...) {
         removeTags(tags)
     }
     
+    /// Removes the tag from this task.
     public func removeTag(_ tag: String) {
         removeTags(tag)
     }
 }
 
 
-extension Job {
+extension Task {
     
-    /// Suspend all job that attach the tag.
-    public static func suspend(_ tag: String) {
-        JobCenter.shared.jobs(forTag: tag).forEach { $0.suspend() }
+    /// Suspends all tasks that have the tag.
+    public static func suspend(byTag tag: String) {
+        TaskCenter.shared.tasks(forTag: tag).forEach { $0.suspend() }
     }
     
-    /// Resume all job that attach the tag.
-    public static func resume(_ tag: String) {
-        JobCenter.shared.jobs(forTag: tag).forEach { $0.resume() }
+    /// Resumes all tasks that have the tag.
+    public static func resume(byTag tag: String) {
+        TaskCenter.shared.tasks(forTag: tag).forEach { $0.resume() }
     }
     
-    /// Cancel all job that attach the tag.
-    public static func cancel(_ tag: String) {
-        JobCenter.shared.jobs(forTag: tag).forEach { $0.cancel() }
+    /// Cancels all tasks that have the tag.
+    public static func cancel(byTag tag: String) {
+        TaskCenter.shared.tasks(forTag: tag).forEach { $0.cancel() }
     }
 }
 
 
-extension Job: Hashable {
+extension Task: Hashable {
     
-    /// The hashValue of this job.
+    /// The task's hash value.
     public var hashValue: Int {
         return ObjectIdentifier(self).hashValue
     }
     
-    /// Returns a boolean value indicating whether the job is equal to another job.
-    public static func ==(lhs: Job, rhs: Job) -> Bool {
+    /// Returns a boolean value indicating whether two tasks are equal.
+    public static func ==(lhs: Task, rhs: Task) -> Bool {
         return lhs.hashValue == rhs.hashValue
     }
 }

@@ -35,7 +35,7 @@ struct Bucket<Element> {
     }
     
     @discardableResult
-    mutating func removeElement(for key: BucketKey) -> Element? {
+    mutating func removeElement(byKey key: BucketKey) -> Element? {
         return elements.removeValue(forKey: key)
     }
     

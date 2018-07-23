@@ -71,7 +71,7 @@ public struct Period {
                       nanoseconds: lhs.nanoseconds.clampedAdding(rhs.ns))
     }
     
-    internal func asDateComponents() -> DateComponents {
+    func asDateComponents() -> DateComponents {
         return DateComponents(year: years, month: months, day: days,
                               hour: hours, minute: minutes, second: seconds,
                               nanosecond: nanoseconds)

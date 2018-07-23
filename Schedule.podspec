@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name             = "Schedule"
-  s.version          = "0.0.3"
-  s.summary          = "Swift Job Schedule."
+  s.version          = "0.0.4"
+  s.summary          = "Task Scheduler for Swift."
   s.homepage         = "https://github.com/jianstm/Schedule"
   s.license          = { :type => "MIT", :file => "LICENSE" }
   s.author           = { "Quentin Jin" => "jianstm@gmail.com" }

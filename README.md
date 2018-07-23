@@ -1,6 +1,6 @@
 # Schedule
 
-⏰ A interval-based and date-based job scheduler for swift.
+⏰ A interval-based and date-based task scheduler for swift, with incredibly sweet apis.
 
 
 ## Features
@@ -17,7 +17,7 @@
 
 ## Usage
 
-Scheduling a job can not be simplier.
+Scheduling a task can not be simplier.
 
 ```swift
 func heartBeat() { }
@@ -93,40 +93,68 @@ let s8 = s7.until(date)
 ```
 
 
-### Job management
+### Task management
 
-In genera, you don't need to care about the reference management of job. All jobs will be held by a inner shared instance `jobCenter`, so they won't be released, unless you do that yourself.
+In general, you don't need to care about the reference management of task. All tasks will be held by a inner shared instance of class `TaskCenter`, so they won't be released, unless you do that yourself.
 
+#### Operation
 
 ```swift
-let job = Schedule.every(1.day).do { }
+let task = Schedule.every(1.day).do { }
 
-job.suspend()
-job.resume()
-job.cancel()    // will release this job
+task.suspend()
+task.resume()
+task.cancel()    // will release this task after you cancel it.
 ```
 
-You also can use `tag` to organize jobs, and use `queue` to define which queue the job should be dispatched to:
+#### Tag
+
+You also can use `tag` to organize tasks, and use `queue` to define which queue the task should be dispatched to:
 
 ```swift
 let s = Schedule.every(1.day)
-s.do(queue: myJobQueue, tag: "log") { }
-s.do(queue: myJobQueue, tag: "log") { }
+let task0 = s.do(queue: myTaskQueue, tag: "log") { }
+let task1 = s.do(queue: myTaskQueue, tag: "log") { }
 
-Job.suspend("log")
-Job.resume("log")
-Job.cancel("log")
+task0.addTag("database")
+task1.removeTag("log")
+
+Task.suspend(byTag: "log")
+Task.resume(byTag: "log")
+Task.cancel(byTag: "log")
 ```
 
-There is also a more elegant way to deal with job's lifecycle:
+#### Action
+
+Aciton is minimal job unit. A task is composed of a series of actions. 
+
+```swift
+let dailyTask = Schedule.every(1.day)
+dailyTask.addAction {
+	print("open eyes")
+}
+dailyTask.addAction {
+	print("get up")
+}
+let key = dailyTask.addAction {
+	print("take a shower")
+}
+dailyTask.removeAction(byKey: key)
+```
+
+There is also a more elegant way to deal with task's lifecycle:
 
 ```swift
 Schedule.every(1.second).do(dependOn: self) {
-    // do something, and cancel the job when `self` is deallocated.
+    // do something, and cancel the task when `self` is deallocated.
 }
 ```
 
-## Install
+## Contribution
+
+Feel free to criticize!
+
+## Installation
 
 Schedul supports all popular dependency managers.
 
@@ -149,4 +177,3 @@ dependencies: [
     .package(url: "https://github.com/jianstm/Schedule", from: "0.0.2")
 ]
 ```
-

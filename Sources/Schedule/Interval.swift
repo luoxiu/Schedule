@@ -20,7 +20,7 @@ public struct Interval {
     
     /// A boolean value indicating whether this interval is negative.
     ///
-    /// A interval can be negative.
+    /// An interval can be negative.
     ///
     /// - The interval between 6:00 and 7:00 is `1.hour`,
     /// but the interval between 7:00 and 6:00 is `-1.hour`.
@@ -39,12 +39,6 @@ public struct Interval {
     /// measured in nanoseconds, but disregarding its sign.
     public var magnitude: Double {
         return nanoseconds.magnitude
-    }
-    
-    internal var ns: Int {
-        if nanoseconds > Double(Int.max) { return .max }
-        if nanoseconds < Double(Int.min) { return .min }
-        return Int(nanoseconds)
     }
     
     /// Returns a boolean value indicating whether this interval is longer than the given value.
@@ -151,19 +145,28 @@ extension Date {
         return timeIntervalSince(date).seconds
     }
     
-    /// Return a new date by adding an interval to the date.
+    /// Returns a new date by adding an interval to the date.
     public func addingInterval(_ interval: Interval) -> Date {
         return addingTimeInterval(interval.seconds)
     }
     
-    /// Return a new date by adding an interval to the date.
+    /// Returns a new date by adding an interval to the date.
     public static func +(lhs: Date, rhs: Interval) -> Date {
         return lhs.addingInterval(rhs)
     }
     
-    /// Add an interval to the date.
+    /// Adds an interval to the date.
     public static func +=(lhs: inout Date, rhs: Interval) {
         lhs = lhs + rhs
+    }
+}
+
+extension Interval {
+    
+    var ns: Int {
+        if nanoseconds > Double(Int.max) { return .max }
+        if nanoseconds < Double(Int.min) { return .min }
+        return Int(nanoseconds)
     }
 }
 
