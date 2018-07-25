@@ -16,8 +16,10 @@ import Foundation
 ///
 /// If you add a period `1.month` to the 1st January,
 /// you will get the 1st February.
+///
 /// If you add the same period to the 1st February,
 /// you will get the 1st March.
+///
 /// But the intervals(`31.days` in case 1, `28.days` or `29.days` in case 2)
 /// in these two cases are quite different.
 public struct Period {
@@ -59,12 +61,12 @@ public struct Period {
                       nanoseconds: lhs.nanoseconds.clampedAdding(rhs.nanoseconds))
     }
     
-    /// Returns a new date by adding the right period to the left date.
+    /// Returns a date with a period added to it.
     public static func +(lhs: Date, rhs: Period) -> Date {
         return Calendar.autoupdatingCurrent.date(byAdding: rhs.asDateComponents(), to: lhs) ?? .distantFuture
     }
     
-    /// Returns a new period by adding the right interval to the left period.
+    /// Return a period with a interval added to it.
     public static func +(lhs: Period, rhs: Interval) -> Period {
         return Period(years: lhs.years, months: lhs.months, days: lhs.days,
                       hours: lhs.hours, minutes: lhs.minutes, seconds: lhs.seconds,
@@ -80,22 +82,18 @@ public struct Period {
 
 extension Int {
     
-    /// Period by setting years to this value.
     public var years: Period {
         return Period(years: self)
     }
     
-    /// Period by setting years to this value.
     public var year: Period {
         return years
     }
     
-    /// Period by setting months to this value.
     public var months: Period {
         return Period(months: self)
     }
     
-    /// Period by setting months to this value.
     public var month: Period {
         return months
     }

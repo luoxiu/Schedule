@@ -10,13 +10,13 @@ import Foundation
 /// `Time` represents a time without a date.
 public struct Time {
     
-    /// Hour of this time, max is 23, min is 0.
+    /// Hour of this time.
     public let hour: Int
     
-    /// Minute of this time, max is 59, min is 0.
+    /// Minute of this time.
     public let minute: Int
     
-    /// Second of this time, max is 59, min is 0.
+    /// Second of this time.
     public let second: Int
     
     /// Nanosecond of this time.

@@ -10,14 +10,6 @@ import XCTest
 
 final class DateTimeTests: XCTestCase {
     
-    func testInterval2DispatchInterval() {
-        let i0 = 1.23.seconds
-        XCTAssertEqual(i0.asDispatchTimeInterval(), DispatchTimeInterval.nanoseconds(Int(i0.nanoseconds)))
-        
-        let i1 = 4.56.minutes + 7.89.hours
-        XCTAssertEqual(i1.asDispatchTimeInterval(), DispatchTimeInterval.nanoseconds(Int(i1.nanoseconds)))
-    }
-    
     func testIntervalConvertible() {
         XCTAssertEqual(1.nanoseconds, Interval(nanoseconds: 1))
         XCTAssertEqual(2.microseconds, Interval(nanoseconds: 2 * K.ns_per_us))
@@ -53,7 +45,6 @@ final class DateTimeTests: XCTestCase {
     }
     
     static var allTests = [
-        ("testInterval2DispatchInterval", testInterval2DispatchInterval),
         ("testInterval", testIntervalConvertible),
         ("testTimeConstructor", testTimeConstructor),
         ("testPeriodAnd", testPeriodAnd),

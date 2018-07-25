@@ -7,15 +7,22 @@
 
 import Foundation
 
-/// `Interval` represents a duration of time.
+/// `Interval` represents a length of time.
+///
+/// The value range of interval is [Int.min.nanoseconds...Int.max.nanoseconds],
+/// that is, about -292.years ~ 292.years, enough for us!
 public struct Interval {
     
-    ///  The length of this interval, measured in nanoseconds.
-    public let nanoseconds: Double
+    let ns: Int
+    
+    ///  The length of this interval in nanoseconds.
+    public var nanoseconds: Double {
+        return Double(ns)
+    }
     
     /// Creates an interval from the given number of nanoseconds.
     public init(nanoseconds: Double) {
-        self.nanoseconds = nanoseconds
+        self.ns = nanoseconds.clampedToInt()
     }
     
     /// A boolean value indicating whether this interval is negative.
@@ -26,27 +33,31 @@ public struct Interval {
     /// but the interval between 7:00 and 6:00 is `-1.hour`.
     /// In this case, `-1.hour` means **one hour ago**.
     ///
-    /// - The interval comparing `3.hour` and `1.hour` is `2.hour`,
-    /// but the interval comparing `1.hour` and `3.hour` is `-2.hour`.
+    /// - The interval comparing `3.hour` to `1.hour` is `2.hour`,
+    /// but the interval comparing `1.hour` to `3.hour` is `-2.hour`.
     /// In this case, `-2.hour` means **two hours shorter**
     public var isNegative: Bool {
-        return nanoseconds.isLess(than: 0)
+        return ns < 0
     }
     
-    /// The magnitude of this interval.
-    ///
-    /// It's the absolute value of the length of this interval,
+    /// The absolute value of the length of this interval,
     /// measured in nanoseconds, but disregarding its sign.
-    public var magnitude: Double {
-        return nanoseconds.magnitude
+    public var magnitude: UInt {
+        return ns.magnitude
     }
+}
+
+
+extension Interval {
     
-    /// Returns a boolean value indicating whether this interval is longer than the given value.
+    /// Returns a boolean value indicating whether this interval is longer
+    /// than the given value.
     public func isLonger(than other: Interval) -> Bool {
         return magnitude > other.magnitude
     }
     
-    /// Returns a boolean value indicating whether this interval is shorter than the given value.
+    /// Returns a boolean value indicating whether this interval is shorter
+    /// than the given value.
     public func isShorter(than other: Interval) -> Bool {
         return magnitude < other.magnitude
     }
@@ -87,30 +98,30 @@ extension Interval {
     
     /// Creates an interval from the given number of seconds.
     public init(seconds: Double) {
-        self.nanoseconds = seconds * pow(10, 9)
+        self.init(nanoseconds: seconds * pow(10, 9))
     }
     
-    /// The length of this interval, measured in seconds.
+    /// The length of this interval in seconds.
     public var seconds: Double {
         return nanoseconds / pow(10, 9)
     }
     
-    /// The length of this interval, measured in minutes.
+    /// The length of this interval in minutes.
     public var minutes: Double {
         return seconds / 60
     }
     
-    /// The length of this interval, measured in hours.
+    /// The length of this interval in hours.
     public var hours: Double {
         return minutes / 60
     }
     
-    /// The length of this interval, measured in days.
+    /// The length of this interval in days.
     public var days: Double {
         return hours / 24
     }
     
-    /// The length of this interval, measured in weeks.
+    /// The length of this interval in weeks.
     public var weeks: Double {
         return days / 7
     }
@@ -131,53 +142,48 @@ extension Interval: Hashable {
 
 extension Date {
     
-    /// The interval between this date and now.
+    /// The interval between this date and the current date and time.
     ///
-    /// If the date is earlier than now, the interval is negative.
+    /// If this date is earlier than now, the interval will be negative.
     public var intervalSinceNow: Interval {
         return timeIntervalSinceNow.seconds
     }
     
     /// Returns the interval between this date and the given date.
     ///
-    /// If the date is earlier than the given date, the interval is negative.
+    /// If this date is earlier than the given date, the interval will be negative.
     public func interval(since date: Date) -> Interval {
         return timeIntervalSince(date).seconds
     }
     
-    /// Returns a new date by adding an interval to the date.
+    /// Returns a new date by adding an interval to this date.
     public func addingInterval(_ interval: Interval) -> Date {
         return addingTimeInterval(interval.seconds)
     }
     
-    /// Returns a new date by adding an interval to the date.
+    /// Returns a date with an interval added to it.
     public static func +(lhs: Date, rhs: Interval) -> Date {
         return lhs.addingInterval(rhs)
     }
     
-    /// Adds an interval to the date.
+    /// Adds a interval to the date.
     public static func +=(lhs: inout Date, rhs: Interval) {
         lhs = lhs + rhs
-    }
-}
-
-extension Interval {
-    
-    var ns: Int {
-        if nanoseconds > Double(Int.max) { return .max }
-        if nanoseconds < Double(Int.min) { return .min }
-        return Int(nanoseconds)
     }
 }
 
 extension DispatchSourceTimer {
     
     func schedule(after interval: Interval) {
+        guard !interval.isNegative else {
+            schedule(wallDeadline: .distantFuture)
+            return
+        }
         schedule(wallDeadline: .now() + DispatchTimeInterval.nanoseconds(interval.ns))
     }
 }
 
-/// `IntervalConvertible` provides a set of intuitive apis for creating interval.
+/// `IntervalConvertible` provides a set of intuitive api for creating interval.
 public protocol IntervalConvertible {
     
     var nanoseconds: Interval { get }

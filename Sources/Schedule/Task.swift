@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// `ActionKey` represents a token that can be used to operate action.
 public protocol ActionKey {
     var underlying: UInt64 { get }
 }
@@ -17,127 +18,133 @@ extension BucketKey: ActionKey {
     }
 }
 
-/// `Task` represents a series of actions to be scheduled.
+/// `Task` represents a job to be scheduled.
 public class Task {
     
-    /// The timstamp last time this task was scheduled at.
-    public var lastSchedule: Date? {
-        lock.lock()
-        defer { lock.unlock() }
-        return _lastSchedule
-    }
-    private var _lastSchedule: Date?
+    private let _lock = Lock()
     
-    /// The timestamp next time this task will be scheduled at.
-    public var nextSchedule: Date? {
-        lock.lock()
-        defer { lock.unlock() }
-        return deadline
-    }
+    private var _iterator: AnyIterator<Interval>
     
-    /// All tags associate with this task.
-    public var tags: Set<String> {
-        lock.lock()
-        defer { lock.unlock() }
-        return _tags
-    }
-    private var _tags: Set<String> = []
-    
-    private lazy var lock = NSRecursiveLock()
-    
-    private var iterator: AnyIterator<Interval>
-    
-    private var deadline: Date!
+    private var _timer: DispatchSourceTimer?
     
     private typealias Action = (Task) -> Void
-    private var actions = Bucket<Action>.empty
-
-    private var timer: DispatchSourceTimer!
+    private lazy var _actions = Bucket<Action>()
     
-    private var suspensions: UInt64 = 0
+    private lazy var _suspensions: UInt64 = 0
+    private lazy var _timeline = Timeline()
+    private lazy var _tags: Set<String> = []
     
     init(schedule: Schedule,
          queue: DispatchQueue? = nil,
          tag: String? = nil,
          onElapse: @escaping (Task) -> Void) {
         
-        self.iterator = schedule.makeIterator()
-        guard let interval = self.iterator.next() else {
-            return
-        }
-        self.deadline = Date() + interval
-        self.actions.insert(onElapse)
-        self.timer = DispatchSource.makeTimerSource(queue: queue)
-        self.timer.setEventHandler { [weak self] in
+        self._iterator = schedule.makeIterator()
+        
+        guard let interval = self._iterator.next() else { return }
+        
+        self._timer = DispatchSource.makeTimerSource(queue: queue)
+        
+        self._actions.add(onElapse)
+        self._timer?.setEventHandler { [weak self] in
             self?.elapse()
         }
-        self.timer.schedule(after: interval)
-        self.timer.resume()
+        self._timer?.schedule(after: interval)
+        
+        let now = Date()
+        self._timeline.activate = now
+        self._timeline.nextSchedule = now.addingInterval(interval)
         TaskCenter.shared.add(self, withTag: tag)
+        
+        self._timer?.resume()
     }
     
     private func elapse() {
+        _lock.lock()
         let now = Date()
+        if _timeline.firstSchedule == nil {
+            _timeline.firstSchedule = now
+        }
+        _timeline.lastSchedule = now
         
-        lock.lock()
-        _lastSchedule = now
-        guard let interval = iterator.next(), !interval.isNegative else {
-            deadline = nil
-            let _actions = actions
-            lock.unlock()
-            _actions.forEach { $0(self) }
+        guard let interval = _iterator.next() else {
+            _timeline.nextSchedule = nil
+            let actions = _actions
+            _lock.unlock()
+            actions.forEach { $0(self) }
             return
         }
-        deadline = deadline.addingInterval(interval)
-        let _actions = actions
-        timer.schedule(after: interval)
-        lock.unlock()
         
-        _actions.forEach { $0(self) }
+        _timeline.nextSchedule = _timeline.nextSchedule?.addingInterval(interval)
+        
+        _timer?.schedule(after: (_timeline.nextSchedule ?? Date.distantFuture).interval(since: now))
+        let actions = _actions
+        _lock.unlock()
+        
+        actions.forEach { $0(self) }
+    }
+    
+    /// The timeline of this task.
+    public var timeline: Timeline {
+        return _lock.withLock {
+            _timeline
+        }
+    }
+    
+    /// All tags associated with this task.
+    public var tags: Set<String> {
+        return _lock.withLock {
+            _tags
+        }
     }
     
     /// Reschedules this task with the new schedule.
     public func reschedule(_ new: Schedule) {
-        lock.lock()
-        iterator = new.makeIterator()
-        lock.unlock()
+        _lock.withLock {
+            _iterator = new.makeIterator()
+        }
     }
     
     /// Suspends this task.
     public func suspend() {
-        lock.lock()
-        if suspensions < UInt64.max {
-            suspensions += 1
-            timer.suspend()
+        guard let timer = _timer else { return }
+        _lock.withLock {
+            if _suspensions < UInt64.max {
+                timer.suspend()
+                _suspensions += 1
+            }
         }
-        lock.unlock()
     }
     
     /// Resumes this task.
     public func resume() {
-        lock.lock()
-        if suspensions > 0 {
-            suspensions -= 1
-            timer.resume()
+        guard let timer = _timer else { return }
+        _lock.withLock {
+            if _suspensions > 0 {
+                timer.resume()
+                _suspensions -= 1
+            }
         }
-        lock.unlock()
     }
     
     /// Cancels this task.
     public func cancel() {
-        lock.lock()
-        timer.cancel()
-        lock.unlock()
+        guard let timer = _timer else { return }
+        _lock.withLock {
+            timer.cancel()
+            _timeline.cancel = Date()
+        }
         TaskCenter.shared.remove(self)
     }
     
     deinit {
-        lock.lock()
-        while suspensions > 0 {
-            suspensions -= 1
-            timer.resume()
+        guard let timer = _timer else { return }
+        _lock.withLock {
+            while _suspensions > 0 {
+                timer.resume()
+                _suspensions -= 1
+            }
         }
-        lock.unlock()
         cancel()
     }
 }
@@ -145,27 +152,26 @@ public class Task {
 
 extension Task {
     
-    /// Adds an action to this task.
+    /// Adds the action to this task.
     @discardableResult
     public func addAction(_ action: @escaping (Task) -> Void) -> ActionKey {
-        lock.lock()
-        let key = actions.insert(action)
-        lock.unlock()
-        return key
+        return _lock.withLock {
+            _actions.add(action)
+        }
     }
     
-    /// Removes the key's corresponding action from this task.
+    /// Removes action by key from this task.
     public func removeAction(byKey key: ActionKey) {
-        lock.lock()
-        actions.removeElement(byKey: BucketKey(rawValue: key.underlying))
-        lock.unlock()
+        _lock.withLock {
+            _ = _actions.removeElement(for: BucketKey(rawValue: key.underlying))
+        }
     }
     
     /// Removes all actions from this task.
     public func removeAllActions() {
-        lock.lock()
-        actions.removeAll()
-        lock.unlock()
+        _lock.withLock {
+            _actions.removeAll()
+        }
     }
 }
 
@@ -173,18 +179,18 @@ extension Task {
     
     /// Adds tags to this task.
     public func addTags(_ tags: [String]) {
-        let set = Set(tags)
+        var set = Set(tags)
         
-        lock.lock()
-        let intersection = set.intersection(self._tags)
-        guard intersection.count > 0 else {
-            lock.unlock()
+        _lock.lock()
+        set.subtract(_tags)
+        guard set.count > 0 else {
+            _lock.unlock()
             return
         }
-        self._tags.formUnion(intersection)
-        lock.unlock()
+        _tags.formUnion(set)
+        _lock.unlock()
         
-        for tag in intersection {
+        for tag in set {
             TaskCenter.shared.add(tag: tag, to: self)
         }
     }
@@ -201,19 +207,17 @@ extension Task {
     
     /// Removes tags from this task.
     public func removeTags(_ tags: [String]) {
-        let set = Set(tags)
-        lock.lock()
-        let intersection = set.intersection(self._tags)
-        guard intersection.count > 0 else {
-            lock.unlock()
+        var set = Set(tags)
+        _lock.lock()
+        set.formIntersection(_tags)
+        guard set.count > 0 else {
+            _lock.unlock()
             return
         }
-        for tag in intersection {
-            self._tags.insert(tag)
-        }
-        lock.unlock()
+        _tags.subtract(set)
+        _lock.unlock()
         
-        for tag in intersection {
+        for tag in set {
             TaskCenter.shared.remove(tag: tag, from: self)
         }
     }

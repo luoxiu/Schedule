@@ -7,30 +7,24 @@
 
 import Foundation
 
-extension FixedWidthInteger {
+extension Int {
     
-    func clampedAdding(_ other: Self) -> Self {
+    func clampedAdding(_ other: Int) -> Int {
         let r = addingReportingOverflow(other)
         return r.overflow ? (other > 0 ? .max : .min) : r.partialValue
     }
     
-    func clampedSubtracting(_ other: Self) -> Self {
+    func clampedSubtracting(_ other: Int) -> Int {
         let r = subtractingReportingOverflow(other)
-        return r.overflow ? (other > 0 ? .max : .min) : r.partialValue
+        return r.overflow ? (other > 0 ? .min : .max) : r.partialValue
     }
 }
 
-extension String {
+extension Double {
     
-    func matches(pattern: String) -> [String] {
-        guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else {
-            return []
-        }
-        let matches = regex.matches(in: self, options: [], range: NSRange(location: 0, length: count))
-        guard let match = matches.first else { return [] }
-        
-        return (0..<match.numberOfRanges).reduce(into: [String]()) { (r, i) in
-            r.append((self as NSString).substring(with: match.range(at: i)))
-        }
+    func clampedToInt() -> Int {
+        if self > Double(Int.max) { return Int.max }
+        if self < Double(Int.min) { return Int.min }
+        return Int(self)
     }
 }
