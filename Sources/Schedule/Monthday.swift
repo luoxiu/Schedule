@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// `MonthDay` represents a day in month, without a time.
+/// `Monthday` represents a day in month, without a time.
 public enum MonthDay {
     
     case january(Int)

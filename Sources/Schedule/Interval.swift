@@ -8,21 +8,14 @@
 import Foundation
 
 /// `Interval` represents a length of time.
-///
-/// The value range of interval is [Int.min.nanoseconds...Int.max.nanoseconds],
-/// that is, about -292.years ~ 292.years, enough for us!
 public struct Interval {
     
-    let ns: Int
-    
     ///  The length of this interval in nanoseconds.
-    public var nanoseconds: Double {
-        return Double(ns)
-    }
+    public var nanoseconds: Double
     
     /// Creates an interval from the given number of nanoseconds.
     public init(nanoseconds: Double) {
-        self.ns = nanoseconds.clampedToInt()
+        self.nanoseconds = nanoseconds
     }
     
     /// A boolean value indicating whether this interval is negative.
@@ -37,13 +30,13 @@ public struct Interval {
     /// but the interval comparing `1.hour` to `3.hour` is `-2.hour`.
     /// In this case, `-2.hour` means **two hours shorter**
     public var isNegative: Bool {
-        return ns < 0
+        return nanoseconds.isLess(than: 0)
     }
     
     /// The absolute value of the length of this interval,
     /// measured in nanoseconds, but disregarding its sign.
-    public var magnitude: UInt {
-        return ns.magnitude
+    public var magnitude: Double {
+        return nanoseconds.magnitude
     }
 }
 
@@ -72,25 +65,25 @@ extension Interval {
         return intervals.sorted(by: { $0.magnitude < $1.magnitude })[0]
     }
     
-    /// Returns a new interval by multipling the left interval by the right number.
+    /// Returns a new interval by multipling this interval by a double number.
     ///
     ///     1.hour * 2 == 2.hours
-    public static func *(lhs: Interval, rhs: Double) -> Interval {
-        return Interval(nanoseconds: lhs.nanoseconds * rhs)
+    public func multiplying(by number: Double) -> Interval {
+        return Interval(nanoseconds: nanoseconds * number)
     }
     
-    /// Returns a new interval by adding the right interval to the left interval.
+    /// Returns a new interval by adding an interval to this interval.
     ///
     ///     1.hour + 1.hour == 2.hours
-    public static func +(lhs: Interval, rhs: Interval) -> Interval {
-        return Interval(nanoseconds: lhs.nanoseconds + rhs.nanoseconds)
+    public func adding(_ other: Interval) -> Interval {
+        return Interval(nanoseconds: nanoseconds + other.nanoseconds)
     }
     
-    /// Returns a new instarval by subtracting the right interval from the left interval.
+    /// Returns a new interval by subtracting an interval from this interval.
     ///
     ///     2.hours - 1.hour == 1.hour
-    public static func -(lhs: Interval, rhs: Interval) -> Interval {
-        return Interval(nanoseconds: lhs.nanoseconds - rhs.nanoseconds)
+    public func subtracting(_ other: Interval) -> Interval {
+        return Interval(nanoseconds: nanoseconds - other.nanoseconds)
     }
 }
 
@@ -127,6 +120,31 @@ extension Interval {
     }
 }
 
+
+extension Interval {
+    
+    /// Returns a new interval by multipling the left interval by the right number.
+    ///
+    ///     1.hour * 2 == 2.hours
+    public static func *(lhs: Interval, rhs: Double) -> Interval {
+        return lhs.multiplying(by: rhs)
+    }
+    
+    /// Returns a new interval by adding the right interval to the left interval.
+    ///
+    ///     1.hour + 1.hour == 2.hours
+    public static func +(lhs: Interval, rhs: Interval) -> Interval {
+        return lhs.adding(rhs)
+    }
+    
+    /// Returns a new interval by subtracting the right interval from the left interval.
+    ///
+    ///     2.hours - 1.hour == 1.hour
+    public static func -(lhs: Interval, rhs: Interval) -> Interval {
+        return lhs.subtracting(rhs)
+    }
+}
+
 extension Interval: Hashable {
     
     /// The hashValue of this interval.
@@ -139,6 +157,7 @@ extension Interval: Hashable {
         return lhs.nanoseconds == rhs.nanoseconds
     }
 }
+
 
 extension Date {
     
@@ -157,20 +176,16 @@ extension Date {
     }
     
     /// Returns a new date by adding an interval to this date.
-    public func addingInterval(_ interval: Interval) -> Date {
+    public func adding(_ interval: Interval) -> Date {
         return addingTimeInterval(interval.seconds)
     }
     
     /// Returns a date with an interval added to it.
     public static func +(lhs: Date, rhs: Interval) -> Date {
-        return lhs.addingInterval(rhs)
-    }
-    
-    /// Adds a interval to the date.
-    public static func +=(lhs: inout Date, rhs: Interval) {
-        lhs = lhs + rhs
+        return lhs.adding(rhs)
     }
 }
+
 
 extension DispatchSourceTimer {
     
@@ -179,15 +194,19 @@ extension DispatchSourceTimer {
             schedule(wallDeadline: .distantFuture)
             return
         }
-        schedule(wallDeadline: .now() + DispatchTimeInterval.nanoseconds(interval.ns))
+        
+        let ns = interval.nanoseconds.clampedToInt()
+        schedule(wallDeadline: .now() + DispatchTimeInterval.nanoseconds(ns))
     }
 }
+
 
 /// `IntervalConvertible` provides a set of intuitive api for creating interval.
 public protocol IntervalConvertible {
     
     var nanoseconds: Interval { get }
 }
+
 
 extension Int: IntervalConvertible {
     
@@ -196,12 +215,14 @@ extension Int: IntervalConvertible {
     }
 }
 
+
 extension Double: IntervalConvertible {
     
     public var nanoseconds: Interval {
         return Interval(nanoseconds: self)
     }
 }
+
 
 extension IntervalConvertible {
     

@@ -53,7 +53,7 @@ public class Task {
         
         let now = Date()
         self._timeline.activate = now
-        self._timeline.nextSchedule = now.addingInterval(interval)
+        self._timeline.nextSchedule = now.adding(interval)
         TaskCenter.shared.add(self, withTag: tag)
         
         self._timer?.resume()
@@ -75,7 +75,7 @@ public class Task {
             return
         }
         
-        _timeline.nextSchedule = _timeline.nextSchedule?.addingInterval(interval)
+        _timeline.nextSchedule = _timeline.nextSchedule?.adding(interval)
         
         _timer?.schedule(after: (_timeline.nextSchedule ?? Date.distantFuture).interval(since: now))
         let actions = _actions

@@ -26,6 +26,8 @@ extension WeakBox: Hashable {
     }
 }
 
+
+/// An alternative to `NSHashTable`, since it is unavailable on linux.
 struct WeakSet<T: AnyObject> {
     
     private var set = Set<WeakBox<T>>()

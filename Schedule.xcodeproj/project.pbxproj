@@ -30,6 +30,7 @@
 		6624105421075FDC00013B00 /* ExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6624105221075F8A00013B00 /* ExtensionsTests.swift */; };
 		66241056210761F000013B00 /* BucketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66241055210761F000013B00 /* BucketTests.swift */; };
 		662410592107804400013B00 /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662410582107804400013B00 /* Lock.swift */; };
+		666AEAF32109F90C00A50F27 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666AEAF22109F90C00A50F27 /* Atomic.swift */; };
 		669D215020FE1B7300AFFDF7 /* Interval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669D214F20FE1B7300AFFDF7 /* Interval.swift */; };
 		669D215220FE1B8A00AFFDF7 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669D215120FE1B8A00AFFDF7 /* Time.swift */; };
 		669D215420FE1BA600AFFDF7 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669D215320FE1BA600AFFDF7 /* Period.swift */; };
@@ -41,8 +42,8 @@
 		OBJ_29 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Schedule.swift */; };
 		OBJ_37 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_48 /* DateTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* DateTimeTests.swift */; };
-		OBJ_49 /* ScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* ScheduleTests.swift */; };
-		OBJ_50 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* Util.swift */; };
+		OBJ_49 /* SchedulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* SchedulesTests.swift */; };
+		OBJ_50 /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* Misc.swift */; };
 		OBJ_51 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* XCTestManifests.swift */; };
 		OBJ_53 /* Schedule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Schedule::Schedule::Product" /* Schedule.framework */; };
 /* End PBXBuildFile section */
@@ -66,6 +67,7 @@
 
 /* Begin PBXFileReference section */
 		62661F402108433300055501 /* WeakSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakSet.swift; sourceTree = "<group>"; };
+		626C7209210968C6005F10A7 /* LinuxMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
 		62EF93F821085309001F7A47 /* WeakSetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakSetTests.swift; sourceTree = "<group>"; };
 		62EF93FD21086411001F7A47 /* TaskCenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCenterTests.swift; sourceTree = "<group>"; };
 		62EF940721086F63001F7A47 /* Timeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 		6624105221075F8A00013B00 /* ExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsTests.swift; sourceTree = "<group>"; };
 		66241055210761F000013B00 /* BucketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketTests.swift; sourceTree = "<group>"; };
 		662410582107804400013B00 /* Lock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
+		666AEAF22109F90C00A50F27 /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
 		669D214F20FE1B7300AFFDF7 /* Interval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interval.swift; sourceTree = "<group>"; };
 		669D215120FE1B8A00AFFDF7 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		669D215320FE1BA600AFFDF7 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
@@ -86,8 +89,8 @@
 		OBJ_10 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		OBJ_11 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		OBJ_15 /* DateTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeTests.swift; sourceTree = "<group>"; };
-		OBJ_16 /* ScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTests.swift; sourceTree = "<group>"; };
-		OBJ_17 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		OBJ_16 /* SchedulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulesTests.swift; sourceTree = "<group>"; };
+		OBJ_17 /* Misc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Misc.swift; sourceTree = "<group>"; };
 		OBJ_18 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		"Schedule::Schedule::Product" /* Schedule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Schedule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -113,22 +116,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		62EF93FB21085312001F7A47 /* Utils */ = {
+		62EF93FB21085312001F7A47 /* UtilsTests */ = {
 			isa = PBXGroup;
 			children = (
 				6624105221075F8A00013B00 /* ExtensionsTests.swift */,
 				66241055210761F000013B00 /* BucketTests.swift */,
 				62EF93F821085309001F7A47 /* WeakSetTests.swift */,
 			);
-			name = Utils;
-			sourceTree = "<group>";
-		};
-		62EF93FC210863FA001F7A47 /* DateTime */ = {
-			isa = PBXGroup;
-			children = (
-				OBJ_15 /* DateTimeTests.swift */,
-			);
-			name = DateTime;
+			name = UtilsTests;
 			sourceTree = "<group>";
 		};
 		662410462104A0EC00013B00 /* Utils */ = {
@@ -138,6 +133,7 @@
 				6624104D2104AF2100013B00 /* Extensions.swift */,
 				662410582107804400013B00 /* Lock.swift */,
 				62661F402108433300055501 /* WeakSet.swift */,
+				666AEAF22109F90C00A50F27 /* Atomic.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -166,6 +162,7 @@
 		OBJ_13 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				626C7209210968C6005F10A7 /* LinuxMain.swift */,
 				OBJ_14 /* ScheduleTests */,
 			);
 			name = Tests;
@@ -174,12 +171,12 @@
 		OBJ_14 /* ScheduleTests */ = {
 			isa = PBXGroup;
 			children = (
-				62EF93FC210863FA001F7A47 /* DateTime */,
-				62EF93FB21085312001F7A47 /* Utils */,
-				OBJ_16 /* ScheduleTests.swift */,
-				OBJ_17 /* Util.swift */,
-				OBJ_18 /* XCTestManifests.swift */,
+				OBJ_15 /* DateTimeTests.swift */,
+				OBJ_17 /* Misc.swift */,
+				OBJ_16 /* SchedulesTests.swift */,
 				62EF93FD21086411001F7A47 /* TaskCenterTests.swift */,
+				OBJ_18 /* XCTestManifests.swift */,
+				62EF93FB21085312001F7A47 /* UtilsTests */,
 			);
 			name = ScheduleTests;
 			path = Tests/ScheduleTests;
@@ -315,6 +312,7 @@
 				669D215020FE1B7300AFFDF7 /* Interval.swift in Sources */,
 				669D215620FE1BB400AFFDF7 /* Weekday.swift in Sources */,
 				62EF940821086F63001F7A47 /* Timeline.swift in Sources */,
+				666AEAF32109F90C00A50F27 /* Atomic.swift in Sources */,
 				OBJ_28 /* Task.swift in Sources */,
 				OBJ_29 /* Schedule.swift in Sources */,
 				62661F412108433400055501 /* WeakSet.swift in Sources */,
@@ -343,8 +341,8 @@
 				6624105421075FDC00013B00 /* ExtensionsTests.swift in Sources */,
 				62EF93FA2108530D001F7A47 /* WeakSetTests.swift in Sources */,
 				OBJ_48 /* DateTimeTests.swift in Sources */,
-				OBJ_49 /* ScheduleTests.swift in Sources */,
-				OBJ_50 /* Util.swift in Sources */,
+				OBJ_49 /* SchedulesTests.swift in Sources */,
+				OBJ_50 /* Misc.swift in Sources */,
 				OBJ_51 /* XCTestManifests.swift in Sources */,
 				66241056210761F000013B00 /* BucketTests.swift in Sources */,
 				62EF93FF21086420001F7A47 /* TaskCenterTests.swift in Sources */,

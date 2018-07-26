@@ -1,18 +1,20 @@
 # Schedule
 
-⏰ A interval-based and date-based task scheduler for swift, with incredibly sweet apis.
+⏰ An interval-based and date-based task scheduler for swift, with incredibly sweet api.
 
 
 ## Features
 
 - 📆 Date-based scheduling
 - ⏳ Interval-based scheduling
-- 📝 Mixture rules scheduling
+- 📝 Mixture rules
+- 👩‍🎓‍ Human readable period parsing
 - 🚦 Suspend, resume, cancel
-- 🏷 Tag related management
+- 🏷 Tag-based management
+- 🍰 Action appending/removing
 - 🍻 No need to concern about runloop
 - 👻 No need to concern about circular reference
-- 🍭 **Sweet apis**
+- 🍭 **Incredibly Sweet API**
 
 
 ## Usage
@@ -20,9 +22,11 @@
 Scheduling a task can not be simplier.
 
 ```swift
-func heartBeat() { }
-Schedule.every(0.5.seconds).do(heartBeat)
+Schedule.every(1.second).do {
+	print("heart beat")
+}
 ```
+
 
 ### Interval-based Scheduling
 
@@ -43,7 +47,6 @@ Schedule.from([1.second, 2.minutes, 3.hours]).do { }
 ```
 
 
-
 ### Date-based Scheduling
 
 ```swift
@@ -55,14 +58,15 @@ Schedule.every(.monday, .tuesday).at("11:11").do { }
 
 Schedule.every(.september(30)).at("10:00:00").do { }
 
+Schedule.every("one month and ten days").do { }
+
 Schedule.of(date0, date1, date2).do { }
 
 Schedule.from([date0, date1, date2]).do { }
 ```
 
 
-
-### Custom Scheduling
+### Mixture rules
 
 ```swift
 import Schedule
@@ -76,28 +80,27 @@ birthdaySchedule.do {
 }
 
 /// merge
-let s3 = Schedule.every(.january(1)).at(8, 30)
-let s4 = Schedule.every(.october(1)).at(8, 30)
+let s3 = Schedule.every(.january(1)).at("8:00")
+let s4 = Schedule.every(.october(1)).at("9:00 AM")
 let holiday = s3.merge(s3)
 holidaySchedule.do {
     print("Happy holiday")
 }
 
-/// count
+/// cut
 let s5 = Schedule.after(5.seconds).concat(Schedule.every(1.day))
-let s6 = s5.count(10)
+let s6 = s5.cut(10)
 
 /// until
 let s7 = Schedule.every(.monday).at(11, 12)
 let s8 = s7.until(date)
 ```
 
-
 ### Task management
 
-In general, you don't need to care about the reference management of task. All tasks will be held by a inner shared instance of class `TaskCenter`, so they won't be released, unless you do that yourself.
+In general, you don't need to concern about the reference management of task. All tasks will be retained internally, so they won't be released, unless you do it yourself.
 
-#### Operation
+#### Manipulation
 
 ```swift
 let task = Schedule.every(1.day).do { }
@@ -142,7 +145,22 @@ let key = dailyTask.addAction {
 dailyTask.removeAction(byKey: key)
 ```
 
-There is also a more elegant way to deal with task's lifecycle:
+### Lifecycle
+
+You can get the current timeline of the task:
+
+```swift
+let timeline = task.timeline
+print(timeline.firstSchedule)
+print(timeline.lastSchedule)
+print(timeline.lastSchedule)
+print(timeline.activate)
+print(timeline.cancel)
+```
+
+### Parasitism
+
+There is a more elegant way to deal with task's lifecycle:
 
 ```swift
 Schedule.every(1.second).do(dependOn: self) {
@@ -152,11 +170,11 @@ Schedule.every(1.second).do(dependOn: self) {
 
 ## Contribution
 
-Feel free to criticize!
+Feel free to criticize. 🍺
 
 ## Installation
 
-Schedul supports all popular dependency managers.
+Schedule supports all popular dependency managers.
 
 ### Cocoapods
 
@@ -174,6 +192,6 @@ github "jianstm/Schedule"
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/jianstm/Schedule", .exact("0.0.4"))
+    .package(url: "https://github.com/jianstm/Schedule", .upToNextMinor("0.0.0"))
 ]
 ```

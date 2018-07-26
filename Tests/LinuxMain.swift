@@ -1,5 +1,4 @@
 import XCTest
-
 import ScheduleTests
 
 var tests = [XCTestCaseEntry]()
