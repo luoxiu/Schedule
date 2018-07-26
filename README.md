@@ -1,5 +1,12 @@
 # Schedule
 
+![travis](https://img.shields.io/travis/jianstm/schedule.svg)
+![codecov](https://img.shields.io/codecov/c/github/jianstm/schedule.svg)
+![platform](https://img.shields.io/badge/platforms-iOS%20%7C%20macOS%20%7C%20tvOS%20%7C%20watchOS%20%7C%20Linux-333333.svg)
+![cocoapods](https://img.shields.io/cocoapods/v/Schedule.svg)
+![carthage](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg)
+![swift-package-manager](https://img.shields.io/badge/swift--package--manager-compatible-brightgreen.svg)
+
 ⏰ An interval-based and date-based task scheduler for swift, with incredibly sweet api.
 
 

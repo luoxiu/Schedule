@@ -78,6 +78,10 @@
 		66241055210761F000013B00 /* BucketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketTests.swift; sourceTree = "<group>"; };
 		662410582107804400013B00 /* Lock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
 		666AEAF22109F90C00A50F27 /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
+		666AEAF5210A128A00A50F27 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
+		666AEAF6210A177900A50F27 /* .swift-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
+		666AEAF8210A17DB00A50F27 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
+		666AEAFA210A24E800A50F27 /* .codecov.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .codecov.yml; sourceTree = "<group>"; };
 		669D214F20FE1B7300AFFDF7 /* Interval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interval.swift; sourceTree = "<group>"; };
 		669D215120FE1B8A00AFFDF7 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		669D215320FE1BA600AFFDF7 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
@@ -153,8 +157,12 @@
 		669D21612100E3C600AFFDF7 /* Related */ = {
 			isa = PBXGroup;
 			children = (
+				666AEAFA210A24E800A50F27 /* .codecov.yml */,
+				666AEAF6210A177900A50F27 /* .swift-version */,
+				666AEAF5210A128A00A50F27 /* .swiftlint.yml */,
 				66241051210617CD00013B00 /* Schedule.podspec */,
 				669D21622100E3E300AFFDF7 /* README.md */,
+				666AEAF8210A17DB00A50F27 /* .travis.yml */,
 			);
 			name = Related;
 			sourceTree = "<group>";
@@ -234,6 +242,7 @@
 			buildPhases = (
 				OBJ_26 /* Sources */,
 				OBJ_31 /* Frameworks */,
+				666AEAF4210A102500A50F27 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -302,6 +311,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		666AEAF4210A102500A50F27 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		OBJ_26 /* Sources */ = {

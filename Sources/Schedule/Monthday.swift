@@ -9,31 +9,31 @@ import Foundation
 
 /// `Monthday` represents a day in month, without a time.
 public enum MonthDay {
-    
+
     case january(Int)
-    
+
     case february(Int)
-    
+
     case march(Int)
-    
+
     case april(Int)
-    
+
     case may(Int)
-    
+
     case june(Int)
-    
+
     case july(Int)
-    
+
     case august(Int)
-    
+
     case september(Int)
-    
+
     case october(Int)
-    
+
     case november(Int)
-    
+
     case december(Int)
-    
+
     func asDateComponents() -> DateComponents {
         switch self {
         case .january(let day):     return DateComponents(month: 1, day: day)

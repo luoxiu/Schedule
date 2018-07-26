@@ -9,18 +9,18 @@ import Foundation
 @testable import Schedule
 
 extension Date {
-    
+
     var dateComponents: DateComponents {
         return Calendar(identifier: .gregorian).dateComponents(in: TimeZone.autoupdatingCurrent, from: self)
     }
-    
+
     var localizedDescription: String {
         let formatter = DateFormatter()
         formatter.timeZone = TimeZone.autoupdatingCurrent
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
         return formatter.string(from: self)
     }
-    
+
     init(year: Int, month: Int, day: Int, hour: Int = 0, minute: Int = 0, second: Int = 0, nanosecond: Int = 0) {
         let components = DateComponents(calendar: Calendar(identifier: .gregorian),
                                         timeZone: TimeZone.autoupdatingCurrent,
@@ -39,14 +39,14 @@ extension Interval {
 }
 
 extension Double {
-    
+
     func isAlmostEqual(to double: Double, leeway: Double) -> Bool {
         return (double - self).magnitude <= leeway
     }
 }
 
 extension Sequence where Element == Interval {
-    
+
     func isAlmostEqual<S>(to sequence: S, leeway: Interval) -> Bool where S: Sequence, S.Element == Element {
         var i0 = self.makeIterator()
         var i1 = sequence.makeIterator()
@@ -60,14 +60,14 @@ extension Sequence where Element == Interval {
 }
 
 extension Schedule {
-    
+
     func isAlmostEqual(to schedule: Schedule, leeway: Interval) -> Bool {
         return makeIterator().isAlmostEqual(to: schedule.makeIterator(), leeway: leeway)
     }
 }
 
 struct Constants {
-    
+
     static let NSEC_PER_USEC = Double(Foundation.NSEC_PER_USEC)
     static let NSEC_PER_MSEC = Double(Foundation.NSEC_PER_MSEC)
     static let NSEC_PER_SEC = Double(Foundation.NSEC_PER_SEC)

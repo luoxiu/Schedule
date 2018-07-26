@@ -8,7 +8,7 @@
 import Foundation
 
 extension Schedule {
-    
+
     /// Schedules a task with this schedule.
     ///
     /// This method will receive a `host` object as a parameter,
@@ -32,7 +32,7 @@ extension Schedule {
                      onElapse: @escaping (Task) -> Void) -> Task {
         return ParasiticTask(schedule: self, queue: queue, host: host, onElapse: onElapse)
     }
-    
+
     /// Schedules a task with this schedule.
     ///
     /// This method will receive a `host` object as a parameter,
@@ -58,11 +58,10 @@ extension Schedule {
     }
 }
 
-
 private final class ParasiticTask: Task {
-    
+
     weak var parasitifer: AnyObject?
-    
+
     init(schedule: Schedule, queue: DispatchQueue?, host: AnyObject, onElapse: @escaping (Task) -> Void) {
         super.init(schedule: schedule, queue: queue) { (task) in
             guard (task as? ParasiticTask)?.parasitifer != nil else {

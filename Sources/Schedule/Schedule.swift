@@ -12,16 +12,16 @@ import Foundation
 ///
 /// `Schedule` is interval based.
 public struct Schedule {
-    
+
     private var sequence: AnySequence<Interval>
     private init<S>(_ sequence: S) where S: Sequence, S.Element == Interval {
         self.sequence = AnySequence(sequence)
     }
-    
+
     func makeIterator() -> AnyIterator<Interval> {
         return sequence.makeIterator()
     }
-    
+
     /// Schedules a task with this schedule.
     ///
     /// - Parameters:
@@ -35,7 +35,7 @@ public struct Schedule {
                      onElapse: @escaping (Task) -> Void) -> Task {
         return Task(schedule: self, queue: queue, tag: tag, onElapse: onElapse)
     }
-    
+
     /// Schedules a task with this schedule.
     ///
     /// - Parameters:
@@ -52,7 +52,7 @@ public struct Schedule {
 }
 
 extension Schedule {
-    
+
     /// Creates a schedule from a `makeUnderlyingIterator()` method.
     ///
     /// The task will be executed after each interval
@@ -79,13 +79,13 @@ extension Schedule {
     public static func make<I>(_ makeUnderlyingIterator: @escaping () -> I) -> Schedule where I: IteratorProtocol, I.Element == Interval {
         return Schedule(AnySequence(makeUnderlyingIterator))
     }
-    
+
     /// Creates a schedule from an interval sequence.
     /// The task will be executed after each interval in the sequence.
     public static func from<S>(_ sequence: S) -> Schedule where S: Sequence, S.Element == Interval {
         return Schedule(sequence)
     }
-    
+
     /// Creates a schedule from an interval array.
     /// The task will be executed after each interval in the array.
     public static func of(_ intervals: Interval...) -> Schedule {
@@ -94,7 +94,7 @@ extension Schedule {
 }
 
 extension Schedule {
-    
+
     /// Creates a schedule from a `makeUnderlyingIterator()` method.
     ///
     /// The task will be executed at each date
@@ -131,19 +131,19 @@ extension Schedule {
             }
         }
     }
-    
+
     /// Creates a schedule from a date sequence.
     /// The task will be executed at each date in the sequence.
     public static func from<S>(_ sequence: S) -> Schedule where S: Sequence, S.Element == Date {
         return Schedule.make(sequence.makeIterator)
     }
-    
+
     /// Creates a schedule from a date array.
     /// The task will be executed at each date in the array.
     public static func of(_ dates: Date...) -> Schedule {
         return Schedule.from(dates)
     }
-    
+
     /// A dates sequence corresponding to this schedule.
     public var dates: AnySequence<Date> {
         return AnySequence { () -> AnyIterator<Date> in
@@ -152,6 +152,7 @@ extension Schedule {
             return AnyIterator {
                 last = last ?? Date()
                 guard let interval = iterator.next() else { return nil }
+                // swiftlint:disable shorthand_operator
                 last = last + interval
                 return last
             }
@@ -160,17 +161,17 @@ extension Schedule {
 }
 
 extension Schedule {
-    
+
     /// A schedule with a distant past date.
     public static var distantPast: Schedule {
         return Schedule.of(Date.distantPast)
     }
-    
+
     /// A schedule with a distant future date.
     public static var distantFuture: Schedule {
         return Schedule.of(Date.distantFuture)
     }
-    
+
     /// A schedule that is never going to happen.
     public static var never: Schedule {
         return Schedule.make {
@@ -180,7 +181,7 @@ extension Schedule {
 }
 
 extension Schedule {
-    
+
     /// Returns a new schedule by concatenating a schedule to this schedule.
     ///
     /// For example:
@@ -201,7 +202,7 @@ extension Schedule {
             }
         }
     }
-    
+
     /// Returns a new schedule by merging a schedule to this schedule.
     ///
     /// For example:
@@ -220,21 +221,21 @@ extension Schedule {
             return AnyIterator<Date> {
                 if buffer0 == nil { buffer0 = i0.next() }
                 if buffer1 == nil { buffer1 = i1.next() }
-                
+
                 var d: Date!
                 if let d0 = buffer0, let d1 = buffer1 {
                     d = Swift.min(d0, d1)
                 } else {
                     d = buffer0 ?? buffer1
                 }
-                
+
                 if d == buffer0 { buffer0 = nil }
                 if d == buffer1 { buffer1 = nil }
                 return d
             }
         }
     }
-    
+
     /// Returns a new schedule by only taking the first specific number of this schedule.
     ///
     /// For example:
@@ -254,7 +255,7 @@ extension Schedule {
             }
         }
     }
-    
+
     /// Returns a new schedule by only taking the part before the date.
     public func until(_ date: Date) -> Schedule {
         return Schedule.make { () -> AnyIterator<Date> in
@@ -267,35 +268,35 @@ extension Schedule {
             }
         }
     }
-    
+
     /// Creates a schedule that executes the task immediately.
     public static var now: Schedule {
         return Schedule.of(0.nanosecond)
     }
-    
+
     /// Creates a schedule that executes the task after delay.
     public static func after(_ delay: Interval) -> Schedule {
         return Schedule.of(delay)
     }
-    
+
     /// Creates a schedule that executes the task every interval.
     public static func every(_ interval: Interval) -> Schedule {
         return Schedule.make {
             AnyIterator { interval }
         }
     }
-    
+
     /// Creates a schedule that executes the task at the specific date.
     public static func at(_ date: Date) -> Schedule {
         return Schedule.of(date)
     }
-    
+
     /// Creates a schedule that executes the task after delay then repeat
     /// every interval.
     public static func after(_ delay: Interval, repeating interval: Interval) -> Schedule {
         return Schedule.after(delay).concat(Schedule.every(interval))
     }
-    
+
     /// Creates a schedule that executes the task every period.
     public static func every(_ period: Period) -> Schedule {
         return Schedule.make { () -> AnyIterator<Interval> in
@@ -312,7 +313,7 @@ extension Schedule {
             }
         }
     }
-    
+
     /// Creates a schedule that executes the task every period.
     ///
     /// See Period's constructor
@@ -325,15 +326,15 @@ extension Schedule {
 }
 
 extension Schedule {
-    
+
     /// `DateMiddleware` represents a middleware that wraps a schedule
     /// which was only specified date without time.
     ///
     /// You should call `at` method to get the schedule with time specified.
     public struct DateMiddleware {
-        
+
         fileprivate let schedule: Schedule
-        
+
         /// Returns a schedule at the specific time.
         public func at(_ time: Time) -> Schedule {
             return Schedule.make { () -> AnyIterator<Date> in
@@ -353,7 +354,7 @@ extension Schedule {
                 }
             }
         }
-        
+
         /// Returns a schedule at the specific time.
         ///
         /// See Time's constructor
@@ -363,7 +364,7 @@ extension Schedule {
             }
             return at(time)
         }
-        
+
         /// Returns a schedule at the specific time.
         ///
         ///     .at(1)              => 01
@@ -375,14 +376,14 @@ extension Schedule {
             let minute = time.count > 1 ? time[1] : 0
             let second = time.count > 2 ? time[2] : 0
             let nanosecond = time.count > 3 ? time[3]: 0
-            
+
             guard let time = Time(hour: hour, minute: minute, second: second, nanosecond: nanosecond) else {
                 return Schedule.never
             }
             return at(time)
         }
     }
-    
+
     /// Creates a schedule that executes the task every specific weekday.
     public static func every(_ weekday: Weekday) -> DateMiddleware {
         let schedule = Schedule.make { () -> AnyIterator<Date> in
@@ -400,7 +401,7 @@ extension Schedule {
         }
         return DateMiddleware(schedule: schedule)
     }
-    
+
     /// Creates a schedule that executes the task every specific weekdays.
     public static func every(_ weekdays: Weekday...) -> DateMiddleware {
         var schedule = every(weekdays[0]).schedule
@@ -411,13 +412,13 @@ extension Schedule {
         }
         return DateMiddleware(schedule: schedule)
     }
-    
+
     /// Creates a schedule that executes the task every specific day in the month.
     public static func every(_ monthDay: MonthDay) -> DateMiddleware {
         let schedule = Schedule.make { () -> AnyIterator<Date> in
             let calendar = Calendar(identifier: .gregorian)
             let components = monthDay.asDateComponents()
-            
+
             var date: Date!
             return AnyIterator<Date> {
                 if date == nil {
@@ -430,7 +431,7 @@ extension Schedule {
         }
         return DateMiddleware(schedule: schedule)
     }
-    
+
     /// Creates a schedule that executes the task every specific days in the months.
     public static func every(_ mondays: MonthDay...) -> DateMiddleware {
         var schedule = every(mondays[0]).schedule

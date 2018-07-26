@@ -1,0 +1,12 @@
+ignore:
+  - "Tests/"
+
+coverage:
+  precision: 5
+  round: down
+  range: "50...70"
+
+  status:
+    project: yes
+    patch: yes
+    changes: no

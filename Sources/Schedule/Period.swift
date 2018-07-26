@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 /// `Period` represents a period of time defined in terms of fields.
 ///
 /// It's a little different from `Interval`.
@@ -23,21 +22,21 @@ import Foundation
 /// But the intervals(`31.days` in case 1, `28.days` or `29.days` in case 2)
 /// in these two cases are quite different.
 public struct Period {
-    
+
     public private(set) var years: Int
-    
+
     public private(set) var months: Int
-    
+
     public private(set) var days: Int
-    
+
     public private(set) var hours: Int
-    
+
     public private(set) var minutes: Int
-    
+
     public private(set) var seconds: Int
-    
+
     public private(set) var nanoseconds: Int
-    
+
     public init(years: Int = 0, months: Int = 0, days: Int = 0,
                 hours: Int = 0, minutes: Int = 0, seconds: Int = 0,
                 nanoseconds: Int = 0) {
@@ -49,18 +48,18 @@ public struct Period {
         self.seconds = seconds
         self.nanoseconds = nanoseconds
     }
-    
+
     private static var map: Atomic<[String: Int]> = Atomic([
         "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6,
         "seven": 7, "eight": 8, "nine": 9, "ten": 10, "eleven": 11, "twelve": 12
     ])
-    
+
     public static func registerQuantifier(_ word: String, for number: Int) {
         map.mutate {
             $0[word] = number
         }
     }
-    
+
     /// Creates a period from a natural expression.
     ///
     ///     Period("one second") => Period(seconds: 1)
@@ -75,7 +74,7 @@ public struct Period {
             return nil
         }
         period = regex.stringByReplacingMatches(in: period, range: NSRange(location: 0, length: period.count), withTemplate: "$")
-        
+
         var result = 0.year
         for pair in period.split(separator: "$").map({ $0.split(separator: " ") }) {
             guard pair.count == 2 else { return nil }
@@ -96,7 +95,7 @@ public struct Period {
         }
         self = result
     }
-    
+
     /// Returns a new period by adding a period to this period.
     public func adding(_ other: Period) -> Period {
         return Period(years: years.clampedAdding(other.years),
@@ -107,7 +106,7 @@ public struct Period {
                       seconds: seconds.clampedAdding(other.seconds),
                       nanoseconds: nanoseconds.clampedAdding(other.nanoseconds))
     }
-    
+
     /// Returns a new period by adding an interval to this period.
     ///
     /// You can tidy the new period by specify the unit parameter.
@@ -120,22 +119,22 @@ public struct Period {
         period = period.tidied(to: unit)
         return period
     }
-    
+
     /// Adds two periods and produces their sum.
-    public static func +(lhs: Period, rhs: Period) -> Period {
+    public static func + (lhs: Period, rhs: Period) -> Period {
         return lhs.adding(rhs)
     }
-    
+
     /// Returns a period with an interval added to it.
-    public static func +(lhs: Period, rhs: Interval) -> Period {
+    public static func + (lhs: Period, rhs: Interval) -> Period {
         return lhs.adding(rhs)
     }
-    
+
     /// Type used to as tidy's parameter.
     public enum Unit {
         case day, hour, minute, second, nanosecond
     }
-    
+
     /// Returns the tidied period.
     ///
     ///     Period(hours: 25).tidied(to .day) => Period(days: 1, hours: 1)
@@ -146,19 +145,19 @@ public struct Period {
             period.seconds += period.nanoseconds / Int(NSEC_PER_SEC)
             period.nanoseconds %= Int(NSEC_PER_SEC)
         }
-        
+
         if case .second = unit { return period }
         if period.seconds.magnitude >= 60 {
             period.minutes += period.seconds / 60
             period.seconds %= 60
         }
-        
+
         if case .minute = unit { return period }
         if period.minutes.magnitude >= 60 {
             period.hours += period.minutes / 60
             period.minutes %= 60
         }
-        
+
         if case .hour = unit { return period }
         if period.hours.magnitude >= 24 {
             period.days += period.hours / 24
@@ -166,7 +165,7 @@ public struct Period {
         }
         return period
     }
-    
+
     func asDateComponents() -> DateComponents {
         return DateComponents(year: years, month: months, day: days,
                               hour: hours, minute: minutes, second: seconds,
@@ -175,32 +174,32 @@ public struct Period {
 }
 
 extension Date {
-    
+
     /// Returns a new date by adding a period to this date.
     public func adding(_ period: Period) -> Date {
         return Calendar(identifier: .gregorian).date(byAdding: period.asDateComponents(), to: self) ?? .distantFuture
     }
-    
+
     /// Returns a date with a period added to it.
-    public static func +(lhs: Date, rhs: Period) -> Date {
+    public static func + (lhs: Date, rhs: Period) -> Date {
         return lhs.adding(rhs)
     }
 }
 
 extension Int {
-    
+
     public var years: Period {
         return Period(years: self)
     }
-    
+
     public var year: Period {
         return years
     }
-    
+
     public var months: Period {
         return Period(months: self)
     }
-    
+
     public var month: Period {
         return months
     }

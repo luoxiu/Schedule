@@ -1,0 +1,29 @@
+language: objective-c
+sudo: required
+osx_image: xcode9.4
+branches:
+  only:
+    - master
+env:
+  global:
+    - PROJECT="Schedule.xcodeproj"
+    - SCHEME="Schedule-Package"
+    - FRAMEWORK="Schedule"
+    - IOS_SDK="iphonesimulator11.3"
+    - TVOS_SDK="appletvsimulator11.3"
+    - MACOS_SDK="macosx10.13"
+
+  matrix:
+    - SDK="$IOS_SDK"      DESTINATION="platform=iOS Simulator,name=iPhone 8,OS=11.3"
+    - SDK="$MACOS_SDK"    DESTINATION="arch=x86_64"
+    - SDK="$TVOS_SDK"     DESTINATION="OS=11.3,name=Apple TV 4K"
+
+before_install:
+  - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
+
+script:
+  - xcodebuild clean build test -project "$PROJECT" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug -enableCodeCoverage YES CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty -c
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -J 'Schedule'
+  - sleep 5

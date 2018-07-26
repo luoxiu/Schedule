@@ -9,19 +9,19 @@ import Foundation
 
 /// `Time` represents a time without a date.
 public struct Time {
-    
+
     /// Hour of this time.
     public let hour: Int
-    
+
     /// Minute of this time.
     public let minute: Int
-    
+
     /// Second of this time.
     public let second: Int
-    
+
     /// Nanosecond of this time.
     public let nanosecond: Int
-    
+
     /// Creates a time with `hour`, `minute`, `second` and `nanosecond` fields.
     ///
     /// If any parameter is illegal, return nil.
@@ -34,19 +34,19 @@ public struct Time {
         guard (0...59).contains(minute) else { return nil }
         guard (0...59).contains(second) else { return nil }
         guard (0...Int(NSEC_PER_SEC)).contains(nanosecond) else { return nil }
-        
+
         self.hour = hour
         self.minute = minute
         self.second = second
         self.nanosecond = nanosecond
     }
-    
+
     private static let cache: NSCache<NSString, DateFormatter> = {
        let c = NSCache<NSString, DateFormatter>()
         c.countLimit = 5
         return c
     }()
-    
+
     /// Creates a time with a string.
     ///
     /// If parameter is illegal, return nil.
@@ -67,12 +67,12 @@ public struct Time {
                 break
             }
         }
-        
+
         let supportedFormats = [
             "HH",                       // 09
             "HH:mm",                    // 09:30
             "HH:mm:ss",                 // 09:30:26
-            "HH:mm:ss.SSS",             // 09:30:26.123
+            "HH:mm:ss.SSS"             // 09:30:26.123
         ]
         for format in supportedFormats {
             var fmt = format
@@ -101,15 +101,15 @@ public struct Time {
                 }
             }
         }
-        
+
         return nil
     }
-    
+
     /// Interval since zero time.
     public var intervalSinceZeroTime: Interval {
         return Int(hour).hours + Int(minute).minutes + Int(second).seconds + Int(nanosecond).nanoseconds
     }
-    
+
     func asDateComponents() -> DateComponents {
         return DateComponents(hour: hour, minute: minute, second: second, nanosecond: nanosecond)
     }
