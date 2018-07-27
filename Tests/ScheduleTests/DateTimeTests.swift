@@ -23,6 +23,7 @@ final class DateTimeTests: XCTestCase {
         XCTAssertEqual(1.second * 60, 1.minute)
         XCTAssertEqual(59.minutes + 60.seconds, 1.hour)
         XCTAssertEqual(1.week - 24.hours, 6.days)
+        XCTAssertEqual(-(1.second), (-1).second)
 
         XCTAssertEqual(1.nanoseconds, Interval(nanoseconds: 1))
         XCTAssertEqual(2.microseconds, Interval(nanoseconds: 2 * Constants.NSEC_PER_USEC))

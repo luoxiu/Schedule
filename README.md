@@ -1,27 +1,28 @@
 # Schedule
 
-![travis](https://img.shields.io/travis/jianstm/schedule.svg)
+![travis](https://img.shields.io/travis/jianstm/Schedule.svg)
 ![codecov](https://img.shields.io/codecov/c/github/jianstm/schedule.svg)
-![platform](https://img.shields.io/badge/platforms-iOS%20%7C%20macOS%20%7C%20tvOS%20%7C%20watchOS%20%7C%20Linux-333333.svg)
+![platform](https://img.shields.io/badge/platforms-iOS%20%7C%20macOS%20%7C%20tvOS%20%7C%20watchOS-333333.svg)
 ![cocoapods](https://img.shields.io/cocoapods/v/Schedule.svg)
 ![carthage](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg)
 ![swift-package-manager](https://img.shields.io/badge/swift--package--manager-compatible-brightgreen.svg)
 
-⏰ An interval-based and date-based task scheduler for swift, with incredibly sweet api.
+⏰ An interval-based and date-based task scheduler for swift, with incredibly smooth api.
 
 
 ## Features
 
 - 📆 Date-based scheduling
 - ⏳ Interval-based scheduling
-- 📝 Mixture rules
-- 👩‍🎓‍ Human readable period parsing
+- 🌈 Mixture rules
+- 📝 Human readable period parsing
 - 🚦 Suspend, resume, cancel
 - 🏷 Tag-based management
 - 🍰 Action appending/removing
+- 🚔 Thread safe
 - 🍻 No need to concern about runloop
 - 👻 No need to concern about circular reference
-- 🍭 **Incredibly Sweet API**
+- 🍭 **Incredibly Smooth API**
 
 
 ## Usage
@@ -158,11 +159,17 @@ You can get the current timeline of the task:
 
 ```swift
 let timeline = task.timeline
-print(timeline.firstSchedule)
-print(timeline.lastSchedule)
-print(timeline.lastSchedule)
-print(timeline.activate)
-print(timeline.cancel)
+print(timeline.firstExecution)
+print(timeline.lastExecution)
+print(timeline.estimatedNextExecution)
+```
+
+You also can specify task's lifetime:
+
+```swift
+task.setLifetime(10.hours)  // will be cancelled after 10 hours.
+task.addLifetime(1.hours)
+task.restOfLifetime == 11.hours
 ```
 
 ### Parasitism

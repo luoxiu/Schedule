@@ -62,4 +62,10 @@ final class TaskCenter {
             tasks.contains(task)
         }
     }
+
+    var countOfTask: Int {
+        return lock.withLock {
+            tasks.count
+        }
+    }
 }

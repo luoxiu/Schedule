@@ -33,10 +33,20 @@ public struct Interval {
         return nanoseconds.isLess(than: 0)
     }
 
+    /// See `isNegative`
+    public var isPositive: Bool {
+        return !nanoseconds.isLessThanOrEqualTo(0)
+    }
+
     /// The absolute value of the length of this interval,
     /// measured in nanoseconds, but disregarding its sign.
     public var magnitude: Double {
         return nanoseconds.magnitude
+    }
+
+    /// The opposite of this interval.
+    public var opposite: Interval {
+        return (-nanoseconds).nanoseconds
     }
 }
 
@@ -67,8 +77,8 @@ extension Interval {
     /// Returns a new interval by multipling this interval by a double number.
     ///
     ///     1.hour * 2 == 2.hours
-    public func multiplying(by number: Double) -> Interval {
-        return Interval(nanoseconds: nanoseconds * number)
+    public func multiplying(by multiplier: Double) -> Interval {
+        return Interval(nanoseconds: nanoseconds * multiplier)
     }
 
     /// Returns a new interval by adding an interval to this interval.
@@ -140,6 +150,16 @@ extension Interval {
     ///     2.hours - 1.hour == 1.hour
     public static func - (lhs: Interval, rhs: Interval) -> Interval {
         return lhs.subtracting(rhs)
+    }
+
+    /// Adds two intervals and stores the result in the left-hand-side variable.
+    public static func += (lhs: inout Interval, rhs: Interval) {
+        lhs = lhs.adding(rhs)
+    }
+
+    /// Returns the opposite of this interval.
+    public prefix static func - (interval: Interval) -> Interval {
+        return interval.opposite
     }
 }
 

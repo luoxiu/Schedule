@@ -44,4 +44,10 @@ final class TaskCenterTests: XCTestCase {
         center.remove(tag: tag0, from: task)
         XCTAssertFalse(center.tasks(forTag: tag0).contains(task))
     }
+
+    static var allTests = [
+        ("testAdd", testAdd),
+        ("testRemove", testRemove),
+        ("testTag", testTag)
+    ]
 }

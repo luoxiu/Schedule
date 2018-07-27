@@ -3,14 +3,14 @@ import XCTest
 
 final class SchedulesTests: XCTestCase {
 
-    let leeway = 0.01.seconds
+    let leeway = 0.001.seconds
 
     func testMake() {
         let intervals = [1.second, 2.hours, 3.days, 4.weeks]
         let s0 = Schedule.of(intervals[0], intervals[1], intervals[2], intervals[3])
-        XCTAssert(s0.makeIterator().isAlmostEqual(to: intervals, leeway: leeway))
+        XCTAssertTrue(s0.makeIterator().isAlmostEqual(to: intervals, leeway: leeway))
         let s1 = Schedule.from(intervals)
-        XCTAssert(s1.makeIterator().isAlmostEqual(to: intervals, leeway: leeway))
+        XCTAssertTrue(s1.makeIterator().isAlmostEqual(to: intervals, leeway: leeway))
 
         let d0 = Date() + intervals[0]
         let d1 = d0 + intervals[1]
@@ -19,18 +19,18 @@ final class SchedulesTests: XCTestCase {
 
         let s2 = Schedule.of(d0, d1, d2, d3)
         let s3 = Schedule.from([d0, d1, d2, d3])
-        XCTAssert(s2.makeIterator().isAlmostEqual(to: intervals, leeway: leeway))
-        XCTAssert(s3.makeIterator().isAlmostEqual(to: intervals, leeway: leeway))
+        XCTAssertTrue(s2.makeIterator().isAlmostEqual(to: intervals, leeway: leeway))
+        XCTAssertTrue(s3.makeIterator().isAlmostEqual(to: intervals, leeway: leeway))
     }
 
     func testDates() {
         let iterator = Schedule.of(1.days, 2.weeks).dates.makeIterator()
         var next = iterator.next()
         XCTAssertNotNil(next)
-        XCTAssert(next!.intervalSinceNow.isAlmostEqual(to: 1.days, leeway: leeway))
+        XCTAssertTrue(next!.intervalSinceNow.isAlmostEqual(to: 1.days, leeway: leeway))
         next = iterator.next()
         XCTAssertNotNil(next)
-        XCTAssert(next!.intervalSinceNow.isAlmostEqual(to: 2.weeks + 1.days, leeway: leeway))
+        XCTAssertTrue(next!.intervalSinceNow.isAlmostEqual(to: 2.weeks + 1.days, leeway: leeway))
     }
 
     func testNever() {
@@ -42,7 +42,7 @@ final class SchedulesTests: XCTestCase {
         let s1: [Interval] = [4.days, 5.weeks]
         let s3 = Schedule.from(s0).concat(Schedule.from(s1))
         let s4 = Schedule.from(s0 + s1)
-        XCTAssert(s3.isAlmostEqual(to: s4, leeway: leeway))
+        XCTAssertTrue(s3.isAlmostEqual(to: s4, leeway: leeway))
     }
 
     func testMerge() {
@@ -50,14 +50,14 @@ final class SchedulesTests: XCTestCase {
         let intervals1: [Interval] = [2.seconds, 1.minutes, 1.seconds]
         let scheudle0 = Schedule.from(intervals0).merge(Schedule.from(intervals1))
         let scheudle1 = Schedule.of(1.second, 1.second, 1.minutes, 1.seconds, 58.seconds, 1.hour)
-        XCTAssert(scheudle0.isAlmostEqual(to: scheudle1, leeway: leeway))
+        XCTAssertTrue(scheudle0.isAlmostEqual(to: scheudle1, leeway: leeway))
     }
 
     func testAt() {
         let s = Schedule.at(Date() + 1.second)
         let next = s.makeIterator().next()
         XCTAssertNotNil(next)
-        XCTAssert(next!.isAlmostEqual(to: 1.second, leeway: leeway))
+        XCTAssertTrue(next!.isAlmostEqual(to: 1.second, leeway: leeway))
     }
 
     func testFirst() {

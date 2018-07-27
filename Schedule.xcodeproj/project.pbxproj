@@ -25,12 +25,14 @@
 		62EF93FA2108530D001F7A47 /* WeakSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EF93F821085309001F7A47 /* WeakSetTests.swift */; };
 		62EF93FF21086420001F7A47 /* TaskCenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EF93FD21086411001F7A47 /* TaskCenterTests.swift */; };
 		62EF940821086F63001F7A47 /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EF940721086F63001F7A47 /* Timeline.swift */; };
+		62FF0D66210ADEE000AABE1E /* TaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FF0D65210ADEE000AABE1E /* TaskTests.swift */; };
 		6624104A2104A42C00013B00 /* Bucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662410492104A42C00013B00 /* Bucket.swift */; };
 		6624104E2104AF2100013B00 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6624104D2104AF2100013B00 /* Extensions.swift */; };
 		6624105421075FDC00013B00 /* ExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6624105221075F8A00013B00 /* ExtensionsTests.swift */; };
 		66241056210761F000013B00 /* BucketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66241055210761F000013B00 /* BucketTests.swift */; };
 		662410592107804400013B00 /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662410582107804400013B00 /* Lock.swift */; };
 		666AEAF32109F90C00A50F27 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666AEAF22109F90C00A50F27 /* Atomic.swift */; };
+		666AEAFC210B599D00A50F27 /* AtomicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666AEAFB210B599D00A50F27 /* AtomicTests.swift */; };
 		669D215020FE1B7300AFFDF7 /* Interval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669D214F20FE1B7300AFFDF7 /* Interval.swift */; };
 		669D215220FE1B8A00AFFDF7 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669D215120FE1B8A00AFFDF7 /* Time.swift */; };
 		669D215420FE1BA600AFFDF7 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669D215320FE1BA600AFFDF7 /* Period.swift */; };
@@ -71,6 +73,7 @@
 		62EF93F821085309001F7A47 /* WeakSetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakSetTests.swift; sourceTree = "<group>"; };
 		62EF93FD21086411001F7A47 /* TaskCenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCenterTests.swift; sourceTree = "<group>"; };
 		62EF940721086F63001F7A47 /* Timeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
+		62FF0D65210ADEE000AABE1E /* TaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTests.swift; sourceTree = "<group>"; };
 		662410492104A42C00013B00 /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
 		6624104D2104AF2100013B00 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		66241051210617CD00013B00 /* Schedule.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Schedule.podspec; sourceTree = "<group>"; };
@@ -82,6 +85,7 @@
 		666AEAF6210A177900A50F27 /* .swift-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
 		666AEAF8210A17DB00A50F27 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
 		666AEAFA210A24E800A50F27 /* .codecov.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .codecov.yml; sourceTree = "<group>"; };
+		666AEAFB210B599D00A50F27 /* AtomicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicTests.swift; sourceTree = "<group>"; };
 		669D214F20FE1B7300AFFDF7 /* Interval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interval.swift; sourceTree = "<group>"; };
 		669D215120FE1B8A00AFFDF7 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		669D215320FE1BA600AFFDF7 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
@@ -126,6 +130,7 @@
 				6624105221075F8A00013B00 /* ExtensionsTests.swift */,
 				66241055210761F000013B00 /* BucketTests.swift */,
 				62EF93F821085309001F7A47 /* WeakSetTests.swift */,
+				666AEAFB210B599D00A50F27 /* AtomicTests.swift */,
 			);
 			name = UtilsTests;
 			sourceTree = "<group>";
@@ -157,11 +162,11 @@
 		669D21612100E3C600AFFDF7 /* Related */ = {
 			isa = PBXGroup;
 			children = (
-				666AEAFA210A24E800A50F27 /* .codecov.yml */,
 				666AEAF6210A177900A50F27 /* .swift-version */,
-				666AEAF5210A128A00A50F27 /* .swiftlint.yml */,
-				66241051210617CD00013B00 /* Schedule.podspec */,
 				669D21622100E3E300AFFDF7 /* README.md */,
+				66241051210617CD00013B00 /* Schedule.podspec */,
+				666AEAFA210A24E800A50F27 /* .codecov.yml */,
+				666AEAF5210A128A00A50F27 /* .swiftlint.yml */,
 				666AEAF8210A17DB00A50F27 /* .travis.yml */,
 			);
 			name = Related;
@@ -183,6 +188,7 @@
 				OBJ_17 /* Misc.swift */,
 				OBJ_16 /* SchedulesTests.swift */,
 				62EF93FD21086411001F7A47 /* TaskCenterTests.swift */,
+				62FF0D65210ADEE000AABE1E /* TaskTests.swift */,
 				OBJ_18 /* XCTestManifests.swift */,
 				62EF93FB21085312001F7A47 /* UtilsTests */,
 			);
@@ -202,11 +208,11 @@
 		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
-				669D21612100E3C600AFFDF7 /* Related */,
 				OBJ_6 /* Package.swift */,
+				OBJ_19 /* Products */,
+				669D21612100E3C600AFFDF7 /* Related */,
 				OBJ_7 /* Sources */,
 				OBJ_13 /* Tests */,
-				OBJ_19 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -221,12 +227,12 @@
 		OBJ_8 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
-				669D214E20FE1B5500AFFDF7 /* DateTime */,
 				669D215C20FE1D1800AFFDF7 /* ParasiticTask.swift */,
+				OBJ_11 /* Schedule.swift */,
 				OBJ_10 /* Task.swift */,
 				669D215A20FE1C0E00AFFDF7 /* TaskCenter.swift */,
-				OBJ_11 /* Schedule.swift */,
 				62EF940721086F63001F7A47 /* Timeline.swift */,
+				669D214E20FE1B5500AFFDF7 /* DateTime */,
 				662410462104A0EC00013B00 /* Utils */,
 			);
 			name = Schedule;
@@ -366,9 +372,11 @@
 			files = (
 				6624105421075FDC00013B00 /* ExtensionsTests.swift in Sources */,
 				62EF93FA2108530D001F7A47 /* WeakSetTests.swift in Sources */,
+				62FF0D66210ADEE000AABE1E /* TaskTests.swift in Sources */,
 				OBJ_48 /* DateTimeTests.swift in Sources */,
 				OBJ_49 /* SchedulesTests.swift in Sources */,
 				OBJ_50 /* Misc.swift in Sources */,
+				666AEAFC210B599D00A50F27 /* AtomicTests.swift in Sources */,
 				OBJ_51 /* XCTestManifests.swift in Sources */,
 				66241056210761F000013B00 /* BucketTests.swift in Sources */,
 				62EF93FF21086420001F7A47 /* TaskCenterTests.swift in Sources */,

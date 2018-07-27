@@ -28,3 +28,10 @@ extension Double {
         return Int(self)
     }
 }
+
+extension DispatchQueue {
+
+    func async(after delay: Interval, execute body: @escaping () -> Void) {
+        asyncAfter(wallDeadline: .now() + delay.seconds, execute: body)
+    }
+}
