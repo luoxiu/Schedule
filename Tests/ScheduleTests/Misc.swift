@@ -11,7 +11,7 @@ import Foundation
 extension Date {
 
     var dateComponents: DateComponents {
-        return Calendar(identifier: .gregorian).dateComponents(in: TimeZone.autoupdatingCurrent, from: self)
+        return Calendar.gregorian.dateComponents(in: TimeZone.autoupdatingCurrent, from: self)
     }
 
     var localizedDescription: String {
@@ -22,7 +22,7 @@ extension Date {
     }
 
     init(year: Int, month: Int, day: Int, hour: Int = 0, minute: Int = 0, second: Int = 0, nanosecond: Int = 0) {
-        let components = DateComponents(calendar: Calendar(identifier: .gregorian),
+        let components = DateComponents(calendar: Calendar.gregorian,
                                         timeZone: TimeZone.autoupdatingCurrent,
                                         year: year, month: month, day: day,
                                         hour: hour, minute: minute, second: second,

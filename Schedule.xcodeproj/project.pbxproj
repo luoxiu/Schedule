@@ -9,11 +9,11 @@
 /* Begin PBXAggregateTarget section */
 		"Schedule::SchedulePackageTests::ProductTarget" /* SchedulePackageTests */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = OBJ_39 /* Build configuration list for PBXAggregateTarget "SchedulePackageTests" */;
+			buildConfigurationList = OBJ_68 /* Build configuration list for PBXAggregateTarget "SchedulePackageTests" */;
 			buildPhases = (
 			);
 			dependencies = (
-				OBJ_42 /* PBXTargetDependency */,
+				OBJ_71 /* PBXTargetDependency */,
 			);
 			name = SchedulePackageTests;
 			productName = SchedulePackageTests;
@@ -21,44 +21,44 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		62661F412108433400055501 /* WeakSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62661F402108433300055501 /* WeakSet.swift */; };
-		62EF93FA2108530D001F7A47 /* WeakSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EF93F821085309001F7A47 /* WeakSetTests.swift */; };
-		62EF93FF21086420001F7A47 /* TaskCenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EF93FD21086411001F7A47 /* TaskCenterTests.swift */; };
-		62EF940821086F63001F7A47 /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EF940721086F63001F7A47 /* Timeline.swift */; };
-		62FF0D66210ADEE000AABE1E /* TaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FF0D65210ADEE000AABE1E /* TaskTests.swift */; };
-		6624104A2104A42C00013B00 /* Bucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662410492104A42C00013B00 /* Bucket.swift */; };
-		6624104E2104AF2100013B00 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6624104D2104AF2100013B00 /* Extensions.swift */; };
-		6624105421075FDC00013B00 /* ExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6624105221075F8A00013B00 /* ExtensionsTests.swift */; };
-		66241056210761F000013B00 /* BucketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66241055210761F000013B00 /* BucketTests.swift */; };
-		662410592107804400013B00 /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662410582107804400013B00 /* Lock.swift */; };
-		666AEAF32109F90C00A50F27 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666AEAF22109F90C00A50F27 /* Atomic.swift */; };
-		666AEAFC210B599D00A50F27 /* AtomicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666AEAFB210B599D00A50F27 /* AtomicTests.swift */; };
-		669D215020FE1B7300AFFDF7 /* Interval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669D214F20FE1B7300AFFDF7 /* Interval.swift */; };
-		669D215220FE1B8A00AFFDF7 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669D215120FE1B8A00AFFDF7 /* Time.swift */; };
-		669D215420FE1BA600AFFDF7 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669D215320FE1BA600AFFDF7 /* Period.swift */; };
-		669D215620FE1BB400AFFDF7 /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669D215520FE1BB400AFFDF7 /* Weekday.swift */; };
-		669D215820FE1BC000AFFDF7 /* Monthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669D215720FE1BC000AFFDF7 /* Monthday.swift */; };
-		669D215B20FE1C0E00AFFDF7 /* TaskCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669D215A20FE1C0E00AFFDF7 /* TaskCenter.swift */; };
-		669D215D20FE1D1800AFFDF7 /* ParasiticTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669D215C20FE1D1800AFFDF7 /* ParasiticTask.swift */; };
-		OBJ_28 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Task.swift */; };
-		OBJ_29 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Schedule.swift */; };
-		OBJ_37 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
-		OBJ_48 /* DateTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* DateTimeTests.swift */; };
-		OBJ_49 /* SchedulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* SchedulesTests.swift */; };
-		OBJ_50 /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* Misc.swift */; };
-		OBJ_51 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* XCTestManifests.swift */; };
-		OBJ_53 /* Schedule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Schedule::Schedule::Product" /* Schedule.framework */; };
+		OBJ_45 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Atomic.swift */; };
+		OBJ_46 /* Bucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Bucket.swift */; };
+		OBJ_47 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Extensions.swift */; };
+		OBJ_48 /* Interval.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Interval.swift */; };
+		OBJ_49 /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* Lock.swift */; };
+		OBJ_50 /* Monthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* Monthday.swift */; };
+		OBJ_51 /* ParasiticTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* ParasiticTask.swift */; };
+		OBJ_52 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* Period.swift */; };
+		OBJ_53 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* Schedule.swift */; };
+		OBJ_54 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* Task.swift */; };
+		OBJ_55 /* TaskCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* TaskCenter.swift */; };
+		OBJ_56 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* Time.swift */; };
+		OBJ_57 /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* Timeline.swift */; };
+		OBJ_58 /* WeakSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* WeakSet.swift */; };
+		OBJ_59 /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* Weekday.swift */; };
+		OBJ_66 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
+		OBJ_77 /* AtomicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* AtomicTests.swift */; };
+		OBJ_78 /* BucketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* BucketTests.swift */; };
+		OBJ_79 /* DateTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* DateTimeTests.swift */; };
+		OBJ_80 /* ExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* ExtensionsTests.swift */; };
+		OBJ_81 /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* Misc.swift */; };
+		OBJ_82 /* SchedulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* SchedulesTests.swift */; };
+		OBJ_83 /* TaskCenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* TaskCenterTests.swift */; };
+		OBJ_84 /* TaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* TaskTests.swift */; };
+		OBJ_85 /* WeakSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* WeakSetTests.swift */; };
+		OBJ_86 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* XCTestManifests.swift */; };
+		OBJ_88 /* Schedule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Schedule::Schedule::Product" /* Schedule.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		6266004220EF028200D5E606 /* PBXContainerItemProxy */ = {
+		668685E6210C8D78009305C3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "Schedule::Schedule";
 			remoteInfo = Schedule;
 		};
-		6266004320EF028200D5E606 /* PBXContainerItemProxy */ = {
+		668685E7210C8D78009305C3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
@@ -68,139 +68,130 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		62661F402108433300055501 /* WeakSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakSet.swift; sourceTree = "<group>"; };
-		626C7209210968C6005F10A7 /* LinuxMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
-		62EF93F821085309001F7A47 /* WeakSetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakSetTests.swift; sourceTree = "<group>"; };
-		62EF93FD21086411001F7A47 /* TaskCenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCenterTests.swift; sourceTree = "<group>"; };
-		62EF940721086F63001F7A47 /* Timeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
-		62FF0D65210ADEE000AABE1E /* TaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTests.swift; sourceTree = "<group>"; };
-		662410492104A42C00013B00 /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
-		6624104D2104AF2100013B00 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		66241051210617CD00013B00 /* Schedule.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Schedule.podspec; sourceTree = "<group>"; };
-		6624105221075F8A00013B00 /* ExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsTests.swift; sourceTree = "<group>"; };
-		66241055210761F000013B00 /* BucketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketTests.swift; sourceTree = "<group>"; };
-		662410582107804400013B00 /* Lock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
-		666AEAF22109F90C00A50F27 /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
-		666AEAF5210A128A00A50F27 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
-		666AEAF6210A177900A50F27 /* .swift-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
-		666AEAF8210A17DB00A50F27 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
-		666AEAFA210A24E800A50F27 /* .codecov.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .codecov.yml; sourceTree = "<group>"; };
-		666AEAFB210B599D00A50F27 /* AtomicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicTests.swift; sourceTree = "<group>"; };
-		669D214F20FE1B7300AFFDF7 /* Interval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interval.swift; sourceTree = "<group>"; };
-		669D215120FE1B8A00AFFDF7 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
-		669D215320FE1BA600AFFDF7 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
-		669D215520FE1BB400AFFDF7 /* Weekday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekday.swift; sourceTree = "<group>"; };
-		669D215720FE1BC000AFFDF7 /* Monthday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Monthday.swift; sourceTree = "<group>"; };
-		669D215A20FE1C0E00AFFDF7 /* TaskCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCenter.swift; sourceTree = "<group>"; };
-		669D215C20FE1D1800AFFDF7 /* ParasiticTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParasiticTask.swift; sourceTree = "<group>"; };
-		669D21622100E3E300AFFDF7 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		OBJ_10 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
-		OBJ_11 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
-		OBJ_15 /* DateTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeTests.swift; sourceTree = "<group>"; };
-		OBJ_16 /* SchedulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulesTests.swift; sourceTree = "<group>"; };
-		OBJ_17 /* Misc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Misc.swift; sourceTree = "<group>"; };
-		OBJ_18 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
+		668685ED210DCC0E009305C3 /* .swift-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
+		668685EE210DCC0E009305C3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		668685EF210DCC0E009305C3 /* .codecov.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .codecov.yml; sourceTree = "<group>"; };
+		668685F0210DCC0E009305C3 /* Schedule.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Schedule.podspec; sourceTree = "<group>"; };
+		668685F1210DCC0F009305C3 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
+		668685F2210DCC0F009305C3 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
+		668685F3210DCEB0009305C3 /* Schedule.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Schedule.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		OBJ_10 /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
+		OBJ_11 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		OBJ_12 /* Interval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interval.swift; sourceTree = "<group>"; };
+		OBJ_13 /* Lock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
+		OBJ_14 /* Monthday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Monthday.swift; sourceTree = "<group>"; };
+		OBJ_15 /* ParasiticTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParasiticTask.swift; sourceTree = "<group>"; };
+		OBJ_16 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
+		OBJ_17 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
+		OBJ_18 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		OBJ_19 /* TaskCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCenter.swift; sourceTree = "<group>"; };
+		OBJ_20 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
+		OBJ_21 /* Timeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
+		OBJ_22 /* WeakSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakSet.swift; sourceTree = "<group>"; };
+		OBJ_23 /* Weekday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekday.swift; sourceTree = "<group>"; };
+		OBJ_26 /* AtomicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicTests.swift; sourceTree = "<group>"; };
+		OBJ_27 /* BucketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketTests.swift; sourceTree = "<group>"; };
+		OBJ_28 /* DateTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeTests.swift; sourceTree = "<group>"; };
+		OBJ_29 /* ExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsTests.swift; sourceTree = "<group>"; };
+		OBJ_30 /* Misc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Misc.swift; sourceTree = "<group>"; };
+		OBJ_31 /* SchedulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulesTests.swift; sourceTree = "<group>"; };
+		OBJ_32 /* TaskCenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCenterTests.swift; sourceTree = "<group>"; };
+		OBJ_33 /* TaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTests.swift; sourceTree = "<group>"; };
+		OBJ_34 /* WeakSetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakSetTests.swift; sourceTree = "<group>"; };
+		OBJ_35 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		OBJ_9 /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
 		"Schedule::Schedule::Product" /* Schedule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Schedule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Schedule::ScheduleTests::Product" /* ScheduleTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = ScheduleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		OBJ_31 /* Frameworks */ = {
+		OBJ_60 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_52 /* Frameworks */ = {
+		OBJ_87 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_53 /* Schedule.framework in Frameworks */,
+				OBJ_88 /* Schedule.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		62EF93FB21085312001F7A47 /* UtilsTests */ = {
+		668685EC210DCBD4009305C3 /* Related */ = {
 			isa = PBXGroup;
 			children = (
-				6624105221075F8A00013B00 /* ExtensionsTests.swift */,
-				66241055210761F000013B00 /* BucketTests.swift */,
-				62EF93F821085309001F7A47 /* WeakSetTests.swift */,
-				666AEAFB210B599D00A50F27 /* AtomicTests.swift */,
-			);
-			name = UtilsTests;
-			sourceTree = "<group>";
-		};
-		662410462104A0EC00013B00 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				662410492104A42C00013B00 /* Bucket.swift */,
-				6624104D2104AF2100013B00 /* Extensions.swift */,
-				662410582107804400013B00 /* Lock.swift */,
-				62661F402108433300055501 /* WeakSet.swift */,
-				666AEAF22109F90C00A50F27 /* Atomic.swift */,
-			);
-			name = Utils;
-			sourceTree = "<group>";
-		};
-		669D214E20FE1B5500AFFDF7 /* DateTime */ = {
-			isa = PBXGroup;
-			children = (
-				669D214F20FE1B7300AFFDF7 /* Interval.swift */,
-				669D215120FE1B8A00AFFDF7 /* Time.swift */,
-				669D215320FE1BA600AFFDF7 /* Period.swift */,
-				669D215520FE1BB400AFFDF7 /* Weekday.swift */,
-				669D215720FE1BC000AFFDF7 /* Monthday.swift */,
-			);
-			name = DateTime;
-			sourceTree = "<group>";
-		};
-		669D21612100E3C600AFFDF7 /* Related */ = {
-			isa = PBXGroup;
-			children = (
-				666AEAF6210A177900A50F27 /* .swift-version */,
-				669D21622100E3E300AFFDF7 /* README.md */,
-				66241051210617CD00013B00 /* Schedule.podspec */,
-				666AEAFA210A24E800A50F27 /* .codecov.yml */,
-				666AEAF5210A128A00A50F27 /* .swiftlint.yml */,
-				666AEAF8210A17DB00A50F27 /* .travis.yml */,
+				668685EF210DCC0E009305C3 /* .codecov.yml */,
+				668685ED210DCC0E009305C3 /* .swift-version */,
+				668685F2210DCC0F009305C3 /* .swiftlint.yml */,
+				668685F1210DCC0F009305C3 /* .travis.yml */,
+				668685EE210DCC0E009305C3 /* README.md */,
+				668685F0210DCC0E009305C3 /* Schedule.podspec */,
 			);
 			name = Related;
 			sourceTree = "<group>";
 		};
-		OBJ_13 /* Tests */ = {
+		668685F4210DD21A009305C3 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				626C7209210968C6005F10A7 /* LinuxMain.swift */,
-				OBJ_14 /* ScheduleTests */,
+				OBJ_22 /* WeakSet.swift */,
+				OBJ_9 /* Atomic.swift */,
+				OBJ_10 /* Bucket.swift */,
+				OBJ_11 /* Extensions.swift */,
+				OBJ_13 /* Lock.swift */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+		668685F5210DD226009305C3 /* Datetime */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_12 /* Interval.swift */,
+				OBJ_14 /* Monthday.swift */,
+				OBJ_16 /* Period.swift */,
+				OBJ_20 /* Time.swift */,
+				OBJ_23 /* Weekday.swift */,
+			);
+			name = Datetime;
+			sourceTree = "<group>";
+		};
+		OBJ_24 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_25 /* ScheduleTests */,
 			);
 			name = Tests;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_14 /* ScheduleTests */ = {
+		OBJ_25 /* ScheduleTests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_15 /* DateTimeTests.swift */,
-				OBJ_17 /* Misc.swift */,
-				OBJ_16 /* SchedulesTests.swift */,
-				62EF93FD21086411001F7A47 /* TaskCenterTests.swift */,
-				62FF0D65210ADEE000AABE1E /* TaskTests.swift */,
-				OBJ_18 /* XCTestManifests.swift */,
-				62EF93FB21085312001F7A47 /* UtilsTests */,
+				OBJ_26 /* AtomicTests.swift */,
+				OBJ_27 /* BucketTests.swift */,
+				OBJ_28 /* DateTimeTests.swift */,
+				OBJ_29 /* ExtensionsTests.swift */,
+				OBJ_30 /* Misc.swift */,
+				OBJ_31 /* SchedulesTests.swift */,
+				OBJ_32 /* TaskCenterTests.swift */,
+				OBJ_33 /* TaskTests.swift */,
+				OBJ_34 /* WeakSetTests.swift */,
+				OBJ_35 /* XCTestManifests.swift */,
 			);
 			name = ScheduleTests;
 			path = Tests/ScheduleTests;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_19 /* Products */ = {
+		OBJ_37 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				"Schedule::Schedule::Product" /* Schedule.framework */,
 				"Schedule::ScheduleTests::Product" /* ScheduleTests.xctest */,
+				"Schedule::Schedule::Product" /* Schedule.framework */,
 			);
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -208,11 +199,12 @@
 		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
+				668685F3210DCEB0009305C3 /* Schedule.playground */,
 				OBJ_6 /* Package.swift */,
-				OBJ_19 /* Products */,
-				669D21612100E3C600AFFDF7 /* Related */,
+				OBJ_37 /* Products */,
+				668685EC210DCBD4009305C3 /* Related */,
 				OBJ_7 /* Sources */,
-				OBJ_13 /* Tests */,
+				OBJ_24 /* Tests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -227,13 +219,13 @@
 		OBJ_8 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
-				669D215C20FE1D1800AFFDF7 /* ParasiticTask.swift */,
-				OBJ_11 /* Schedule.swift */,
-				OBJ_10 /* Task.swift */,
-				669D215A20FE1C0E00AFFDF7 /* TaskCenter.swift */,
-				62EF940721086F63001F7A47 /* Timeline.swift */,
-				669D214E20FE1B5500AFFDF7 /* DateTime */,
-				662410462104A0EC00013B00 /* Utils */,
+				OBJ_15 /* ParasiticTask.swift */,
+				OBJ_17 /* Schedule.swift */,
+				OBJ_18 /* Task.swift */,
+				OBJ_19 /* TaskCenter.swift */,
+				OBJ_21 /* Timeline.swift */,
+				668685F5210DD226009305C3 /* Datetime */,
+				668685F4210DD21A009305C3 /* Utils */,
 			);
 			name = Schedule;
 			path = Sources/Schedule;
@@ -244,11 +236,11 @@
 /* Begin PBXNativeTarget section */
 		"Schedule::Schedule" /* Schedule */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_23 /* Build configuration list for PBXNativeTarget "Schedule" */;
+			buildConfigurationList = OBJ_41 /* Build configuration list for PBXNativeTarget "Schedule" */;
 			buildPhases = (
-				OBJ_26 /* Sources */,
-				OBJ_31 /* Frameworks */,
-				666AEAF4210A102500A50F27 /* SwiftLint */,
+				OBJ_44 /* Sources */,
+				OBJ_60 /* Frameworks */,
+				668685F6210DD61E009305C3 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -261,15 +253,15 @@
 		};
 		"Schedule::ScheduleTests" /* ScheduleTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_44 /* Build configuration list for PBXNativeTarget "ScheduleTests" */;
+			buildConfigurationList = OBJ_73 /* Build configuration list for PBXNativeTarget "ScheduleTests" */;
 			buildPhases = (
-				OBJ_47 /* Sources */,
-				OBJ_52 /* Frameworks */,
+				OBJ_76 /* Sources */,
+				OBJ_87 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				OBJ_54 /* PBXTargetDependency */,
+				OBJ_89 /* PBXTargetDependency */,
 			);
 			name = ScheduleTests;
 			productName = ScheduleTests;
@@ -278,9 +270,9 @@
 		};
 		"Schedule::SwiftPMPackageDescription" /* SchedulePackageDescription */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_33 /* Build configuration list for PBXNativeTarget "SchedulePackageDescription" */;
+			buildConfigurationList = OBJ_62 /* Build configuration list for PBXNativeTarget "SchedulePackageDescription" */;
 			buildPhases = (
-				OBJ_36 /* Sources */,
+				OBJ_65 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -306,7 +298,7 @@
 				en,
 			);
 			mainGroup = OBJ_5;
-			productRefGroup = OBJ_19 /* Products */;
+			productRefGroup = OBJ_37 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -319,7 +311,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		666AEAF4210A102500A50F27 /* SwiftLint */ = {
+		668685F6210DD61E009305C3 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -336,115 +328,69 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		OBJ_26 /* Sources */ = {
+		OBJ_44 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				669D215220FE1B8A00AFFDF7 /* Time.swift in Sources */,
-				669D215020FE1B7300AFFDF7 /* Interval.swift in Sources */,
-				669D215620FE1BB400AFFDF7 /* Weekday.swift in Sources */,
-				62EF940821086F63001F7A47 /* Timeline.swift in Sources */,
-				666AEAF32109F90C00A50F27 /* Atomic.swift in Sources */,
-				OBJ_28 /* Task.swift in Sources */,
-				OBJ_29 /* Schedule.swift in Sources */,
-				62661F412108433400055501 /* WeakSet.swift in Sources */,
-				669D215820FE1BC000AFFDF7 /* Monthday.swift in Sources */,
-				669D215B20FE1C0E00AFFDF7 /* TaskCenter.swift in Sources */,
-				669D215D20FE1D1800AFFDF7 /* ParasiticTask.swift in Sources */,
-				6624104E2104AF2100013B00 /* Extensions.swift in Sources */,
-				6624104A2104A42C00013B00 /* Bucket.swift in Sources */,
-				662410592107804400013B00 /* Lock.swift in Sources */,
-				669D215420FE1BA600AFFDF7 /* Period.swift in Sources */,
+				OBJ_45 /* Atomic.swift in Sources */,
+				OBJ_46 /* Bucket.swift in Sources */,
+				OBJ_47 /* Extensions.swift in Sources */,
+				OBJ_48 /* Interval.swift in Sources */,
+				OBJ_49 /* Lock.swift in Sources */,
+				OBJ_50 /* Monthday.swift in Sources */,
+				OBJ_51 /* ParasiticTask.swift in Sources */,
+				OBJ_52 /* Period.swift in Sources */,
+				OBJ_53 /* Schedule.swift in Sources */,
+				OBJ_54 /* Task.swift in Sources */,
+				OBJ_55 /* TaskCenter.swift in Sources */,
+				OBJ_56 /* Time.swift in Sources */,
+				OBJ_57 /* Timeline.swift in Sources */,
+				OBJ_58 /* WeakSet.swift in Sources */,
+				OBJ_59 /* Weekday.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_36 /* Sources */ = {
+		OBJ_65 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_37 /* Package.swift in Sources */,
+				OBJ_66 /* Package.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_47 /* Sources */ = {
+		OBJ_76 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				6624105421075FDC00013B00 /* ExtensionsTests.swift in Sources */,
-				62EF93FA2108530D001F7A47 /* WeakSetTests.swift in Sources */,
-				62FF0D66210ADEE000AABE1E /* TaskTests.swift in Sources */,
-				OBJ_48 /* DateTimeTests.swift in Sources */,
-				OBJ_49 /* SchedulesTests.swift in Sources */,
-				OBJ_50 /* Misc.swift in Sources */,
-				666AEAFC210B599D00A50F27 /* AtomicTests.swift in Sources */,
-				OBJ_51 /* XCTestManifests.swift in Sources */,
-				66241056210761F000013B00 /* BucketTests.swift in Sources */,
-				62EF93FF21086420001F7A47 /* TaskCenterTests.swift in Sources */,
+				OBJ_77 /* AtomicTests.swift in Sources */,
+				OBJ_78 /* BucketTests.swift in Sources */,
+				OBJ_79 /* DateTimeTests.swift in Sources */,
+				OBJ_80 /* ExtensionsTests.swift in Sources */,
+				OBJ_81 /* Misc.swift in Sources */,
+				OBJ_82 /* SchedulesTests.swift in Sources */,
+				OBJ_83 /* TaskCenterTests.swift in Sources */,
+				OBJ_84 /* TaskTests.swift in Sources */,
+				OBJ_85 /* WeakSetTests.swift in Sources */,
+				OBJ_86 /* XCTestManifests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		OBJ_42 /* PBXTargetDependency */ = {
+		OBJ_71 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Schedule::ScheduleTests" /* ScheduleTests */;
-			targetProxy = 6266004320EF028200D5E606 /* PBXContainerItemProxy */;
+			targetProxy = 668685E7210C8D78009305C3 /* PBXContainerItemProxy */;
 		};
-		OBJ_54 /* PBXTargetDependency */ = {
+		OBJ_89 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Schedule::Schedule" /* Schedule */;
-			targetProxy = 6266004220EF028200D5E606 /* PBXContainerItemProxy */;
+			targetProxy = 668685E6210C8D78009305C3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		OBJ_24 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = Schedule.xcodeproj/Schedule_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = Schedule;
-				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
-				TARGET_NAME = Schedule;
-			};
-			name = Debug;
-		};
-		OBJ_25 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = Schedule.xcodeproj/Schedule_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = Schedule;
-				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
-				TARGET_NAME = Schedule;
-			};
-			name = Release;
-		};
 		OBJ_3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -467,24 +413,6 @@
 			};
 			name = Debug;
 		};
-		OBJ_34 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				LD = /usr/bin/true;
-				OTHER_SWIFT_FLAGS = "-swift-version 4 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk";
-				SWIFT_VERSION = 4.0;
-			};
-			name = Debug;
-		};
-		OBJ_35 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				LD = /usr/bin/true;
-				OTHER_SWIFT_FLAGS = "-swift-version 4 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk";
-				SWIFT_VERSION = 4.0;
-			};
-			name = Release;
-		};
 		OBJ_4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -505,19 +433,83 @@
 			};
 			name = Release;
 		};
-		OBJ_40 /* Debug */ = {
+		OBJ_42 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = Schedule.xcodeproj/Schedule_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = Schedule;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGET_NAME = Schedule;
+			};
+			name = Debug;
+		};
+		OBJ_43 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = Schedule.xcodeproj/Schedule_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = Schedule;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGET_NAME = Schedule;
+			};
+			name = Release;
+		};
+		OBJ_63 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 4 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		OBJ_64 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 4 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Release;
+		};
+		OBJ_69 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 			};
 			name = Debug;
 		};
-		OBJ_41 /* Release */ = {
+		OBJ_70 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 			};
 			name = Release;
 		};
-		OBJ_45 /* Debug */ = {
+		OBJ_74 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -536,7 +528,7 @@
 			};
 			name = Debug;
 		};
-		OBJ_46 /* Release */ = {
+		OBJ_75 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -567,38 +559,38 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_23 /* Build configuration list for PBXNativeTarget "Schedule" */ = {
+		OBJ_41 /* Build configuration list for PBXNativeTarget "Schedule" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_24 /* Debug */,
-				OBJ_25 /* Release */,
+				OBJ_42 /* Debug */,
+				OBJ_43 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_33 /* Build configuration list for PBXNativeTarget "SchedulePackageDescription" */ = {
+		OBJ_62 /* Build configuration list for PBXNativeTarget "SchedulePackageDescription" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_34 /* Debug */,
-				OBJ_35 /* Release */,
+				OBJ_63 /* Debug */,
+				OBJ_64 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_39 /* Build configuration list for PBXAggregateTarget "SchedulePackageTests" */ = {
+		OBJ_68 /* Build configuration list for PBXAggregateTarget "SchedulePackageTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_40 /* Debug */,
-				OBJ_41 /* Release */,
+				OBJ_69 /* Debug */,
+				OBJ_70 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_44 /* Build configuration list for PBXNativeTarget "ScheduleTests" */ = {
+		OBJ_73 /* Build configuration list for PBXNativeTarget "ScheduleTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_45 /* Debug */,
-				OBJ_46 /* Release */,
+				OBJ_74 /* Debug */,
+				OBJ_75 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

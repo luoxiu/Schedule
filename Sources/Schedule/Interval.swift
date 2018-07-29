@@ -30,12 +30,12 @@ public struct Interval {
     /// but the interval comparing `1.hour` to `3.hour` is `-2.hour`.
     /// In this case, `-2.hour` means **two hours shorter**
     public var isNegative: Bool {
-        return nanoseconds.isLess(than: 0)
+        return nanoseconds < 0
     }
 
     /// See `isNegative`
     public var isPositive: Bool {
-        return !nanoseconds.isLessThanOrEqualTo(0)
+        return nanoseconds > 0
     }
 
     /// The absolute value of the length of this interval,

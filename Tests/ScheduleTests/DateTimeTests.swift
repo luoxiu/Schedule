@@ -77,21 +77,16 @@ final class DateTimeTests: XCTestCase {
         XCTAssertEqual(p3!.days, 3)
 
         let date = Date(year: 1989, month: 6, day: 4) + 1.year
-        let year = Calendar(identifier: .gregorian).component(.year, from: date)
+        let year = date.dateComponents.year
         XCTAssertEqual(year, 1990)
 
         let p4 = Period(hours: 25).tidied(to: .day)
         XCTAssertEqual(p4.days, 1)
     }
 
-    func testMonthday() {
-        XCTAssertEqual(MonthDay.april(3).asDateComponents(), DateComponents(month: 4, day: 3))
-    }
-
     static var allTests = [
         ("testInterval", testInterval),
         ("testTime", testTime),
-        ("testPeriod", testPeriod),
-        ("testMonthday", testMonthday)
+        ("testPeriod", testPeriod)
     ]
 }

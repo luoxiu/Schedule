@@ -17,7 +17,7 @@ struct WeakBox<T: AnyObject> {
 extension WeakBox: Hashable {
 
     var hashValue: Int {
-        guard let value = self.underlying else { return 0 }
+        guard let value = underlying else { return 0 }
         return ObjectIdentifier(value).hashValue
     }
 

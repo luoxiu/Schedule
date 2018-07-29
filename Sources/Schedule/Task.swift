@@ -56,18 +56,16 @@ public class Task {
 
         self._timer = DispatchSource.makeTimerSource(queue: queue)
         self._actions.add(onElapse)
+        self._timer.setEventHandler { [weak self] in
+            self?.elapse()
+        }
 
         // Consider nil a distant future.
         let interval = self._iterator.next() ?? Date.distantFuture.intervalSinceNow
         self._timer.schedule(after: interval)
-
         self._timeline.estimatedNextExecution = Date().adding(interval)
 
         TaskCenter.shared.add(self, withTag: tag)
-
-        self._timer.setEventHandler { [weak self] in
-            self?.elapse()
-        }
         self._timer.resume()
     }
 
@@ -134,6 +132,13 @@ public class Task {
             _timeline.estimatedNextExecution = Date()
         }
         scheduleNext()
+    }
+
+    /// Suspensions of this task.
+    public var suspends: UInt64 {
+        return _lock.withLock {
+            _suspensions
+        }
     }
 
     /// Suspends this task.

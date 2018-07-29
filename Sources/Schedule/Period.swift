@@ -54,6 +54,10 @@ public struct Period {
         "seven": 7, "eight": 8, "nine": 9, "ten": 10, "eleven": 11, "twelve": 12
     ])
 
+    /// Register your own quantifier.
+    ///
+    ///     Period.registerQuantifier("fifty", for: 15)
+    ///     let period = Period("fifty minutes")
     public static func registerQuantifier(_ word: String, for number: Int) {
         map.mutate {
             $0[word] = number
@@ -177,7 +181,7 @@ extension Date {
 
     /// Returns a new date by adding a period to this date.
     public func adding(_ period: Period) -> Date {
-        return Calendar(identifier: .gregorian).date(byAdding: period.asDateComponents(), to: self) ?? .distantFuture
+        return Calendar.gregorian.date(byAdding: period.asDateComponents(), to: self) ?? .distantFuture
     }
 
     /// Returns a date with a period added to it.

@@ -300,7 +300,7 @@ extension Schedule {
     /// Creates a schedule that executes the task every period.
     public static func every(_ period: Period) -> Schedule {
         return Schedule.make { () -> AnyIterator<Interval> in
-            let calendar = Calendar(identifier: .gregorian)
+            let calendar = Calendar.gregorian
             var last: Date!
             return AnyIterator {
                 last = last ?? Date()
@@ -339,12 +339,12 @@ extension Schedule {
         public func at(_ time: Time) -> Schedule {
             return Schedule.make { () -> AnyIterator<Date> in
                 let iterator = self.schedule.dates.makeIterator()
-                var calendar = Calendar(identifier: .gregorian)
+                let calendar = Calendar.gregorian
                 var last: Date!
                 return AnyIterator {
                     last = last ?? Date()
                     guard let date = iterator.next(),
-                        let next = calendar.nextDate(after: date,
+                        let next = calendar.nextDate(after: date.localZero(),
                                                      matching: time.asDateComponents(),
                                                      matchingPolicy: .strict) else {
                         return nil
@@ -387,11 +387,13 @@ extension Schedule {
     /// Creates a schedule that executes the task every specific weekday.
     public static func every(_ weekday: Weekday) -> DateMiddleware {
         let schedule = Schedule.make { () -> AnyIterator<Date> in
-            let calendar = Calendar(identifier: .gregorian)
-            let components = DateComponents(weekday: weekday.rawValue)
+            let calendar = Calendar.gregorian
+            let components = weekday.asDateComponents()
             var date: Date!
             return AnyIterator<Date> {
-                if date == nil {
+                if weekday.isToday {
+                    date = Date()
+                } else if date == nil {
                     date = calendar.nextDate(after: Date(), matching: components, matchingPolicy: .strict)
                 } else {
                     date = calendar.date(byAdding: .day, value: 7, to: date)
@@ -414,14 +416,15 @@ extension Schedule {
     }
 
     /// Creates a schedule that executes the task every specific day in the month.
-    public static func every(_ monthDay: MonthDay) -> DateMiddleware {
+    public static func every(_ monthDay: Monthday) -> DateMiddleware {
         let schedule = Schedule.make { () -> AnyIterator<Date> in
-            let calendar = Calendar(identifier: .gregorian)
+            let calendar = Calendar.gregorian
             let components = monthDay.asDateComponents()
-
             var date: Date!
             return AnyIterator<Date> {
-                if date == nil {
+                if monthDay.isToday {
+                    date = Date()
+                } else if date == nil {
                     date = calendar.nextDate(after: Date(), matching: components, matchingPolicy: .strict)
                 } else {
                     date = calendar.date(byAdding: .year, value: 1, to: date)
@@ -433,7 +436,7 @@ extension Schedule {
     }
 
     /// Creates a schedule that executes the task every specific days in the months.
-    public static func every(_ mondays: MonthDay...) -> DateMiddleware {
+    public static func every(_ mondays: Monthday...) -> DateMiddleware {
         var schedule = every(mondays[0]).schedule
         if mondays.count > 1 {
             for i in 1..<mondays.count {

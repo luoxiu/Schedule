@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Schedule"
-  s.version          = "0.0.5"
+  s.version          = "0.0.6"
   s.summary          = "Task Scheduler for Swift."
   s.homepage         = "https://github.com/jianstm/Schedule"
   s.license          = { :type => "MIT", :file => "LICENSE" }
@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
                          :tag => "#{s.version}" }
   s.source_files     = "Sources/Schedule/*.swift"
   s.requires_arc     = true
-  s.swift_version    = "4.2"
+  s.swift_version    = "4.0"
 
   s.ios.deployment_target = "8.0"
   s.osx.deployment_target = "10.10"

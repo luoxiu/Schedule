@@ -12,9 +12,7 @@ final class TaskCenter {
     static let shared = TaskCenter()
 
     private init() { }
-
     private var lock = Lock()
-
     private var tasks: Set<Task> = []
     private var registry: [String: WeakSet<Task>] = [:]
 
@@ -38,6 +36,7 @@ final class TaskCenter {
 
     func add(tag: String, to task: Task) {
         lock.withLock {
+            guard tasks.contains(task) else { return }
             if registry[tag] == nil {
                 registry[tag] = WeakSet()
             }

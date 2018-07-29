@@ -1,12 +1,3 @@
 ignore:
   - "Tests/"
-
-coverage:
-  precision: 2
-  range: 50...75
-  precision: 3
-
-  status:
-    project: yes
-    patch: yes
-    changes: no
+  - "Schedule.playground"

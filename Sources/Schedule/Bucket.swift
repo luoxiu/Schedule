@@ -24,7 +24,7 @@ struct Bucket<Element> {
 
     private var nextKey = BucketKey(rawValue: 0)
 
-    typealias Entry = (key: BucketKey, element: Element)
+    private typealias Entry = (key: BucketKey, element: Element)
     private var entries: [Entry] = []
 
     @discardableResult
@@ -64,6 +64,9 @@ struct Bucket<Element> {
 extension Bucket: Sequence {
 
     func makeIterator() -> AnyIterator<Element> {
-        return AnyIterator(entries.map({ $0.element }).makeIterator())
+        var it = entries.makeIterator()
+        return AnyIterator {
+            return it.next()?.element
+        }
     }
 }

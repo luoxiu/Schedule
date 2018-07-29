@@ -3,7 +3,7 @@ import XCTest
 
 final class SchedulesTests: XCTestCase {
 
-    let leeway = 0.001.seconds
+    let leeway = 0.01.seconds
 
     func testMake() {
         let intervals = [1.second, 2.hours, 3.days, 4.weeks]
@@ -112,10 +112,10 @@ final class SchedulesTests: XCTestCase {
     }
 
     func testEveryMonthday() {
-        let s = Schedule.every(.april(2)).at(11, 11).first(5)
+        let s = Schedule.every(.april(1)).at(11, 11).first(5)
         for i in s.dates {
             XCTAssertEqual(i.dateComponents.month, 4)
-            XCTAssertEqual(i.dateComponents.day, 2)
+            XCTAssertEqual(i.dateComponents.day, 1)
             XCTAssertEqual(i.dateComponents.hour, 11)
         }
     }
