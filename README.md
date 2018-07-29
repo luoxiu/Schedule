@@ -1,4 +1,4 @@
-# Schedule
+<p align="center"><img src="https://i.imgur.com/MzBYK7N.png"></p>
 
 ![travis](https://img.shields.io/travis/jianstm/Schedule.svg)
 ![codecov](https://img.shields.io/codecov/c/github/jianstm/schedule.svg)
