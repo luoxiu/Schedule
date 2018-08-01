@@ -17,7 +17,7 @@ Schedule.every("ten seconds").do {
     print("Ten seconds elapsed!")
 }
 
-Schedule.every(.monday, .tuesday, .wednesday, .thursday, friday).at(6, 30).do {
+Schedule.every(.monday, .tuesday, .wednesday, .thursday, .friday).at(6, 30).do {
     print("Get up!")
 }
 

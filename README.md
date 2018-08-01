@@ -7,7 +7,9 @@
 ![carthage](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg)
 ![swift-package-manager](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg)
 
-⏳ An interval-based and date-based task scheduler for swift, with incredibly sweet api.
+⏳ An interval-based and date-based task scheduler for swift, with incredibly sweet api. 
+
+中文介绍可以见我的[博客](http://v2ambition.com/2018/07/29/schedule-%E6%9B%B4%E5%A5%BD%E7%9A%84-swift-timer)。
 
 <p align="center"><img src="https://raw.githubusercontent.com/jianstm/Schedule/master/Images/demo.png" width="700"></p>
 
