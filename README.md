@@ -1,4 +1,4 @@
-<p align="center"><img src="https://i.imgur.com/MzBYK7N.png"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/jianstm/Schedule/master/Images/logo.png" width="350"></p>
 
 ![travis](https://img.shields.io/travis/jianstm/Schedule.svg)
 ![codecov](https://img.shields.io/codecov/c/github/jianstm/schedule.svg)
@@ -9,11 +9,13 @@
 
 ⏳ An interval-based and date-based task scheduler for swift, with incredibly sweet api.
 
+<p align="center"><img src="https://raw.githubusercontent.com/jianstm/Schedule/master/Images/demo.png" width="700"></p>
+
 ## Features
 
 - 📆 Date-based scheduling
 - ⏰ Interval-based scheduling
-- 🌈 Mixture rules
+- 🌈 Mixing rules
 - 📝 Human readable datetime parsing
 - 🚦 Suspend, resume, cancel
 - 🏷 Tag-based management
@@ -62,7 +64,7 @@ Schedule.of(date0, date1, date2).do { }
 ```
 
 
-### Mixture rules
+### Mixing rules
 
 ```swift
 import Schedule
@@ -96,6 +98,8 @@ let s8 = s7.until(date)
 
 ```swift
 Schedule.every("one hour and ten minutes").do { }
+
+Schedule.every("1 hour, 5 minutes and 10 seconds").do { }
 ```
 
 ### Task management
@@ -201,5 +205,7 @@ dependencies: [
 ## Contributing
 
 Feel free to criticize! Any suggestion is welcome!
+
+---
 
 > Like **Schedule**? Star me and tell your friends!
