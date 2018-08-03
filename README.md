@@ -1,44 +1,70 @@
-<p align="center"><img src="https://raw.githubusercontent.com/jianstm/Schedule/master/Images/logo.png" width="350"></p>
+<p align="center">
+<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/Images/logo.png" width="350">
+</p>
 
-![travis](https://img.shields.io/travis/jianstm/Schedule.svg)
-![codecov](https://img.shields.io/codecov/c/github/jianstm/schedule.svg)
-![platform](https://img.shields.io/badge/platforms-iOS%20%7C%20macOS%20%7C%20tvOS%20%7C%20watchOS-333333.svg)
-![cocoapods](https://img.shields.io/cocoapods/v/Schedule.svg)
-![carthage](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg)
-![swift-package-manager](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg)
+<p align="center>A light-weight task scheduler for Swift.</p>
 
-⏳ An interval-based and date-based task scheduler for swift, with incredibly sweet api. 
+<p align="center">
+<img src="https://img.shields.io/travis/jianstm/Schedule.svg">
+<img src="https://img.shields.io/codecov/c/github/jianstm/schedule.svg">
+<img src="https://img.shields.io/cocoapods/v/Schedule.svg">
+<img src="https://img.shields.io/badge/Carthage-compatible-brightgreen.svg">
+<img src="https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg">
+<p>
 
-中文介绍可以见我的[博客](http://v2ambition.com/2018/07/29/schedule-%E6%9B%B4%E5%A5%BD%E7%9A%84-swift-timer)。
+# Schedule([简体中文](https://raw.githubusercontent.com/jianstm/Schedule/master/README.zh_cn.md))
 
-<p align="center"><img src="https://raw.githubusercontent.com/jianstm/Schedule/master/Images/demo.png" width="700"></p>
+⏳ Schedule is a light-weight task scheduler for Swift. It allows you run timed tasks using an incredibly human-friendly syntax.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/Images/demo.png" width="700">
+</p>
 
 ## Features
 
-- 📆 Date-based scheduling
-- ⏰ Interval-based scheduling
-- 🌈 Mixing rules
-- 📝 Human readable datetime parsing
-- 🚦 Suspend, resume, cancel
-- 🏷 Tag-based management
-- 🍰 Action appending/removing
-- 🚔 Thread safe
-- 🍻 No need to concern about runloop
-- 👻 No need to concern about circular reference
-- 🍭 **Incredibly Sweet API**
+- [x] ⏰ Interval-based Schedule
+- [x] 📆 Date-based Schedule
+- [x] 🌈 Mixing rules Schedule
+- [x] 📝 Human Readable Period Parse
+- [x] 🚦 Suspend, Resume, Cancel
+- [x] 🎡 Reschedule
+- [x] 🏷 Tag-based Management
+- [x] 🍰 Child-action Add/Remove
+- [x] 🚔 Atomic Operations 
+- [x] 🏌 Full Control Over the Lift Time 
+- [x] 🍻 No Need to Worry About Runloop
+- [x] 👻 No Need to Worry About Circular Reference
+- [x] 🍭 **Incredibly Human Friendly API**  
 
+### Why should you Use Schedule Instead of Timer?
+
+A chart is worth a thousand words:                                             
+
+| Features                                  | Timer | DispatchSourceTimer | Schedule |
+| ----------------------------------------- | :---: | :-----------------: | :------: |
+| ⏰ Interval-based Schedule                 |   ✓   |          ✓          |    ✓     |
+| 📆 Date-based Schedule                     |   ✓   |                     |    ✓     |
+| 🌈 Mixing Rules Schedule                   |       |                     |    ✓     |
+| 📝 Human Readable Period Parse           |       |                     |    ✓     |
+| 🚦 Suspende/Resume, Cancel                 |       |          ✓          |    ✓     |
+| 🎡 ReSchedule                              |       |          ✓          |    ✓     |                   
+| 🏷 Tag-based management                    |       |                     |    ✓     |
+| 🍰 Child-action Add/Remove                 |       |                     |    ✓     |
+| 🚔 Atomic Operations                       |       |                     |    ✓     |
+| 🏌 Full Control Over the Life Time         |       |                     |    ✓     |
+| 🍭 **Incredibly Human Friendly API**       |       |                     |    ✓     |
 
 ## Usage
 
-Scheduling a task can not be simplier.
+Scheduling a task can't be simplier:
 
 ```swift
 Schedule.after(3.seconds).do {
-	print("elapsed!")
+    print("3 seconds passed!")
 }
 ```
 
-### Interval-based Scheduling
+### Interval-based Schedule
 
 ```swift
 Schedule.every(1.seconds).do { }
@@ -48,12 +74,9 @@ Schedule.after(1.hour, repeating: 1.minute).do { }
 Schedule.of(1.second, 2.minutes, 3.hours).do { }
 ```
 
-
-### Date-based Scheduling
+### Date-based Schedule
 
 ```swift
-import Schedule
-
 Schedule.at(when).do { }
 
 Schedule.every(.monday, .tuesday).at("9:00:00").do { }
@@ -65,8 +88,7 @@ Schedule.every("one month and ten days").do { }
 Schedule.of(date0, date1, date2).do { }
 ```
 
-
-### Mixing rules
+### Mixing Rules Schedule
 
 ```swift
 import Schedule
@@ -82,7 +104,7 @@ birthdaySchedule.do {
 /// merge
 let s3 = Schedule.every(.january(1)).at("8:00")
 let s4 = Schedule.every(.october(1)).at("9:00 AM")
-let holiday = s3.merge(s3)
+let holiday = s3.merge(s4)
 holidaySchedule.do {
     print("Happy holiday")
 }
@@ -96,7 +118,7 @@ let s7 = Schedule.every(.monday).at(11, 12)
 let s8 = s7.until(date)
 ```
 
-### Human readable datetime parsing
+### Human Readable Period Parse
 
 ```swift
 Schedule.every("one hour and ten minutes").do { }
@@ -104,11 +126,11 @@ Schedule.every("one hour and ten minutes").do { }
 Schedule.every("1 hour, 5 minutes and 10 seconds").do { }
 ```
 
-### Task management
+### Task Management
 
-In general, you don't need to concern about the reference management of task. All tasks will be retained internally, so they won't be released, unless you do it yourself.
+In general, you don't need to worry about reference management of the task any more. All tasks will be retained internally, so they won't be released, unless you do it yourself.
 
-There is a more elegant way to deal with task's lifecycle:
+Schedule lets you handle a task's lifecycle with a more elegant way:
 
 ```swift
 Schedule.every(1.second).do(host: self) {
@@ -116,19 +138,19 @@ Schedule.every(1.second).do(host: self) {
 }
 ```
 
-#### Manipulation
+#### Handle
 
 ```swift
 let task = Schedule.every(1.day).do { }
 
 task.suspend()
 task.resume()
-task.cancel()    // will decrease this task's ref count.
+task.cancel()    // will remove internally held reference of this task
 ```
 
 #### Tag
 
-You also can use `tag` to organize tasks, and use `queue` to define which queue the task should be dispatched to:
+You can organize tasks with `tag`, and use `queue` to define where the task should be dispatched:
 
 ```swift
 let s = Schedule.every(1.day)
@@ -145,18 +167,18 @@ Task.cancel(byTag: "log")
 
 #### Action
 
-`Aciton` is minimal job unit. A task is composed of a series of actions. 
+`Aciton` is smaller unit of `Task`, A task is composed of a series of actions. 
 
 ```swift
 let dailyTask = Schedule.every(1.day)
 dailyTask.addAction {
-	print("open eyes")
+    print("open eyes")
 }
 dailyTask.addAction {
-	print("get up")
+    print("get up")
 }
 let key = dailyTask.addAction {
-	print("take a shower")
+    print("take a shower")
 }
 dailyTask.removeAction(byKey: key)
 ```
@@ -175,25 +197,48 @@ print(timeline.estimatedNextExecution)
 You also can specify task's lifetime:
 
 ```swift
-task.setLifetime(10.hours)  // will be cancelled after 10 hours.
+task.setLifetime(10.hours)  // will cancel this task after 10 hours
 task.addLifetime(1.hours)
 task.restOfLifetime == 11.hours
 ```
 
-## Installation
+## Requirements
 
-Schedule supports all popular dependency managers.
+- Swift 4.x
+- All Apple platforms are supported!
+- And since there is no use of `NS` class, it should supports linux, too!
+
+## Installation
 
 ### Cocoapods
 
 ```ruby
-pod 'Schedule'
+# Podfile
+use_frameworks!
+
+target 'YOUR_TARGET_NAME' do
+    pod 'Schedule'
+end
+```
+
+Replace YOUR_TARGET_NAME and then run:
+
+```sh
+$ pod install
 ```
 
 ### Carthage
 
-```swift
+Add this to Cartfile
+
+```
 github "jianstm/Schedule"
+```
+
+Then run:
+
+```sh
+$ carthage update
 ```
 
 ### Swift Package Manager
@@ -204,10 +249,16 @@ dependencies: [
 ]
 ```
 
+Then run:
+
+```sh
+$ swift build
+```
+
 ## Contributing
 
-Feel free to criticize! Any suggestion is welcome!
+Feel free to criticize!
 
 ---
 
-> Like **Schedule**? Star me and tell your friends!
+Like **Schedule**? Star me then tell your friends!

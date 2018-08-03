@@ -68,6 +68,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		626D761B2113F9D100FCAFFE /* README.zh_cn.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.zh_cn.md; sourceTree = "<group>"; };
 		668685ED210DCC0E009305C3 /* .swift-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
 		668685EE210DCC0E009305C3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		668685EF210DCC0E009305C3 /* .codecov.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .codecov.yml; sourceTree = "<group>"; };
@@ -133,6 +134,7 @@
 				668685F1210DCC0F009305C3 /* .travis.yml */,
 				668685EE210DCC0E009305C3 /* README.md */,
 				668685F0210DCC0E009305C3 /* Schedule.podspec */,
+				626D761B2113F9D100FCAFFE /* README.zh_cn.md */,
 			);
 			name = Related;
 			sourceTree = "<group>";
