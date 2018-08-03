@@ -12,7 +12,7 @@
 <img src="https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg">
 <p>
 
-# Schedule([简体中文](https://raw.githubusercontent.com/jianstm/Schedule/master/README.zh_cn.md))
+# Schedule([简体中文](README.zh_cn.md))
 
 ⏳ Schedule is a light-weight task scheduler for Swift. It allows you run timed tasks using an incredibly human-friendly syntax.
 
@@ -22,15 +22,13 @@
 
 ## Features
 
-- [x] ⏰ Interval-based Schedule
-- [x] 📆 Date-based Schedule
-- [x] 🌈 Mixing rules Schedule
+- [x] 🌈 Variety of Rules Schedule
 - [x] 📝 Human Readable Period Parse
 - [x] 🚦 Suspend, Resume, Cancel
 - [x] 🎡 Reschedule
 - [x] 🏷 Tag-based Management
 - [x] 🍰 Child-action Add/Remove
-- [x] 🚔 Atomic Operations 
+- [x] 🚔 Thread safe 
 - [x] 🏌 Full Control Over the Lift Time 
 - [x] 🍻 No Need to Worry About Runloop
 - [x] 👻 No Need to Worry About Circular Reference
@@ -51,7 +49,8 @@ A chart is worth a thousand words:
 | 🏷 Tag-based management                    |       |                     |    ✓     |
 | 🍰 Child-action Add/Remove                 |       |                     |    ✓     |
 | 🚔 Atomic Operations                       |       |                     |    ✓     |
-| 🏌 Full Control Over the Life Time         |       |                     |    ✓     |
+| 🚀 Realtime Timeline Inspect         |       |                     |    ✓     |
+| 🏌 Life Time Control         |       |                     |    ✓     |
 | 🍭 **Incredibly Human Friendly API**       |       |                     |    ✓     |
 
 ## Usage
