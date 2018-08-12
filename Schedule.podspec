@@ -1,7 +1,11 @@
 Pod::Spec.new do |s|
   s.name             = "Schedule"
-  s.version          = "0.0.6"
-  s.summary          = "Task Scheduler for Swift."
+  s.version          = "0.0.7"
+  s.summary          = "A lightweight task scheduler for Swift."
+  s.description      = <<-DESC
+                       Schedule is a missing lightweight task scheduler for Swift.
+                       It allows you run timed tasks using an incredibly human-friendly syntax.
+                       DESC
   s.homepage         = "https://github.com/jianstm/Schedule"
   s.license          = { :type => "MIT", :file => "LICENSE" }
   s.author           = { "Quentin Jin" => "jianstm@gmail.com" }

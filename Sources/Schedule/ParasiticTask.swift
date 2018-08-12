@@ -12,17 +12,17 @@ extension Schedule {
     /// Schedules a task with this schedule.
     ///
     /// This method will receive a `host` object as a parameter,
-    /// the returned task will not retain this object, on the contrary,
+    /// the returned task will not retain this object, instead,
     /// it will observe this object, when this object is dealloced,
-    /// task will not be scheduled any more, something like parasitism.
+    /// the task will not be scheduled any more, something like parasitism.
     ///
-    /// This feature is very useful when you want a timer live and die
+    /// This feature is very useful when you want a scheduled task live and die
     /// with a controller.
     ///
     /// - Parameters:
-    ///   - queue: The dispatch queue to which the task will be submitted.
-    ///   - tag: The tag to associate with the task.
-    ///   - host: The object to host on.
+    ///   - queue: The queue to which the task will be dispatched.
+    ///   - tag: The tag to be associated to the task.
+    ///   - host: The object to be hosted on.
     ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
     @discardableResult
@@ -36,17 +36,17 @@ extension Schedule {
     /// Schedules a task with this schedule.
     ///
     /// This method will receive a `host` object as a parameter,
-    /// the returned task will not retain this object, on the contrary,
+    /// the returned task will not retain this object, instead,
     /// it will observe this object, when this object is dealloced,
-    /// task will not scheduled any more, something like parasitism.
+    /// the task will not scheduled any more, something like parasitism.
     ///
-    /// This feature is very useful when you want a timer live and die
+    /// This feature is very useful when you want a scheduled task live and die
     /// with a controller.
     ///
     /// - Parameters:
-    ///   - queue: The dispatch queue to which the task will be submitted.
-    ///   - tag: The tag to associate with the task.
-    ///   - host: The object to host on.
+    ///   - queue: The queue to which the task will be dispatched.
+    ///   - tag: The tag to be associated to the task.
+    ///   - host: The object to be hosted on.
     ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
     @discardableResult

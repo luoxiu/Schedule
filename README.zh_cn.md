@@ -1,23 +1,20 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/Images/logo.png" width="350">
+<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/Images/logo.png" width="700">
 </p>
 
-
 <p align="center>A light-weight task scheduler for Swift.</p>
-
 
 <p align="center">
 <img src="https://img.shields.io/travis/jianstm/Schedule.svg">
 <img src="https://img.shields.io/codecov/c/github/jianstm/schedule.svg">
-<img src="https://img.shields.io/cocoapods/v/Schedule.svg">
-<img src="https://img.shields.io/badge/Carthage-compatible-brightgreen.svg">
-<img src="https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg">
-<p>
-
+<img src="https://img.shields.io/badge/version-0.0.7-orange.svg">
+<img src="https://img.shields.io/badge/supports-CocoaPods%20%7C%20Carthage%20%7C%20SwiftPM-brightgreen.svg">
+<img src="https://img.shields.io/badge/platforms-iOS%20%7C%20macOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20Linux-blue.svg">
+</p>
 
 # Schedule
 
-⏳ Schedule 是一个羽般轻量的定时任务框架，它可以让你用一种难以置信的友好语法执行定时任务.
+⏳ Schedule 是一个羽量级的定时任务框架，它可以让你用一种难以置信的友好语法执行定时任务.
 
 <p align="center"><img src="https://raw.githubusercontent.com/jianstm/Schedule/master/Images/demo.png" width="700">
 
@@ -32,9 +29,9 @@
 - [x] 🏷 基于 Tag 的任务管理
 - [x] 🍰 添加、移除子动作
 - [x] 🚔 线程安全 
-- [x] 🏌 对生存时间的完全控制 
-- [x] 🍻 不用再担心 RunLoop
-- [x] 👻 不用再担心循环引用（当然如果你执意不用 weak self 的话）
+- [x] 🏌 对生命周期的完全控制 
+- [x] 🍻 高测试覆盖（高达 90%）
+- [x] 👻 全文档覆盖（所有 public 类型和方法）
 - [x] 🍭 **难以置信的友好语法**  
 
 ### 为什么你应该用 Schedule 来代替 Timer
@@ -63,7 +60,7 @@
 
 ```swift
 Schedule.after(3.seconds).do {
-print("3 seconds passed!")
+	print("3 seconds passed!")
 }
 ```
 
@@ -103,7 +100,7 @@ let s0 = Schedule.at(birthdate)
 let s1 = Schedule.every(1.year)
 let birthdaySchedule = s0.concat.s1
 birthdaySchedule.do { 
-print("Happy birthday")
+	print("Happy birthday")
 }
 
 /// merge
@@ -111,7 +108,7 @@ let s3 = Schedule.every(.january(1)).at("8:00")
 let s4 = Schedule.every(.october(1)).at("9:00 AM")
 let holiday = s3.merge(s4)
 holidaySchedule.do {
-print("Happy holiday")
+	print("Happy holiday")
 }
 
 /// first
@@ -135,11 +132,13 @@ Schedule.every("1 hour, 5 minutes and 10 seconds").do { }
 
 使用 Schedule，你就不再需要担心 task 的引用管理了。所有 tasks 都被内部持有，它们不会被提前释放，除非你显式地 cancel 它。
 
+#### 寄生
+
 Schedule 还为你提供了一种更优雅的方式来处理 task 的生命周期：
 
 ```swift
 Schedule.every(1.second).do(host: self) {
-// do something, and cancel the task when `self` is deallocated.
+	// do something, and cancel the task when `self` is deallocated.
 }
 ```
 
@@ -155,7 +154,7 @@ task.cancel()    // will remove internally held reference of this task
 
 #### 标签
 
-你可以通过 `tag` 来组织 tasks，`queue` 定义了这个 task 将会被派发到哪里：
+你可以通过 `tag` 来组织 tasks，用 `queue` 定义这个 task 将会被派发到哪里：
 
 ```swift
 let s = Schedule.every(1.day)
@@ -199,7 +198,7 @@ print(timeline.lastExecution)
 print(timeline.estimatedNextExecution)
 ```
 
-也可是设置 task 的寿命：
+也可以设置 task 的寿命：
 
 ```swift
 task.setLifetime(10.hours)  // will cancel this task after 10 hours
@@ -207,22 +206,22 @@ task.addLifetime(1.hours)
 task.restOfLifetime == 11.hours
 ```
 
-## 需求
+## 平台
 
 - Swift 4.x
-- 支持所有苹果平台（iOS，macOS，watchOS，tvOS)！
-- 而且因为没有用到任何 `NS` 类，所以 linux 应该也支持哦！
+- 所有苹果平台（iOS，macOS，watchOS，tvOS)！
+- 而且因为没有用到任何 `NS` 类，所以 Linux 也应该支持哦！
 
 ## 安装
 
-### Cocoapods
+### CocoaPods
 
 ```ruby
 # Podfile
 use_frameworks!
 
 target 'YOUR_TARGET_NAME' do
-pod 'Schedule'
+	pod 'Schedule'
 end
 ```
 
@@ -251,7 +250,7 @@ $ carthage update
 
 ```swift
 dependencies: [
-.package(url: "https://github.com/jianstm/Schedule", .upToNextMinor("0.0.0"))
+	.package(url: "https://github.com/jianstm/Schedule", .upToNextMinor("0.0.0"))
 ]
 ```
 
@@ -263,8 +262,8 @@ $ swift build
 
 ## 贡献
 
-请畅所欲言你的任何建议或意见！
+Schedule 现在还是一个刚刚起步的项目，请畅所欲言你的任何建议或意见！
 
 ---
 
-喜欢 **Schedule** 吗？给我一个 star 然后告诉你的朋友们吧！
+喜欢 **Schedule** 吗？给我一个 star 并且告诉你的朋友们吧！

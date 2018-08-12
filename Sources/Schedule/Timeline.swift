@@ -10,13 +10,13 @@ import Foundation
 /// `Timeline` records a task's schedule.
 public struct Timeline {
 
-    /// The time when the first time task was executed.
+    /// The time of first execution.
     public internal(set) var firstExecution: Date?
 
-    /// The time when the last time task was executed.
+    /// The time of last execution.
     public internal(set) var lastExecution: Date?
 
-    /// The time when the next time task will be executed.
+    /// The time of next execution.
     public internal(set) var estimatedNextExecution: Date?
 
     let initialize = Date()

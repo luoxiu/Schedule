@@ -23,7 +23,7 @@ final class TaskCenter {
                 if registry[tag] == nil {
                     registry[tag] = WeakSet()
                 }
-                registry[tag]?.add(task)
+                registry[tag]?.insert(task)
             }
         }
     }
@@ -40,7 +40,7 @@ final class TaskCenter {
             if registry[tag] == nil {
                 registry[tag] = WeakSet()
             }
-            registry[tag]?.add(task)
+            registry[tag]?.insert(task)
         }
     }
 
@@ -62,7 +62,7 @@ final class TaskCenter {
         }
     }
 
-    var countOfTask: Int {
+    var countOfTasks: Int {
         return lock.withLock {
             tasks.count
         }

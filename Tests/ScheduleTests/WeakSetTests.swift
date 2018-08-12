@@ -17,22 +17,22 @@ final class WeakSetTests: XCTestCase {
 
         let block = {
             let obj = Object()
-            set.add(obj)
+            set.insert(obj)
         }
 
         block()
         XCTAssertEqual(set.count, 0)
 
         let obj = Object()
-        set.add(obj)
-        set.add(obj)
+        set.insert(obj)
+        set.insert(obj)
         XCTAssertEqual(set.count, 1)
     }
 
     func testRemove() {
         var set = WeakSet<Object>()
         let obj = Object()
-        set.add(obj)
+        set.insert(obj)
         set.remove(obj)
         XCTAssertEqual(set.count, 0)
     }

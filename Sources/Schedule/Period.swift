@@ -9,15 +9,13 @@ import Foundation
 
 /// `Period` represents a period of time defined in terms of fields.
 ///
-/// It's a little different from `Interval`.
+/// It's a little different from `Interval`:
 ///
-/// For example:
+/// - If you add a period `1.month` to January 1st,
+/// you will get February 1st.
 ///
-/// If you add a period `1.month` to the 1st January,
-/// you will get the 1st February.
-///
-/// If you add the same period to the 1st February,
-/// you will get the 1st March.
+/// - If you add the same period to February 1st,
+/// you will get March 1st.
 ///
 /// But the intervals(`31.days` in case 1, `28.days` or `29.days` in case 2)
 /// in these two cases are quite different.
@@ -83,9 +81,9 @@ public struct Period {
         for pair in period.split(separator: "$").map({ $0.split(separator: " ") }) {
             guard pair.count == 2 else { return nil }
             guard let number = Int(pair[0]) else { return nil }
-            var word = String(pair[1])
-            if word.last == "s" { word.removeLast() }
-            switch word {
+            var unit = String(pair[1])
+            if unit.last == "s" { unit.removeLast() }
+            switch unit {
             case "year":            result = result + number.years
             case "month":           result = result + number.months
             case "day":             result = result + number.days
@@ -97,7 +95,7 @@ public struct Period {
             default:                break
             }
         }
-        self = result
+        self = result.tidied(to: .day)
     }
 
     /// Returns a new period by adding a period to this period.
@@ -112,16 +110,10 @@ public struct Period {
     }
 
     /// Returns a new period by adding an interval to this period.
-    ///
-    /// You can tidy the new period by specify the unit parameter.
-    ///
-    ///     1.month.adding(25.hour, tiyding: .day) => Period(months: 1, days: 1, hours: 1)
-    public func adding(_ interval: Interval, tidying unit: Unit = .day) -> Period {
-        var period = Period(years: years, months: months, days: days,
+    public func adding(_ interval: Interval) -> Period {
+        return Period(years: years, months: months, days: days,
                       hours: hours, minutes: minutes, seconds: seconds,
-                      nanoseconds: nanoseconds.clampedAdding(interval.nanoseconds.clampedToInt()))
-        period = period.tidied(to: unit)
-        return period
+                      nanoseconds: nanoseconds.clampedAdding(interval.nanoseconds.clampedToInt())).tidied(to: .day)
     }
 
     /// Adds two periods and produces their sum.
@@ -134,12 +126,12 @@ public struct Period {
         return lhs.adding(rhs)
     }
 
-    /// Type used to as tidy's parameter.
+    /// Type to be used as tidying parameter.
     public enum Unit {
         case day, hour, minute, second, nanosecond
     }
 
-    /// Returns the tidied period.
+    /// Returns a tidied period.
     ///
     ///     Period(hours: 25).tidied(to .day) => Period(days: 1, hours: 1)
     public func tidied(to unit: Unit) -> Period {
@@ -170,7 +162,7 @@ public struct Period {
         return period
     }
 
-    func asDateComponents() -> DateComponents {
+    func toDateComponents() -> DateComponents {
         return DateComponents(year: years, month: months, day: days,
                               hour: hours, minute: minutes, second: seconds,
                               nanosecond: nanoseconds)
@@ -181,7 +173,7 @@ extension Date {
 
     /// Returns a new date by adding a period to this date.
     public func adding(_ period: Period) -> Date {
-        return Calendar.gregorian.date(byAdding: period.asDateComponents(), to: self) ?? .distantFuture
+        return Calendar.gregorian.date(byAdding: period.toDateComponents(), to: self) ?? .distantFuture
     }
 
     /// Returns a date with a period added to it.

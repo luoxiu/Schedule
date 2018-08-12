@@ -14,7 +14,7 @@ extension Int {
     }
 
     func clampedSubtracting(_ other: Int) -> Int {
-        return (Double(self) - Double(other)).clampedToInt()
+        return clampedAdding(-other)
     }
 }
 
@@ -34,21 +34,21 @@ extension DispatchQueue {
     }
 }
 
-extension Date {
-
-    func localZero() -> Date {
-        let tz = TimeZone.autoupdatingCurrent
-        let calendar = Calendar.gregorian
-        var dc = calendar.dateComponents(in: tz, from: self)
-        dc.hour = 0
-        dc.minute = 0
-        dc.second = 0
-        dc.nanosecond = 0
-        return calendar.date(from: dc)!
-    }
-}
-
 extension Calendar {
 
     static let gregorian = Calendar(identifier: .gregorian)
+}
+
+extension Date {
+
+    func zeroClock() -> Date {
+        let calendar = Calendar.gregorian
+        let timeZone = TimeZone.autoupdatingCurrent
+        var dateComponents = calendar.dateComponents(in: timeZone, from: self)
+        dateComponents.hour = 0
+        dateComponents.minute = 0
+        dateComponents.second = 0
+        dateComponents.nanosecond = 0
+        return calendar.date(from: dateComponents)!
+    }
 }

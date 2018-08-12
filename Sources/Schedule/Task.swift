@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// `ActionKey` represents a token that can be used to operate action.
+/// `ActionKey` represents a token that can be used to manage action.
 public protocol ActionKey {
     var underlying: UInt64 { get }
 }
@@ -24,7 +24,6 @@ public class Task {
     private let _lock = Lock()
 
     private var _iterator: AnyIterator<Interval>
-
     private var _timer: DispatchSourceTimer
 
     private typealias Action = (Task) -> Void
@@ -53,14 +52,15 @@ public class Task {
          onElapse: @escaping (Task) -> Void) {
 
         self._iterator = schedule.makeIterator()
-
         self._timer = DispatchSource.makeTimerSource(queue: queue)
+
         self._actions.add(onElapse)
+
         self._timer.setEventHandler { [weak self] in
             self?.elapse()
         }
 
-        // Consider nil a distant future.
+        // Consider `nil` a distant future.
         let interval = self._iterator.next() ?? Date.distantFuture.intervalSinceNow
         self._timer.schedule(after: interval)
         self._timeline.estimatedNextExecution = Date().adding(interval)
@@ -90,7 +90,7 @@ public class Task {
         }
     }
 
-    /// Execute this now without affect its schedule.
+    /// Execute this task now, without disrupting its schedule.
     public func execute() {
         let actions = _lock.withLock { () -> Bucket<Task.Action> in
             let now = Date()
@@ -123,7 +123,7 @@ public class Task {
         }
     }
 
-    // MARK: - Manipulation
+    // MARK: - Manage
 
     /// Reschedules this task with the new schedule.
     public func reschedule(_ new: Schedule) {
@@ -171,10 +171,17 @@ public class Task {
 
     // MARK: - Lifecycle
 
-    /// The timeline of this task.
+    /// The snapshot timeline of this task.
     public var timeline: Timeline {
         return _lock.withLock {
             _timeline
+        }
+    }
+
+    /// The lifetime of this task.
+    public var lifetime: Interval {
+        return _lock.withLock {
+            _lifetime
         }
     }
 
@@ -185,19 +192,12 @@ public class Task {
         }
     }
 
-    /// The lifetime of this task, calculated from initialization.
-    public var lifetime: Interval {
-        return _lock.withLock {
-            _lifetime
-        }
-    }
-
     /// Set a new lifetime for this task.
     ///
-    /// If this task has already end its lifetime, setting will fail,
+    /// If this task has already ended its lifetime, setting will fail,
     /// if new lifetime is shorter than its age, setting will fail, too.
     ///
-    /// - Returns: true if set successfully, false if not.
+    /// - Returns: `true` if set successfully, `false` if not.
     @discardableResult
     public func setLifetime(_ interval: Interval) -> Bool {
         guard restOfLifetime.isPositive else { return false }
@@ -217,10 +217,10 @@ public class Task {
 
     /// Add an interval to this task's lifetime.
     ///
-    /// If this task has already end its lifetime, adding will fail,
+    /// If this task has already ended its lifetime, adding will fail,
     /// if new lifetime is shorter than its age, adding will fail, too.
     ///
-    /// - Returns: true if set successfully, false if not.
+    /// - Returns: `true` if set successfully, `false` if not.
     @discardableResult
     public func addLifetime(_ interval: Interval) -> Bool {
         var rest = restOfLifetime
@@ -236,10 +236,10 @@ public class Task {
 
     /// Subtract an interval to this task's lifetime.
     ///
-    /// If this task has already end its lifetime, adding will fail,
-    /// if new lifetime is shorter than its age, adding will fail, too.
+    /// If this task has already ended its lifetime, subtracting will fail,
+    /// if new lifetime is shorter than its age, subtracting will fail, too.
     ///
-    /// - Returns: true if set successfully, false if not.
+    /// - Returns: `true` if set successfully, `false` if not.
     public func subtractLifetime(_ interval: Interval) -> Bool {
         return addLifetime(interval.opposite)
     }
@@ -253,7 +253,7 @@ public class Task {
         }
     }
 
-    /// Adds the action to this task.
+    /// Adds action to this task.
     @discardableResult
     public func addAction(_ action: @escaping (Task) -> Void) -> ActionKey {
         return _lock.withLock {

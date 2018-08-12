@@ -10,7 +10,7 @@ import Foundation
 /// `Schedule` represents a plan that gives the times
 /// at which a task should be executed.
 ///
-/// `Schedule` is interval based.
+/// `Schedule` is `Interval` based.
 public struct Schedule {
 
     private var sequence: AnySequence<Interval>
@@ -25,9 +25,9 @@ public struct Schedule {
     /// Schedules a task with this schedule.
     ///
     /// - Parameters:
-    ///   - queue: The dispatch queue to which the task will be submitted.
-    ///   - tag: The tag to associate with the task.
-    ///   - onElapse: The task to invoke when time is out.
+    ///   - queue: The queue to which the task will be dispatched.
+    ///   - tag: The tag to be associated to the task.
+    ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
     @discardableResult
     public func `do`(queue: DispatchQueue? = nil,
@@ -39,9 +39,9 @@ public struct Schedule {
     /// Schedules a task with this schedule.
     ///
     /// - Parameters:
-    ///   - queue: The dispatch queue to which the task will be submitted.
-    ///   - tag: The tag to associate with the queue
-    ///   - onElapse: The task to invoke when time is out.
+    ///   - queue: The queue to which the task will be dispatched.
+    ///   - tag: The tag to be associated to the task.
+    ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
     @discardableResult
     public func `do`(queue: DispatchQueue? = nil,
@@ -116,8 +116,8 @@ extension Schedule {
     ///     > "task: 2001-01-01 00:00:03"
     ///     ...
     ///
-    /// You are not supposed to return `Date()` in making interator,
-    /// if you want to execute a task immediately,
+    /// You are not supposed to return `Date()` in making interator.
+    /// If you want to execute a task immediately,
     /// use `Schedule.now` then `concat` another schedule instead.
     public static func make<I>(_ makeUnderlyingIterator: @escaping () -> I) -> Schedule where I: IteratorProtocol, I.Element == Date {
         return Schedule.make { () -> AnyIterator<Interval> in
@@ -304,7 +304,7 @@ extension Schedule {
             var last: Date!
             return AnyIterator {
                 last = last ?? Date()
-                guard let next = calendar.date(byAdding: period.asDateComponents(),
+                guard let next = calendar.date(byAdding: period.toDateComponents(),
                                                to: last) else {
                     return nil
                 }
@@ -344,8 +344,8 @@ extension Schedule {
                 return AnyIterator {
                     last = last ?? Date()
                     guard let date = iterator.next(),
-                        let next = calendar.nextDate(after: date.localZero(),
-                                                     matching: time.asDateComponents(),
+                        let next = calendar.nextDate(after: date.zeroClock(),
+                                                     matching: time.toDateComponents(),
                                                      matchingPolicy: .strict) else {
                         return nil
                     }
@@ -388,7 +388,7 @@ extension Schedule {
     public static func every(_ weekday: Weekday) -> DateMiddleware {
         let schedule = Schedule.make { () -> AnyIterator<Date> in
             let calendar = Calendar.gregorian
-            let components = weekday.asDateComponents()
+            let components = weekday.toDateComponents()
             var date: Date!
             return AnyIterator<Date> {
                 if weekday.isToday {
@@ -419,7 +419,7 @@ extension Schedule {
     public static func every(_ monthDay: Monthday) -> DateMiddleware {
         let schedule = Schedule.make { () -> AnyIterator<Date> in
             let calendar = Calendar.gregorian
-            let components = monthDay.asDateComponents()
+            let components = monthDay.toDateComponents()
             var date: Date!
             return AnyIterator<Date> {
                 if monthDay.isToday {

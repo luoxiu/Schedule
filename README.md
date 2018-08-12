@@ -1,20 +1,20 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/Images/logo.png" width="350">
+<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/Images/logo.png" width="700">
 </p>
 
-<p align="center>A light-weight task scheduler for Swift.</p>
+<p align="center>A lightweight task scheduler for Swift.</p>
 
 <p align="center">
 <img src="https://img.shields.io/travis/jianstm/Schedule.svg">
 <img src="https://img.shields.io/codecov/c/github/jianstm/schedule.svg">
-<img src="https://img.shields.io/cocoapods/v/Schedule.svg">
-<img src="https://img.shields.io/badge/Carthage-compatible-brightgreen.svg">
-<img src="https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg">
-<p>
+<img src="https://img.shields.io/badge/version-0.0.7-orange.svg">
+<img src="https://img.shields.io/badge/supports-CocoaPods%20%7C%20Carthage%20%7C%20SwiftPM-brightgreen.svg">
+<img src="https://img.shields.io/badge/platforms-iOS%20%7C%20macOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20Linux-blue.svg">
+</p>
 
 # Schedule([简体中文](README.zh_cn.md))
 
-⏳ Schedule is a light-weight task scheduler for Swift. It allows you run timed tasks using an incredibly human-friendly syntax.
+⏳ Schedule is a lightweight task scheduler for Swift. It allows you run timed tasks using an incredibly human-friendly syntax.
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/jianstm/Schedule/master/Images/demo.png" width="700">
@@ -29,12 +29,12 @@
 - [x] 🏷 Tag-based Management
 - [x] 🍰 Child-action Add/Remove
 - [x] 🚔 Thread safe 
-- [x] 🏌 Full Control Over the Lift Time 
-- [x] 🍻 No Need to Worry About Runloop
-- [x] 👻 No Need to Worry About Circular Reference
-- [x] 🍭 **Incredibly Human Friendly API**  
+- [x] 🏌 Full Control Over the LifeCycle 
+- [x] 🍻 High Test Coverage(Up to 90%)
+- [x] 👻 Full Document Coverage(All Public Type&Method)
+- [x] 🍭 **Incredibly Human-friendly API**  
 
-### Why should you Use Schedule Instead of Timer?
+### Why Should You Use Schedule Instead of Timer?
 
 A chart is worth a thousand words:                                             
 
@@ -127,7 +127,9 @@ Schedule.every("1 hour, 5 minutes and 10 seconds").do { }
 
 ### Task Management
 
-In general, you don't need to worry about reference management of the task any more. All tasks will be retained internally, so they won't be released, unless you do it yourself.
+In general, you don't need to worry about reference management of tasks any more. All tasks will be retained internally, so they won't be released, unless you do it yourself.
+
+#### Parasitism
 
 Schedule lets you handle a task's lifecycle with a more elegant way:
 
@@ -149,7 +151,7 @@ task.cancel()    // will remove internally held reference of this task
 
 #### Tag
 
-You can organize tasks with `tag`, and use `queue` to define where the task should be dispatched:
+You can organize tasks with `tag`, and use `queue` to define to where the task should be dispatched:
 
 ```swift
 let s = Schedule.every(1.day)
@@ -166,7 +168,7 @@ Task.cancel(byTag: "log")
 
 #### Action
 
-`Aciton` is smaller unit of `Task`, A task is composed of a series of actions. 
+`Aciton` is smaller unit of `Task`, A task is composed of a series of actions:
 
 ```swift
 let dailyTask = Schedule.every(1.day)
@@ -205,11 +207,11 @@ task.restOfLifetime == 11.hours
 
 - Swift 4.x
 - All Apple platforms are supported!
-- And since there is no use of `NS` class, it should supports linux, too!
+- And since there is no use of `NS` class, it should supports Linux, too!
 
 ## Installation
 
-### Cocoapods
+### CocoaPods
 
 ```ruby
 # Podfile
@@ -220,7 +222,7 @@ target 'YOUR_TARGET_NAME' do
 end
 ```
 
-Replace YOUR_TARGET_NAME and then run:
+Replace `YOUR_TARGET_NAME` and then run:
 
 ```sh
 $ pod install
@@ -256,8 +258,8 @@ $ swift build
 
 ## Contributing
 
-Feel free to criticize!
+Schedule is now a nascent project. So all suggestions are welcome!
 
 ---
 
-Like **Schedule**? Star me then tell your friends!
+Like **Schedule**? Star me and then tell your friends!

@@ -7,17 +7,17 @@
 
 import Foundation
 
-struct WeakBox<T: AnyObject> {
-    weak var underlying: T?
-    init(_ value: T) {
-        self.underlying = value
+private struct WeakBox<T: AnyObject> {
+    weak var ref: T?
+    init(_ ref: T) {
+        self.ref = ref
     }
 }
 
 extension WeakBox: Hashable {
 
     var hashValue: Int {
-        guard let value = underlying else { return 0 }
+        guard let value = ref else { return 0 }
         return ObjectIdentifier(value).hashValue
     }
 
@@ -26,18 +26,18 @@ extension WeakBox: Hashable {
     }
 }
 
-/// An alternative to `NSHashTable`, since it is unavailable on linux.
+/// An alternative to `NSHashTable`, since `NSHashTable` is unavailable on linux.
 struct WeakSet<T: AnyObject> {
 
     private var set = Set<WeakBox<T>>()
 
-    mutating func add(_ object: T) {
+    mutating func insert(_ object: T) {
         self.set.insert(WeakBox(object))
     }
 
     @discardableResult
     mutating func remove(_ object: T) -> T? {
-        return self.set.remove(WeakBox(object))?.underlying
+        return self.set.remove(WeakBox(object))?.ref
     }
 
     func contains(_ object: T) -> Bool {
@@ -45,7 +45,7 @@ struct WeakSet<T: AnyObject> {
     }
 
     var objects: [T] {
-        return self.set.map { $0.underlying }.compactMap { $0 }
+        return self.set.map { $0.ref }.compactMap { $0 }
     }
 
     var count: Int {
