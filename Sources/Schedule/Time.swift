@@ -30,10 +30,11 @@ public struct Time {
     ///     Time(hour: 25)              => nil
     ///     Time(hour: 1, minute: 61)   => nil
     public init?(hour: Int, minute: Int = 0, second: Int = 0, nanosecond: Int = 0) {
-        guard (0..<24).contains(hour) else { return nil }
-        guard (0..<60).contains(minute) else { return nil }
-        guard (0..<60).contains(second) else { return nil }
-        guard (0..<Int(NSEC_PER_SEC)).contains(nanosecond) else { return nil }
+        guard (0..<24).contains(hour),
+         (0..<60).contains(minute),
+         (0..<60).contains(second),
+         (0..<Int(NSEC_PER_SEC)).contains(nanosecond)
+        else { return nil }
 
         self.hour = hour
         self.minute = minute
@@ -103,7 +104,7 @@ public struct Time {
                    let minute = components.minute,
                    let second = components.second,
                    let nanosecond = components.nanosecond {
-                   self.init(hour: hour, minute: minute, second: second, nanosecond: nanosecond)
+                    self.init(hour: hour, minute: minute, second: second, nanosecond: nanosecond)
                    return
                 }
             }

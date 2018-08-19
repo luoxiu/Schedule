@@ -9,7 +9,7 @@ import Foundation
 
 final class TaskCenter {
 
-    static let shared = TaskCenter()
+    public static let `default` = TaskCenter()
 
     private init() { }
     private var lock = Lock()
