@@ -51,22 +51,22 @@ public class Task {
          tag: String? = nil,
          onElapse: @escaping (Task) -> Void) {
 
-        self._iterator = schedule.makeIterator()
-        self._timer = DispatchSource.makeTimerSource(queue: queue)
+        _iterator = schedule.makeIterator()
+        _timer = DispatchSource.makeTimerSource(queue: queue)
 
-        self._actions.add(onElapse)
+        _actions.add(onElapse)
 
-        self._timer.setEventHandler { [weak self] in
+        _timer.setEventHandler { [weak self] in
             self?.elapse()
         }
 
         // Consider `nil` a distant future.
-        let interval = self._iterator.next() ?? Date.distantFuture.intervalSinceNow
-        self._timer.schedule(after: interval)
-        self._timeline.estimatedNextExecution = Date().adding(interval)
+        let interval = _iterator.next() ?? Date.distantFuture.intervalSinceNow
+        _timer.schedule(after: interval)
+        _timeline.estimatedNextExecution = Date().adding(interval)
 
         TaskCenter.shared.add(self, withTag: tag)
-        self._timer.resume()
+        _timer.resume()
     }
 
     deinit {
