@@ -32,12 +32,12 @@ struct WeakSet<T: AnyObject> {
     private var set = Set<WeakBox<T>>()
 
     mutating func insert(_ object: T) {
-        self.set.insert(WeakBox(object))
+        set.insert(WeakBox(object))
     }
 
     @discardableResult
     mutating func remove(_ object: T) -> T? {
-        return self.set.remove(WeakBox(object))?.ref
+        return set.remove(WeakBox(object))?.ref
     }
 
     func contains(_ object: T) -> Bool {
@@ -45,11 +45,11 @@ struct WeakSet<T: AnyObject> {
     }
 
     var objects: [T] {
-        return self.set.map { $0.ref }.compactMap { $0 }
+        return set.map { $0.ref }.compactMap { $0 }
     }
 
     var count: Int {
-        return self.objects.count
+        return objects.count
     }
 }
 
