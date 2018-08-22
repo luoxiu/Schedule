@@ -65,14 +65,3 @@ extension Schedule {
         return makeIterator().isAlmostEqual(to: schedule.makeIterator(), leeway: leeway)
     }
 }
-
-struct Constants {
-
-    static let NSEC_PER_USEC = Double(Foundation.NSEC_PER_USEC)
-    static let NSEC_PER_MSEC = Double(Foundation.NSEC_PER_MSEC)
-    static let NSEC_PER_SEC = Double(Foundation.NSEC_PER_SEC)
-    static let NSEC_PER_M = Double(Foundation.NSEC_PER_SEC) * 60
-    static let NSEC_PER_H = Double(Foundation.NSEC_PER_SEC) * 60 * 60
-    static let NSEC_PER_D = Double(Foundation.NSEC_PER_SEC) * 60 * 60 * 24
-    static let NSEC_PER_W = Double(Foundation.NSEC_PER_SEC) * 60 * 60 * 24 * 7
-}

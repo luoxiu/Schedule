@@ -137,9 +137,9 @@ public struct Period {
     public func tidied(to unit: Unit) -> Period {
         var period = self
         if case .nanosecond = unit { return period }
-        if period.nanoseconds.magnitude >= UInt(NSEC_PER_SEC) {
-            period.seconds += period.nanoseconds / Int(NSEC_PER_SEC)
-            period.nanoseconds %= Int(NSEC_PER_SEC)
+        if period.nanoseconds.magnitude >= UInt(1.second.nanoseconds) {
+            period.seconds += period.nanoseconds / Int(1.second.nanoseconds)
+            period.nanoseconds %= Int(1.second.nanoseconds)
         }
 
         if case .second = unit { return period }

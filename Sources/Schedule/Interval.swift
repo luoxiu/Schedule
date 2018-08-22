@@ -102,6 +102,16 @@ extension Interval {
         self.init(nanoseconds: seconds * pow(10, 9))
     }
 
+    /// The length of this interval in microseconds.
+    public var microseconds: Double {
+        return nanoseconds / pow(10, 3)
+    }
+
+    /// The length of this interval in milliseconds.
+    public var milliseconds: Double {
+        return nanoseconds / pow(10, 6)
+    }
+
     /// The length of this interval in seconds.
     public var seconds: Double {
         return nanoseconds / pow(10, 9)

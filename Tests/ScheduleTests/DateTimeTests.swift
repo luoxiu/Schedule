@@ -13,7 +13,7 @@ final class DateTimeTests: XCTestCase {
     func testInterval() {
 
         XCTAssertTrue((-1).second.isNegative)
-        XCTAssertEqual(1.1.second.magnitude, 1.1 * Constants.NSEC_PER_SEC)
+        XCTAssertEqual(1.1.second.magnitude, 1.1.second.nanoseconds)
 
         XCTAssertTrue(1.1.second.isLonger(than: 1.0.second))
         XCTAssertTrue(3.days.isShorter(than: 1.week))
@@ -26,13 +26,13 @@ final class DateTimeTests: XCTestCase {
         XCTAssertEqual(-(1.second), (-1).second)
 
         XCTAssertEqual(1.nanoseconds, Interval(nanoseconds: 1))
-        XCTAssertEqual(2.microseconds, Interval(nanoseconds: 2 * Constants.NSEC_PER_USEC))
-        XCTAssertEqual(3.milliseconds, Interval(nanoseconds: 3 * Constants.NSEC_PER_MSEC))
-        XCTAssertEqual(4.seconds, Interval(nanoseconds: 4 * Constants.NSEC_PER_SEC))
-        XCTAssertEqual(5.1.minutes, Interval(nanoseconds: 5.1 * Constants.NSEC_PER_M))
-        XCTAssertEqual(6.2.hours, Interval(nanoseconds: 6.2 * Constants.NSEC_PER_H))
-        XCTAssertEqual(7.3.days, Interval(nanoseconds: 7.3 * Constants.NSEC_PER_D))
-        XCTAssertEqual(8.4.weeks, Interval(nanoseconds: 8.4 * Constants.NSEC_PER_W))
+        XCTAssertEqual(2.microseconds, Interval(nanoseconds: 2.microseconds.nanoseconds))
+        XCTAssertEqual(3.milliseconds, Interval(nanoseconds: 3.milliseconds.nanoseconds))
+        XCTAssertEqual(4.seconds, Interval(nanoseconds: 4.seconds.nanoseconds))
+        XCTAssertEqual(5.1.minutes, Interval(nanoseconds: 5.1.minutes.nanoseconds))
+        XCTAssertEqual(6.2.hours, Interval(nanoseconds: 6.2.hours.nanoseconds))
+        XCTAssertEqual(7.3.days, Interval(nanoseconds: 7.3.days.nanoseconds))
+        XCTAssertEqual(8.4.weeks, Interval(nanoseconds: 8.4.weeks.nanoseconds))
     }
 
     func testTime() {
@@ -45,7 +45,7 @@ final class DateTimeTests: XCTestCase {
         XCTAssertEqual(t1?.minute, 12)
         XCTAssertEqual(t1?.second, 13)
         if let i = t1?.nanosecond.nanoseconds {
-            XCTAssertTrue(i.isAlmostEqual(to: (0.456 * Constants.NSEC_PER_SEC).nanoseconds, leeway: 0.001.seconds))
+            XCTAssertTrue(i.isAlmostEqual(to: (0.456.second.nanoseconds).nanoseconds, leeway: 0.001.seconds))
         }
 
         let t2 = Time("11 pm")
