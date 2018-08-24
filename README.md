@@ -215,7 +215,7 @@ task.restOfLifetime == 11.hours
 use_frameworks!
 
 target 'YOUR_TARGET_NAME' do
-    pod 'Schedule'
+  pod 'Schedule'
 end
 ```
 
