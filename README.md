@@ -29,7 +29,7 @@
 - [x] 🚔 Thread safe
 - [x] 🏌 Full Control Over the LifeCycle 
 - [x] 🍻 High Test Coverage(Up to 90%)
-- [x] 👻 Full Document Coverage(All Public Type&Method)
+- [x] 👻 Full Documention Coverage(All Public Types & Methods)
 - [x] 🍭 **Incredibly Human-friendly APIs**  
 
 ### Why You Should Use Schedule Instead of Timer
@@ -42,7 +42,7 @@ A chart is worth a thousand words:
 | 📆 Date-based Schedule | ✓ | | ✓ |
 | 🌈 Mixing Rules Schedule | | | ✓ |
 | 📝 Human Readable Period Parse | | | ✓ |
-| 🚦 Suspende/Resume, Cancel | | ✓ | ✓ |
+| 🚦 Suspend, Resume, Cancel | | ✓ | ✓ |
 | 🎡 Reschedule | | ✓ | ✓ |                   
 | 🏷 Tag-based management | | | ✓ |
 | 🍰 Child-action Add/Remove | | | ✓ |
@@ -237,8 +237,8 @@ dependencies: [
 
 ## Contributing
 
-Schedule is a really nascent project for now, it only meets my needs. If you have any problems or advices, feel free to open an issues on GitHub. 
+Schedule is a nascent project just to meet my own needs. If you have any problems or advice, feel free to open an issue on GitHub. 
 
 ---
 
-Like **Schedule**? Please give me a star then tell your friends! 🍻
+Like **Schedule**? Please give me a star and tell your friends! 🍻
