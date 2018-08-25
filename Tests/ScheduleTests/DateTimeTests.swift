@@ -20,6 +20,11 @@ final class DateTimeTests: XCTestCase {
         XCTAssertEqual(Interval.longest(1.hour, 1.day, 1.week), 1.week)
         XCTAssertEqual(Interval.shortest(1.hour, 59.minutes, 3000.seconds), 3000.seconds)
 
+        XCTAssertTrue(1.1.second > 1.0.second)
+        XCTAssertTrue(3.days < 1.week)
+        XCTAssertTrue(4.day >= 4.days)
+        XCTAssertTrue(0.seconds <= 0.seconds)
+
         XCTAssertEqual(1.second * 60, 1.minute)
         XCTAssertEqual(59.minutes + 60.seconds, 1.hour)
         XCTAssertEqual(1.week - 24.hours, 6.days)

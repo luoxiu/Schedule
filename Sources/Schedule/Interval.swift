@@ -185,6 +185,13 @@ extension Interval: Hashable {
     }
 }
 
+extension Interval: Comparable {
+
+    public static func < (lhs: Interval, rhs: Interval) -> Bool {
+        return lhs.magnitude < rhs.magnitude
+    }
+}
+
 extension Interval: CustomStringConvertible {
 
     /// A textual representation of this interval.
