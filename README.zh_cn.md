@@ -1,13 +1,13 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/Images/logo.png" width="750" height="250">
+<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/Images/logo.png" width="700">
 </p>
 
 <p align="center">
-<img src="https://img.shields.io/travis/jianstm/Schedule.svg">
-<img src="https://img.shields.io/codecov/c/github/jianstm/schedule.svg">
-<img src="https://img.shields.io/badge/version-0.0.7-orange.svg">
-<img src="https://img.shields.io/badge/supports-CocoaPods%20%7C%20Carthage%20%7C%20SwiftPM-brightgreen.svg">
-<img src="https://img.shields.io/badge/platforms-iOS%20%7C%20macOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20Linux-blue.svg">
+[![Build Status](https://travis-ci.org/jianstm/Schedule.svg?branch=master)](https://travis-ci.org/jianstm/Schedule)
+[![codecov](https://codecov.io/gh/jianstm/Schedule/branch/master/graph/badge.svg)](https://codecov.io/gh/jianstm/Schedule)
+<img src="https://img.shields.io/badge/version-0.0.9-orange.svg">
+<img src="https://img.shields.io/badge/support-CocoaPods%20%7C%20Carthage%20%7C%20SwiftPM-brightgreen.svg">
+<img src="https://img.shields.io/badge/platform-iOS%20%7C%20macOS%20%7C%20watchOS%20%7C%20tvOS-lightgrey.svg">
 </p>
 
 # Schedule
@@ -20,17 +20,17 @@
 
 ## Features
 
-- [x] 🌈 多种规则调度
-- [x] 📝 自然语言周期解析
-- [x] 🚦 暂停、继续、取消
-- [x] 🎡 重新设置定时规则
-- [x] 🏷 基于 Tag 的任务管理
-- [x] 🍰 添加、移除子动作
-- [x] 🚔 线程安全 
-- [x] 🏌 对生命周期的完全控制 
-- [x] 🍻 高测试覆盖（将近 90%）
-- [x] 👻 全文档覆盖（所有 public 类型和方法）
-- [x] 🍭 **难以置信的友好语法**  
+- [x] 多种规则调度
+- [x] 自然语言周期解析
+- [x] 暂停、继续、取消
+- [x] 重置定时规则
+- [x] 基于 Tag 的任务管理
+- [x] 添加、移除子动作
+- [x] 线程安全 
+- [x] 对生命周期的完全控制 
+- [x] 95%+ 测试覆盖
+- [x] 完善的文档（所有 public 类型和方法）
+- [x] **难以置信的友好语法**  
 
 ### 为什么你应该用 Schedule 来代替 Timer
 
@@ -43,8 +43,8 @@
 | 🌈 自定义规则调度 | | | ✓ |
 | 📝 自然语言周期解析 | | | ✓ |
 | 🚦 暂停、继续、取消 | | ✓ | ✓ |
-| 🎡 重新设置定时规则 | | ✓ | ✓ |
-| 🏷 使用 Tag 管理任务 | | | ✓ |
+| 🎡 重置定时规则 | | ✓ | ✓ |
+| 🏷 使用 Tag 批量管理任务 | | | ✓ |
 | 🍰 添加、移除子动作 | | | ✓ |
 | 🚔 原子操作 | | | ✓ |
 | 🚀 实时观察时间线 | | | ✓ |
@@ -131,7 +131,7 @@ Schedule.every("1 hour, 5 minutes and 10 seconds").do { }
 
 ### 任务管理
 
-在 Schedule 里，每一个新创建的 task 都会被一个内部的全局变量持有，它们不会被提前释放，除非你显式地 cancel 它们。所以你不用再在控制器里写那些诸如 `weak var timer: Timer`, `self.timer = timer` 之类的啰唆代码啦：
+在 Schedule 里，每一个新创建的 task 都会被一个内部的全局变量持有，它们不会被提前释放，除非你显式地 cancel 它们。所以你不用再在控制器里写那些诸如 `weak var timer: Timer`, `self.timer = timer` 之类的啰唆代码：
 
 ```swift
 let task = Schedule.every(1.minute).do { }
@@ -170,7 +170,7 @@ dailyTask.removeAction(byKey: key)
 
 #### 标签
 
-你可以通过 `tag` 来组织 tasks，用 `queue` 定义这个 task 将会被派发到哪里：
+你可以通过 `tag` 来组织 tasks，用 `queue` 指定这个 task 将会被派发到哪里：
 
 ```swift
 let s = Schedule.every(1.day)
@@ -207,8 +207,8 @@ task.restOfLifetime == 11.hours
 ## 支持
 
 - Swift 4.x
-- 所有苹果平台（iOS，macOS，watchOS，tvOS)！
-- 而且因为没有用到任何 `NS` 类，所以 Linux 也应该支持啦！
+- iOS 8.0+ / macOS 10.10+ / tvOS 9.0+ / watchOS 2.0+
+- 而且因为没有用到任何 `NS` 类，所以 Linux 也应该支持啦！（还在测试中）
 
 ## 安装
 
@@ -219,13 +219,11 @@ task.restOfLifetime == 11.hours
 use_frameworks!
 
 target 'YOUR_TARGET_NAME' do
-	pod 'Schedule'
+  pod 'Schedule'
 end
 ```
 
 ### Carthage
-
-把下行加到 Cartfile 里：
 
 ```
 github "jianstm/Schedule"
@@ -244,6 +242,4 @@ dependencies: [
 
 Schedule 现在还是一个刚刚起步的项目，它只不过满足了我对一个好用的 Timer 的期待，如果你有任何问题或者建议，请使用 issues 畅所欲言！
 
----
-
-喜欢 **Schedule** 吗？给我一个 star，然后告诉你的朋友们吧！🍻
+> 喜欢 **Schedule** 吗？给我一个 star，然后告诉你的朋友们吧！🍻

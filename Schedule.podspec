@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Schedule"
-  s.version          = "0.0.7"
+  s.version          = "0.0.9"
   s.summary          = "A lightweight task scheduler for Swift."
   s.description      = <<-DESC
                        Schedule is a missing lightweight task scheduler for Swift.

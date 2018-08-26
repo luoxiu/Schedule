@@ -1,13 +1,13 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/Images/logo.png" width="750" height="250">
+<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/Images/logo.png" width="700">
 </p>
 
 <p align="center">
-<img src="https://img.shields.io/travis/jianstm/Schedule.svg">
-<img src="https://img.shields.io/codecov/c/github/jianstm/schedule.svg">
-<img src="https://img.shields.io/badge/version-0.0.7-orange.svg">
-<img src="https://img.shields.io/badge/supports-CocoaPods%20%7C%20Carthage%20%7C%20SwiftPM-brightgreen.svg">
-<img src="https://img.shields.io/badge/platforms-iOS%20%7C%20macOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20Linux-blue.svg">
+[![Build Status](https://travis-ci.org/jianstm/Schedule.svg?branch=master)](https://travis-ci.org/jianstm/Schedule)
+[![codecov](https://codecov.io/gh/jianstm/Schedule/branch/master/graph/badge.svg)](https://codecov.io/gh/jianstm/Schedule)
+<img src="https://img.shields.io/badge/version-0.0.9-orange.svg">
+<img src="https://img.shields.io/badge/support-CocoaPods%20%7C%20Carthage%20%7C%20SwiftPM-brightgreen.svg">
+<img src="https://img.shields.io/badge/platform-iOS%20%7C%20macOS%20%7C%20watchOS%20%7C%20tvOS-lightgrey.svg">
 </p>
 
 # Schedule([简体中文](README.zh_cn.md))
@@ -20,17 +20,17 @@
 
 ## Features
 
-- [x] 🌈 Variety of Rules Schedule
-- [x] 📝 Human Readable Period Parse
-- [x] 🚦 Suspend, Resume, Cancel
-- [x] 🎡 Reschedule
-- [x] 🏷 Tag-based Management
-- [x] 🍰 Child-action Add/Remove
-- [x] 🚔 Thread safe
-- [x] 🏌 Full Control Over the LifeCycle 
-- [x] 🍻 High Test Coverage(Up to 90%)
-- [x] 👻 Full Documention Coverage(All Public Types & Methods)
-- [x] 🍭 **Incredibly Human-friendly APIs**  
+- [x] Variety of Scheduling Rules 
+- [x] Human Readable Period Parse
+- [x] Suspend, Resume, Cancel
+- [x] Reschedule
+- [x] Tag-based Management
+- [x] Child-action Add/Remove
+- [x] Thread safe
+- [x] Full Control Over the LifeCycle 
+- [x] 95%+ Test Coverage
+- [x] Extensive Documention(All Public Types & Methods)
+- [x] **Incredibly Human-friendly APIs**  
 
 ### Why You Should Use Schedule Instead of Timer
 
@@ -44,7 +44,7 @@ A chart is worth a thousand words:
 | 📝 Human Readable Period Parse | | | ✓ |
 | 🚦 Suspend, Resume, Cancel | | ✓ | ✓ |
 | 🎡 Reschedule | | ✓ | ✓ |                   
-| 🏷 Tag-based management | | | ✓ |
+| 🏷 Tag-based Management | | | ✓ |
 | 🍰 Child-action Add/Remove | | | ✓ |
 | 🚔 Atomic Operations | | | ✓ |
 | 🚀 Realtime Timeline Inspect | | | ✓ |
@@ -117,12 +117,15 @@ let s8 = s7.until(date)
 
 ### Human Readable Period Parse
 
-Simple natural language parsing is also supported:
+Schedule supports simple natural language parsing: 
 
 ```swift
 Schedule.every("one hour and ten minutes").do { }
 
 Schedule.every("1 hour, 5 minutes and 10 seconds").do { }
+
+Period.registerQuantifier("many", for: 100 * 1000)
+let period = Period("many days")
 ```
 
 ### Task Management
@@ -166,7 +169,7 @@ dailyTask.removeAction(byKey: key)
 
 #### Tag
 
-You can also organize tasks with `tag`, and use `queue` to define to where the task should be dispatched:
+You can organize tasks with `tag`, and use `queue` to define to where the task should be dispatched:
 
 ```swift
 let s = Schedule.every(1.day)
@@ -203,8 +206,8 @@ task.restOfLifetime == 11.hours
 ## Requirements
 
 - Swift 4.x
-- All Apple platforms are supported!
-- And since there is no use of `NS` class, it should support Linux, too!
+- iOS 8.0+ / macOS 10.10+ / tvOS 9.0+ / watchOS 2.0+
+- And since there is no use of `NS` class, it should support Linux, too! (Still under testing)
 
 ## Installation
 
@@ -220,8 +223,6 @@ end
 ```
 
 ### Carthage
-
-Add this to Cartfile
 
 ```
 github "jianstm/Schedule"
@@ -239,6 +240,4 @@ dependencies: [
 
 Schedule is a nascent project just to meet my own needs. If you have any problems or advice, feel free to open an issue on GitHub. 
 
----
-
-Like **Schedule**? Please give me a star and tell your friends! 🍻
+> Like **Schedule**? Please give me a star and tell your friends! 🍻
