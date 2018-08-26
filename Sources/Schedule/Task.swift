@@ -135,7 +135,7 @@ public class Task {
     }
 
     /// Suspensions of this task.
-    public var suspends: UInt64 {
+    public var suspensions: UInt64 {
         return _lock.withLock {
             _suspensions
         }
@@ -240,6 +240,7 @@ public class Task {
     /// if new lifetime is shorter than its age, subtracting will fail, too.
     ///
     /// - Returns: `true` if set successfully, `false` if not.
+    @discardableResult
     public func subtractLifetime(_ interval: Interval) -> Bool {
         return addLifetime(interval.opposite)
     }

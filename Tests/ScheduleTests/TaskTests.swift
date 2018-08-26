@@ -21,6 +21,30 @@ final class TaskTests: XCTestCase {
         task.cancel()
     }
 
+    func testSuspendResume() {
+        let block = {
+            let task = Schedule.distantFuture.do { }
+            XCTAssertEqual(task.suspensions, 0)
+            task.suspend()
+            task.suspend()
+            task.suspend()
+            XCTAssertEqual(task.suspensions, 3)
+            task.resume()
+            XCTAssertEqual(task.suspensions, 2)
+        }
+        block()
+
+        let tag = UUID().uuidString
+        let task = Schedule.distantFuture.do { }
+        task.addTag(tag)
+        Task.suspend(byTag: tag)
+        XCTAssertEqual(task.suspensions, 1)
+        Task.resume(byTag: tag)
+        XCTAssertEqual(task.suspensions, 0)
+        Task.cancel(byTag: tag)
+        XCTAssertTrue(task.isCancelled)
+    }
+
     func testAddAndRemoveActions() {
         let expectation = XCTestExpectation(description: "testAddAndRemoveActions")
         let task = Schedule.after(0.5.second).do { }
@@ -34,6 +58,9 @@ final class TaskTests: XCTestCase {
         task.removeAction(byKey: key)
         XCTAssertEqual(task.countOfActions, 1)
         task.cancel()
+
+        task.removeAllActions()
+        XCTAssertEqual(task.countOfActions, 0)
     }
 
     func testAddAndRemoveTags() {
@@ -84,9 +111,11 @@ final class TaskTests: XCTestCase {
         let expectation = XCTestExpectation(description: "testLifetime")
         let task = Schedule.after(1.hour).do { }
         task.setLifetime(1.second)
+        XCTAssertEqual(task.lifetime, 1.second)
+
         DispatchQueue.global().async(after: 0.5.second) {
             XCTAssertTrue(task.restOfLifetime.isAlmostEqual(to: 0.5.second, leeway: 0.1.second))
-            task.addLifetime(0.5.second)
+            task.subtractLifetime(-0.5.second)
         }
         DispatchQueue.global().async(after: 1.second) {
             XCTAssertFalse(task.isCancelled)
