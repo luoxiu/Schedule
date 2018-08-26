@@ -8,17 +8,17 @@
 import Foundation
 
 private struct WeakBox<T: AnyObject> {
-    weak var ref: T?
-    init(_ ref: T) {
-        self.ref = ref
+    weak var object: T?
+    init(_ object: T?) {
+        self.object = object
     }
 }
 
 extension WeakBox: Hashable {
 
     var hashValue: Int {
-        guard let value = ref else { return 0 }
-        return ObjectIdentifier(value).hashValue
+        guard let object = object else { return 0 }
+        return ObjectIdentifier(object).hashValue
     }
 
     static func == (lhs: WeakBox<T>, rhs: WeakBox<T>) -> Bool {
@@ -37,15 +37,23 @@ struct WeakSet<T: AnyObject> {
 
     @discardableResult
     mutating func remove(_ object: T) -> T? {
-        return set.remove(WeakBox(object))?.ref
+        return set.remove(WeakBox(object))?.object
     }
 
     func contains(_ object: T) -> Bool {
         return set.contains(WeakBox(object))
     }
 
+    func containsNil() -> Bool {
+        return set.contains(where: { $0.object == nil })
+    }
+
+    mutating func purify() {
+        set = set.filter({ $0.object != nil })
+    }
+
     var objects: [T] {
-        return set.map { $0.ref }.compactMap { $0 }
+        return set.compactMap({ $0.object })
     }
 
     var count: Int {

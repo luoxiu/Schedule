@@ -12,7 +12,7 @@ final class TaskCenter {
     static let shared = TaskCenter()
 
     private init() { }
-    private var lock = Lock()
+    private let lock = Lock()
     private var tasks: Set<Task> = []
     private var registry: [String: WeakSet<Task>] = [:]
 
