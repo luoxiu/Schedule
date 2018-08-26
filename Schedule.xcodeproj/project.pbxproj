@@ -151,7 +151,7 @@
 			name = Utils;
 			sourceTree = "<group>";
 		};
-		668685F5210DD226009305C3 /* Datetime */ = {
+		668685F5210DD226009305C3 /* DateTime */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_12 /* Interval.swift */,
@@ -160,7 +160,18 @@
 				OBJ_20 /* Time.swift */,
 				OBJ_23 /* Weekday.swift */,
 			);
-			name = Datetime;
+			name = DateTime;
+			sourceTree = "<group>";
+		};
+		6695C99A21329DDB00934290 /* UtilsTests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_34 /* WeakSetTests.swift */,
+				OBJ_26 /* AtomicTests.swift */,
+				OBJ_27 /* BucketTests.swift */,
+				OBJ_29 /* ExtensionsTests.swift */,
+			);
+			name = UtilsTests;
 			sourceTree = "<group>";
 		};
 		OBJ_24 /* Tests */ = {
@@ -174,16 +185,13 @@
 		OBJ_25 /* ScheduleTests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_26 /* AtomicTests.swift */,
-				OBJ_27 /* BucketTests.swift */,
 				OBJ_28 /* DateTimeTests.swift */,
-				OBJ_29 /* ExtensionsTests.swift */,
 				OBJ_30 /* Misc.swift */,
 				OBJ_31 /* SchedulesTests.swift */,
 				OBJ_32 /* TaskCenterTests.swift */,
 				OBJ_33 /* TaskTests.swift */,
-				OBJ_34 /* WeakSetTests.swift */,
 				OBJ_35 /* XCTestManifests.swift */,
+				6695C99A21329DDB00934290 /* UtilsTests */,
 			);
 			name = ScheduleTests;
 			path = Tests/ScheduleTests;
@@ -226,7 +234,7 @@
 				OBJ_18 /* Task.swift */,
 				OBJ_19 /* TaskCenter.swift */,
 				OBJ_21 /* Timeline.swift */,
-				668685F5210DD226009305C3 /* Datetime */,
+				668685F5210DD226009305C3 /* DateTime */,
 				668685F4210DD21A009305C3 /* Utils */,
 			);
 			name = Schedule;
