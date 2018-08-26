@@ -54,7 +54,7 @@ public class Task {
         _iterator = schedule.makeIterator()
         _timer = DispatchSource.makeTimerSource(queue: queue)
 
-        _actions.add(onElapse)
+        _actions.append(onElapse)
 
         _timer.setEventHandler { [weak self] in
             self?.elapse()
@@ -257,7 +257,7 @@ public class Task {
     @discardableResult
     public func addAction(_ action: @escaping (Task) -> Void) -> ActionKey {
         return _lock.withLock {
-            _actions.add(action)
+            _actions.append(action)
         }
     }
 

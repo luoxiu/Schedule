@@ -142,11 +142,11 @@
 		668685F4210DD21A009305C3 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_22 /* WeakSet.swift */,
 				OBJ_9 /* Atomic.swift */,
 				OBJ_10 /* Bucket.swift */,
 				OBJ_11 /* Extensions.swift */,
 				OBJ_13 /* Lock.swift */,
+				OBJ_22 /* WeakSet.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
