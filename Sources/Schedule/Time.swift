@@ -114,7 +114,7 @@ public struct Time {
 
     /// The interval between this time and zero o'clock.
     public var intervalSinceZeroClock: Interval {
-        return Int(hour).hours + Int(minute).minutes + Int(second).seconds + Int(nanosecond).nanoseconds
+        return hour.hours + minute.minutes + second.seconds + nanosecond.nanoseconds
     }
 
     func toDateComponents() -> DateComponents {

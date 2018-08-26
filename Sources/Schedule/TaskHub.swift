@@ -1,5 +1,5 @@
 //
-//  TaskCenter.swift
+//  TaskHub.swift
 //  Schedule
 //
 //  Created by Quentin Jin on 2018/7/17.
@@ -7,21 +7,21 @@
 
 import Foundation
 
-final class TaskCenter {
+final class TaskHub {
 
-    static let shared = TaskCenter()
+    static let shared = TaskHub()
 
     private init() { }
-    private var lock = Lock()
+    private let lock = Lock()
     private var tasks: Set<Task> = []
-    private var registry: [String: WeakSet<Task>] = [:]
+    private var registry: [String: Set<Task>] = [:]
 
     func add(_ task: Task, withTag tag: String? = nil) {
         lock.withLock {
             tasks.insert(task)
             if let tag = tag {
                 if registry[tag] == nil {
-                    registry[tag] = WeakSet()
+                    registry[tag] = []
                 }
                 registry[tag]?.insert(task)
             }
@@ -31,6 +31,11 @@ final class TaskCenter {
     func remove(_ task: Task) {
         lock.withLock {
             _ = tasks.remove(task)
+
+            let tags = task.tags
+            for tag in tags {
+                registry[tag]?.remove(task)
+            }
         }
     }
 
@@ -38,7 +43,7 @@ final class TaskCenter {
         lock.withLock {
             guard tasks.contains(task) else { return }
             if registry[tag] == nil {
-                registry[tag] = WeakSet()
+                registry[tag] = []
             }
             registry[tag]?.insert(task)
         }
@@ -52,7 +57,8 @@ final class TaskCenter {
 
     func tasks(forTag tag: String) -> [Task] {
         return lock.withLock {
-            registry[tag]?.objects ?? []
+            guard let tasks = registry[tag] else { return [] }
+            return Array(tasks)
         }
     }
 
@@ -66,5 +72,16 @@ final class TaskCenter {
         return lock.withLock {
             tasks.count
         }
+    }
+
+    @discardableResult
+    func clear() -> [Task] {
+        var holder: [Task] = []
+        lock.withLock {
+            holder = Array(tasks)
+            tasks = []
+            registry = [:]
+        }
+        return holder
     }
 }

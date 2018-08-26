@@ -7,17 +7,6 @@
 
 import Foundation
 
-extension Int {
-
-    func clampedAdding(_ other: Int) -> Int {
-        return (Double(self) + Double(other)).clampedToInt()
-    }
-
-    func clampedSubtracting(_ other: Int) -> Int {
-        return clampedAdding(-other)
-    }
-}
-
 extension Double {
 
     func clampedToInt() -> Int {
@@ -27,10 +16,14 @@ extension Double {
     }
 }
 
-extension DispatchQueue {
+extension Int {
 
-    func async(after delay: Interval, execute body: @escaping () -> Void) {
-        asyncAfter(wallDeadline: .now() + delay.seconds, execute: body)
+    func clampedAdding(_ other: Int) -> Int {
+        return (Double(self) + Double(other)).clampedToInt()
+    }
+
+    func clampedSubtracting(_ other: Int) -> Int {
+        return clampedAdding(-other)
     }
 }
 

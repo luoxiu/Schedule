@@ -19,9 +19,7 @@ final class AtomicTests: XCTestCase {
 
     func testMutate() {
         let atom = Atomic<Int>(1)
-        atom.mutate {
-            $0 = 2
-        }
+        atom.mutate { $0 = 2 }
         XCTAssertEqual(atom.read(), 2)
     }
 
@@ -33,6 +31,7 @@ final class AtomicTests: XCTestCase {
 
     static var allTests = [
         ("testExecute", testExecute),
-        ("testMutate", testMutate)
+        ("testMutate", testMutate),
+        ("testReadWrite", testReadWrite)
     ]
 }

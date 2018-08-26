@@ -16,7 +16,11 @@ struct BucketKey: Hashable, RawRepresentable {
     }
 
     static func == (lhs: BucketKey, rhs: BucketKey) -> Bool {
-        return lhs.hashValue == rhs.hashValue
+        return lhs.rawValue == rhs.rawValue
+    }
+
+    func next() -> BucketKey {
+        return BucketKey(rawValue: rawValue &+ 1)
     }
 }
 
@@ -28,11 +32,11 @@ struct Bucket<Element> {
     private var entries: [Entry] = []
 
     @discardableResult
-    mutating func add(_ new: Element) -> BucketKey {
-        let key = nextKey
-        nextKey = BucketKey(rawValue: nextKey.rawValue &+ 1)
-        entries.append((key: key, element: new))
-        return key
+    mutating func append(_ new: Element) -> BucketKey {
+        defer { nextKey = nextKey.next() }
+
+        entries.append((key: nextKey, element: new))
+        return nextKey
     }
 
     func element(for key: BucketKey) -> Element? {
@@ -44,10 +48,9 @@ struct Bucket<Element> {
 
     @discardableResult
     mutating func removeElement(for key: BucketKey) -> Element? {
-        for i in 0..<entries.count where entries[i].key == key {
-            let element = entries[i].element
-            entries.remove(at: i)
-            return element
+        for (idx, entry) in entries.enumerated() where entry.key == key {
+            entries.remove(at: idx)
+            return entry.element
         }
         return nil
     }

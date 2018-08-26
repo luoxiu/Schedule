@@ -54,7 +54,7 @@ public class Task {
         _iterator = schedule.makeIterator()
         _timer = DispatchSource.makeTimerSource(queue: queue)
 
-        _actions.add(onElapse)
+        _actions.append(onElapse)
 
         _timer.setEventHandler { [weak self] in
             self?.elapse()
@@ -65,7 +65,7 @@ public class Task {
         _timer.schedule(after: interval)
         _timeline.estimatedNextExecution = Date().adding(interval)
 
-        TaskCenter.shared.add(self, withTag: tag)
+        TaskHub.shared.add(self, withTag: tag)
         _timer.resume()
     }
 
@@ -135,7 +135,7 @@ public class Task {
     }
 
     /// Suspensions of this task.
-    public var suspends: UInt64 {
+    public var suspensions: UInt64 {
         return _lock.withLock {
             _suspensions
         }
@@ -166,7 +166,7 @@ public class Task {
         _lock.withLock {
             _timer.cancel()
         }
-        TaskCenter.shared.remove(self)
+        TaskHub.shared.remove(self)
     }
 
     // MARK: - Lifecycle
@@ -240,6 +240,7 @@ public class Task {
     /// if new lifetime is shorter than its age, subtracting will fail, too.
     ///
     /// - Returns: `true` if set successfully, `false` if not.
+    @discardableResult
     public func subtractLifetime(_ interval: Interval) -> Bool {
         return addLifetime(interval.opposite)
     }
@@ -257,7 +258,7 @@ public class Task {
     @discardableResult
     public func addAction(_ action: @escaping (Task) -> Void) -> ActionKey {
         return _lock.withLock {
-            _actions.add(action)
+            _actions.append(action)
         }
     }
 
@@ -298,7 +299,7 @@ public class Task {
         _lock.unlock()
 
         for tag in set {
-            TaskCenter.shared.add(tag: tag, to: self)
+            TaskHub.shared.add(tag: tag, to: self)
         }
     }
 
@@ -325,7 +326,7 @@ public class Task {
         _lock.unlock()
 
         for tag in set {
-            TaskCenter.shared.remove(tag: tag, from: self)
+            TaskHub.shared.remove(tag: tag, from: self)
         }
     }
 
@@ -344,17 +345,17 @@ extension Task {
 
     /// Suspends all tasks that have the tag.
     public static func suspend(byTag tag: String) {
-        TaskCenter.shared.tasks(forTag: tag).forEach { $0.suspend() }
+        TaskHub.shared.tasks(forTag: tag).forEach { $0.suspend() }
     }
 
     /// Resumes all tasks that have the tag.
     public static func resume(byTag tag: String) {
-        TaskCenter.shared.tasks(forTag: tag).forEach { $0.resume() }
+        TaskHub.shared.tasks(forTag: tag).forEach { $0.resume() }
     }
 
     /// Cancels all tasks that have the tag.
     public static func cancel(byTag tag: String) {
-        TaskCenter.shared.tasks(forTag: tag).forEach { $0.cancel() }
+        TaskHub.shared.tasks(forTag: tag).forEach { $0.cancel() }
     }
 }
 

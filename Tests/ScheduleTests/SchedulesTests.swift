@@ -21,6 +21,10 @@ final class SchedulesTests: XCTestCase {
         let s3 = Schedule.from([d0, d1, d2, d3])
         XCTAssertTrue(s2.makeIterator().isAlmostEqual(to: intervals, leeway: leeway))
         XCTAssertTrue(s3.makeIterator().isAlmostEqual(to: intervals, leeway: leeway))
+
+        let longTime = (100 * 365).days
+        XCTAssertTrue(Schedule.distantPast.makeIterator().next()!.isLonger(than: longTime))
+        XCTAssertTrue(Schedule.distantFuture.makeIterator().next()!.isLonger(than: longTime))
     }
 
     func testDates() {
@@ -93,7 +97,7 @@ final class SchedulesTests: XCTestCase {
     }
 
     func testEveryPeriod() {
-        let s = Schedule.every(1.year).first(10)
+        let s = Schedule.every("1 year").first(10)
         var date = Date()
         for i in s.dates {
             XCTAssertEqual(i.dateComponents.year!, date.dateComponents.year! + 1)
@@ -104,17 +108,17 @@ final class SchedulesTests: XCTestCase {
     }
 
     func testEveryWeekday() {
-        let s = Schedule.every(.friday).at("11:11:00").first(5)
+        let s = Schedule.every(.friday, .monday).at("11:11:00").first(5)
         for i in s.dates {
-            XCTAssertEqual(i.dateComponents.weekday, 6)
+            XCTAssertTrue(i.dateComponents.weekday == 6 || i.dateComponents.weekday == 2)
             XCTAssertEqual(i.dateComponents.hour, 11)
         }
     }
 
     func testEveryMonthday() {
-        let s = Schedule.every(.april(1)).at(11, 11).first(5)
+        let s = Schedule.every(.april(1), .october(1)).at(11, 11).first(5)
         for i in s.dates {
-            XCTAssertEqual(i.dateComponents.month, 4)
+            XCTAssertTrue(i.dateComponents.month == 4 || i.dateComponents.month == 10)
             XCTAssertEqual(i.dateComponents.day, 1)
             XCTAssertEqual(i.dateComponents.hour, 11)
         }

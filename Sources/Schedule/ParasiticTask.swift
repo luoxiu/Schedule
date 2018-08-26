@@ -71,5 +71,11 @@ private final class ParasiticTask: Task {
             onElapse(task)
         }
         self.parasitifer = host
+
+        #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
+        DeinitObserver.observe(host) { [weak self] in
+            self?.cancel()
+        }
+        #endif
     }
 }
