@@ -2,4 +2,5 @@ ignore:
   - "Tests/"
   - "Schedule.playground"
 
-comment: off
+comment:
+  layout: header, changes, diff

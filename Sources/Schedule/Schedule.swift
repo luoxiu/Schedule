@@ -268,6 +268,9 @@ extension Schedule {
             }
         }
     }
+}
+
+extension Schedule {
 
     /// Creates a schedule that executes the task immediately.
     public static var now: Schedule {
@@ -286,15 +289,15 @@ extension Schedule {
         }
     }
 
-    /// Creates a schedule that executes the task at the specific date.
-    public static func at(_ date: Date) -> Schedule {
-        return Schedule.of(date)
-    }
-
     /// Creates a schedule that executes the task after delay then repeat
     /// every interval.
     public static func after(_ delay: Interval, repeating interval: Interval) -> Schedule {
         return Schedule.after(delay).concat(Schedule.every(interval))
+    }
+
+    /// Creates a schedule that executes the task at the specific date.
+    public static func at(_ date: Date) -> Schedule {
+        return Schedule.of(date)
     }
 
     /// Creates a schedule that executes the task every period.
@@ -337,20 +340,15 @@ extension Schedule {
 
         /// Returns a schedule at the specific time.
         public func at(_ time: Time) -> Schedule {
-            return Schedule.make { () -> AnyIterator<Date> in
-                let iterator = self.schedule.dates.makeIterator()
-                let calendar = Calendar.gregorian
-                var last: Date!
+            var interval = time.intervalSinceZeroClock
+            return Schedule.make { () -> AnyIterator<Interval> in
+                let it = self.schedule.makeIterator()
                 return AnyIterator {
-                    last = last ?? Date()
-                    guard let date = iterator.next(),
-                        let next = calendar.nextDate(after: date.zeroClock(),
-                                                     matching: time.toDateComponents(),
-                                                     matchingPolicy: .strict) else {
-                        return nil
+                    if let next = it.next() {
+                        defer { interval = 0.nanoseconds }
+                        return next + interval
                     }
-                    defer { last = next }
-                    return next
+                    return nil
                 }
             }
         }
@@ -392,7 +390,7 @@ extension Schedule {
             var date: Date!
             return AnyIterator<Date> {
                 if weekday.isToday {
-                    date = Date()
+                    date = Date().zeroClock()
                 } else if date == nil {
                     date = calendar.nextDate(after: Date(), matching: components, matchingPolicy: .strict)
                 } else {
@@ -423,7 +421,7 @@ extension Schedule {
             var date: Date!
             return AnyIterator<Date> {
                 if monthDay.isToday {
-                    date = Date()
+                    date = Date().zeroClock()
                 } else if date == nil {
                     date = calendar.nextDate(after: Date(), matching: components, matchingPolicy: .strict)
                 } else {
