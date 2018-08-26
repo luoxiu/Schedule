@@ -65,7 +65,7 @@ public class Task {
         _timer.schedule(after: interval)
         _timeline.estimatedNextExecution = Date().adding(interval)
 
-        TaskCenter.shared.add(self, withTag: tag)
+        TaskHub.shared.add(self, withTag: tag)
         _timer.resume()
     }
 
@@ -166,7 +166,7 @@ public class Task {
         _lock.withLock {
             _timer.cancel()
         }
-        TaskCenter.shared.remove(self)
+        TaskHub.shared.remove(self)
     }
 
     // MARK: - Lifecycle
@@ -298,7 +298,7 @@ public class Task {
         _lock.unlock()
 
         for tag in set {
-            TaskCenter.shared.add(tag: tag, to: self)
+            TaskHub.shared.add(tag: tag, to: self)
         }
     }
 
@@ -325,7 +325,7 @@ public class Task {
         _lock.unlock()
 
         for tag in set {
-            TaskCenter.shared.remove(tag: tag, from: self)
+            TaskHub.shared.remove(tag: tag, from: self)
         }
     }
 
@@ -344,17 +344,17 @@ extension Task {
 
     /// Suspends all tasks that have the tag.
     public static func suspend(byTag tag: String) {
-        TaskCenter.shared.tasks(forTag: tag).forEach { $0.suspend() }
+        TaskHub.shared.tasks(forTag: tag).forEach { $0.suspend() }
     }
 
     /// Resumes all tasks that have the tag.
     public static func resume(byTag tag: String) {
-        TaskCenter.shared.tasks(forTag: tag).forEach { $0.resume() }
+        TaskHub.shared.tasks(forTag: tag).forEach { $0.resume() }
     }
 
     /// Cancels all tasks that have the tag.
     public static func cancel(byTag tag: String) {
-        TaskCenter.shared.tasks(forTag: tag).forEach { $0.cancel() }
+        TaskHub.shared.tasks(forTag: tag).forEach { $0.cancel() }
     }
 }
 

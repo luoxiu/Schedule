@@ -5,13 +5,11 @@ public func allTests() -> [XCTestCaseEntry] {
     return [
         testCase(DateTimeTests.allTests),
         testCase(SchedulesTests.allTests),
-        testCase(TaskCenterTests.allTests),
-        testCase(ExtensionsTests.allTests),
-        testCase(BucketTests.allTests),
-        testCase(WeakSetTests.allTests),
+        testCase(TaskHubTests.allTests),
         testCase(TaskTests.allTests),
-        testCase(TaskCenterTests.allTests),
-        testCase(AtomicTests.allTests)
+        testCase(AtomicTests.allTests),
+        testCase(BucketTests.allTests),
+        testCase(ExtensionsTests.allTests)
     ]
 }
 #endif

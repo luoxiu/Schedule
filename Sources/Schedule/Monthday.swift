@@ -34,6 +34,12 @@ public enum Monthday {
 
     case december(Int)
 
+    var isToday: Bool {
+        let lhs = Calendar.gregorian.dateComponents(in: TimeZone.autoupdatingCurrent, from: Date())
+        let rhs = toDateComponents()
+        return lhs.month == rhs.month && lhs.day == rhs.day
+    }
+
     func toDateComponents() -> DateComponents {
         var month, day: Int
         switch self {
@@ -54,11 +60,5 @@ public enum Monthday {
                               timeZone: TimeZone.autoupdatingCurrent,
                               month: month,
                               day: day)
-    }
-
-    var isToday: Bool {
-        let lhs = Calendar.gregorian.dateComponents(in: TimeZone.autoupdatingCurrent, from: Date())
-        let rhs = toDateComponents()
-        return lhs.month == rhs.month && lhs.day == rhs.day
     }
 }
