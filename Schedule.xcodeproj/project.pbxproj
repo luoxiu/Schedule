@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		667D2DF72132C5390071DC89 /* DeinitObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667D2DF62132C5390071DC89 /* DeinitObserver.swift */; };
+		667D2DF92132C95D0071DC89 /* DeinitObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667D2DF82132C95D0071DC89 /* DeinitObserverTests.swift */; };
 		OBJ_45 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Atomic.swift */; };
 		OBJ_46 /* Bucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Bucket.swift */; };
 		OBJ_47 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Extensions.swift */; };
@@ -67,6 +69,8 @@
 
 /* Begin PBXFileReference section */
 		626D761B2113F9D100FCAFFE /* README.zh_cn.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.zh_cn.md; sourceTree = "<group>"; };
+		667D2DF62132C5390071DC89 /* DeinitObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeinitObserver.swift; sourceTree = "<group>"; };
+		667D2DF82132C95D0071DC89 /* DeinitObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeinitObserverTests.swift; sourceTree = "<group>"; };
 		668685ED210DCC0E009305C3 /* .swift-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
 		668685EE210DCC0E009305C3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		668685EF210DCC0E009305C3 /* .codecov.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .codecov.yml; sourceTree = "<group>"; };
@@ -142,6 +146,7 @@
 				OBJ_10 /* Bucket.swift */,
 				OBJ_11 /* Extensions.swift */,
 				OBJ_13 /* Lock.swift */,
+				667D2DF62132C5390071DC89 /* DeinitObserver.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -164,6 +169,7 @@
 				OBJ_26 /* AtomicTests.swift */,
 				OBJ_27 /* BucketTests.swift */,
 				OBJ_29 /* ExtensionsTests.swift */,
+				667D2DF82132C95D0071DC89 /* DeinitObserverTests.swift */,
 			);
 			name = UtilsTests;
 			sourceTree = "<group>";
@@ -347,6 +353,7 @@
 				OBJ_53 /* Schedule.swift in Sources */,
 				OBJ_54 /* Task.swift in Sources */,
 				OBJ_55 /* TaskHub.swift in Sources */,
+				667D2DF72132C5390071DC89 /* DeinitObserver.swift in Sources */,
 				OBJ_56 /* Time.swift in Sources */,
 				OBJ_57 /* Timeline.swift in Sources */,
 				OBJ_59 /* Weekday.swift in Sources */,
@@ -371,6 +378,7 @@
 				OBJ_80 /* ExtensionsTests.swift in Sources */,
 				OBJ_81 /* Misc.swift in Sources */,
 				OBJ_82 /* SchedulesTests.swift in Sources */,
+				667D2DF92132C95D0071DC89 /* DeinitObserverTests.swift in Sources */,
 				OBJ_83 /* TaskHubTests.swift in Sources */,
 				OBJ_84 /* TaskTests.swift in Sources */,
 				OBJ_86 /* XCTestManifests.swift in Sources */,
