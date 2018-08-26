@@ -21,8 +21,10 @@ final class BucketTests: XCTestCase {
         var bucket = Bucket<Fn>()
         let key = bucket.append { 1 }
         let element = bucket.element(for: key)
-        XCTAssertNotNil(element)
-        guard let fn = element else { return }
+        guard let fn = element else {
+            XCTFail("should not get nil here")
+            return
+        }
         XCTAssertEqual(fn(), 1)
     }
 

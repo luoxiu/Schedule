@@ -65,3 +65,10 @@ extension Schedule {
         return makeIterator().isAlmostEqual(to: schedule.makeIterator(), leeway: leeway)
     }
 }
+
+extension DispatchQueue {
+
+    func async(after delay: Interval, execute body: @escaping () -> Void) {
+        asyncAfter(wallDeadline: .now() + delay.seconds, execute: body)
+    }
+}

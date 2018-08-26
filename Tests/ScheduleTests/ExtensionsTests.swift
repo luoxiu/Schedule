@@ -10,6 +10,11 @@ import XCTest
 
 final class ExtensionsTests: XCTestCase {
 
+    func testClampedToInt() {
+        let a: Double = 0.1
+        XCTAssertEqual(a.clampedToInt(), 0)
+    }
+
     func testClampedAdding() {
         let a: Int = 1
         let b: Int = .max
@@ -22,8 +27,22 @@ final class ExtensionsTests: XCTestCase {
         XCTAssertEqual(a.clampedSubtracting(b), Int.min)
     }
 
+    func testZeroClock() {
+        let z = Date().zeroClock()
+        let components = z.dateComponents
+        guard let h = components.hour, let m = components.minute, let s = components.second else {
+            XCTFail("should not get nil here")
+            return
+        }
+        XCTAssertEqual(h, 0)
+        XCTAssertEqual(m, 0)
+        XCTAssertEqual(s, 0)
+    }
+
     static var allTests = [
+        ("testClampedToInt", testClampedToInt),
         ("testClampedAdding", testClampedAdding),
-        ("testClampedSubtracting", testClampedSubtracting)
+        ("testClampedSubtracting", testClampedSubtracting),
+        ("testZeroClock", testZeroClock)
     ]
 }
