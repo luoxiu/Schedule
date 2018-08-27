@@ -41,15 +41,6 @@ public struct Time {
         self.nanosecond = nanosecond
     }
 
-    /// A cache for Date formatters.
-    ///
-    /// According to the [Foundation](https://github.com/apple/swift-corelibs-foundation), `NSCache` is available on linux.
-    private static let FormatterCache: NSCache<NSString, DateFormatter> = {
-        let c = NSCache<NSString, DateFormatter>()
-        c.countLimit = 10
-        return c
-    }()
-
     /// Creates a time with a string.
     ///
     /// If the parameter is illegal, return nil.
@@ -67,49 +58,38 @@ public struct Time {
     ///     Time("11 pm") == Time(hour: 23)
     ///     Time("11:12:13 PM") == Time(hour: 23, minute: 12, second: 13)
     public init?(_ string: String) {
-        var is12HourTime = false
-        for word in ["am", "pm", "AM", "PM"] {
-            if string.contains(word) {
-                is12HourTime = true
-                break
+        let pattern = "^(\\d{1,2})(:(\\d{1,2})(:(\\d{1,2})(.(\\d{1,3}))?)?)?( (am|AM|pm|PM))?$"
+
+        guard let regexp = try? NSRegularExpression(pattern: pattern, options: []) else { return nil }
+        guard let result = regexp.matches(in: string, options: [], range: NSRange(location: 0, length: string.count)).first else { return nil }
+
+        var hasAM = false
+        var hasPM = false
+        var values: [Int] = []
+
+        for i in 0..<result.numberOfRanges {
+            let range = result.range(at: i)
+            if range.length == 0 { continue }
+            let captured = NSString(string: string).substring(with: range)
+            hasAM = ["am", "AM"].contains(captured)
+            hasPM = ["pm", "PM"].contains(captured)
+            if let value = Int(captured) {
+                values.append(value)
             }
         }
+        guard values.count > 0 else { return nil }
 
-        let supportedFormats = [
-            "HH",                       // 09
-            "HH:mm",                    // 09:30
-            "HH:mm:ss",                 // 09:30:26
-            "HH:mm:ss.SSS"              // 09:30:26.123
-        ]
-
-        for format in supportedFormats {
-            var fmt = format
-            if is12HourTime {
-                fmt = fmt.replacingOccurrences(of: "HH", with: "hh")
-                fmt += " a"
-            }
-            var formatter: DateFormatter! = Time.FormatterCache.object(forKey: NSString(string: fmt))
-            if formatter == nil {
-                formatter = DateFormatter()
-                formatter?.locale = Locale(identifier: "en_US_POSIX")
-                formatter?.calendar = Calendar.gregorian
-                formatter?.timeZone = TimeZone.autoupdatingCurrent
-                formatter.dateFormat = fmt
-            }
-            if let date = formatter.date(from: string) {
-                Time.FormatterCache.setObject(formatter, forKey: NSString(string: fmt))
-                let components = Calendar.gregorian.dateComponents(in: TimeZone.autoupdatingCurrent, from: date)
-                if let hour = components.hour,
-                   let minute = components.minute,
-                   let second = components.second,
-                   let nanosecond = components.nanosecond {
-                   self.init(hour: hour, minute: minute, second: second, nanosecond: nanosecond)
-                   return
-                }
-            }
+        if hasAM && values[0] == 12 { values[0] = 0 }
+        if hasPM && values[0] < 12 { values[0] += 12 }
+        switch values.count {
+        case 1:     self.init(hour: values[0])
+        case 2:     self.init(hour: values[0], minute: values[1])
+        case 3:     self.init(hour: values[0], minute: values[1], second: values[2])
+        case 4:
+            let ns = Double("0.\(values[3])")?.second.nanoseconds
+            self.init(hour: values[0], minute: values[1], second: values[2], nanosecond: Int(ns ?? 0))
+        default:    return nil
         }
-
-        return nil
     }
 
     /// The interval between this time and zero o'clock.
@@ -119,7 +99,7 @@ public struct Time {
 
     func toDateComponents() -> DateComponents {
         return DateComponents(calendar: Calendar.gregorian,
-                              timeZone: TimeZone.autoupdatingCurrent,
+                              timeZone: TimeZone.current,
                               hour: hour, minute: minute,
                               second: second, nanosecond: nanosecond)
     }
