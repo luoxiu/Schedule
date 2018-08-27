@@ -1,14 +1,14 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/Images/logo.png" width="700">
+<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/logo.png" width="700">
 </p>
 
 <p align="center">
 
 [![Build Status](https://travis-ci.org/jianstm/Schedule.svg?branch=master)](https://travis-ci.org/jianstm/Schedule)
 [![codecov](https://codecov.io/gh/jianstm/Schedule/branch/master/graph/badge.svg)](https://codecov.io/gh/jianstm/Schedule)
-<img src="https://img.shields.io/badge/version-0.0.9-orange.svg">
+<img src="https://img.shields.io/badge/version-0.1.0-orange.svg">
 <img src="https://img.shields.io/badge/support-CocoaPods%20%7C%20Carthage%20%7C%20SwiftPM-brightgreen.svg">
-<img src="https://img.shields.io/badge/platform-iOS%20%7C%20macOS%20%7C%20watchOS%20%7C%20tvOS-lightgrey.svg">
+<img src="https://img.shields.io/badge/platform-iOS%20%7C%20macOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20Linux-lightgrey.svg">
 </p>
 
 # Schedule([简体中文](README.zh_cn.md))
@@ -16,45 +16,46 @@
 ⏳ Schedule is a lightweight task scheduler for Swift. It allows you run timed tasks using an incredibly human-friendly syntax.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/Images/demo.png" width="700">
+<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/demo.png" width="700">
 </p>
 
 ## Features
 
 - [x] Variety of Scheduling Rules 
-- [x] Human Readable Period Parse
 - [x] Suspend, Resume, Cancel
 - [x] Reschedule
 - [x] Tag-based Management
 - [x] Child-action Add/Remove
+- [x] Human Readable Period Parse
 - [x] Thread safe
 - [x] Full Control Over the LifeCycle 
 - [x] 95%+ Test Coverage
 - [x] Extensive Documention(All Public Types & Methods)
+- [x] Linux Support(Test on Ubuntu 16.04) 
 - [x] **Incredibly Human-friendly APIs**  
 
-### Why You Should Use Schedule Instead of Timer
+### Why You Should Use Schedule
 
-A chart is worth a thousand words:                                             
+A chart is worth a thousand words:
 
 | Features | Timer | DispatchSourceTimer | Schedule |
 | --- | :---: | :---: | :---: |
 | ⏰ Interval-based Schedule | ✓ | ✓ | ✓ |
 | 📆 Date-based Schedule | ✓ | | ✓ |
 | 🌈 Mixing Rules Schedule | | | ✓ |
-| 📝 Human Readable Period Parse | | | ✓ |
 | 🚦 Suspend, Resume, Cancel | | ✓ | ✓ |
-| 🎡 Reschedule | | ✓ | ✓ |                   
+| 🎡 Reschedule | | ✓ | ✓ |
 | 🏷 Tag-based Management | | | ✓ |
 | 🍰 Child-action Add/Remove | | | ✓ |
+| 📝 Human Readable Period Parse | | | ✓ |
 | 🚔 Atomic Operations | | | ✓ |
 | 🚀 Realtime Timeline Inspect | | | ✓ |
-| 🎯 Lifetime Setting | | | ✓ |
+| 🎯 Lifetime Assign | | | ✓ |
 | 🍭 **Incredibly Human Friendly APIs** | | | ✓ |
 
 ## Usage
 
-Scheduling a task has never been so easy:
+Scheduling a task has never been so easy and intuitive:
 
 ```swift
 Schedule.after(3.seconds).do {
@@ -65,7 +66,7 @@ Schedule.after(3.seconds).do {
 ### Interval-based Schedule
 
 ```swift
-Schedule.every(1.seconds).do { }
+Schedule.every(1.second).do { }
 
 Schedule.after(1.hour, repeating: 1.minute).do { }
 
@@ -88,7 +89,7 @@ Schedule.of(date0, date1, date2).do { }
 
 ### Mixing Rules Schedule
 
-Schedule provides several collection operators, so you can use them to customize your own rules:
+Schedule provides several collection operators, so you can use them to customize your own awesome rules:
 
 ```swift
 /// Concat
@@ -142,7 +143,7 @@ task.cancel() 		// cancel a task will remove it from the internal holder, that i
 
 #### Parasitism
 
-Schedule also provides parasitic mechanism to handle one of the most common scenarios in your app:
+Schedule provides parasitic mechanism to handle one of the most common scenarios in a more elegant way:
 
 ```swift
 Schedule.every(1.second).do(host: self) {
@@ -170,7 +171,7 @@ dailyTask.removeAction(byKey: key)
 
 #### Tag
 
-You can organize tasks with `tag`, and use `queue` to define to where the task should be dispatched:
+You can organize tasks with tag, and use queue to define to where the task should be dispatched:
 
 ```swift
 let s = Schedule.every(1.day)
@@ -187,7 +188,7 @@ Task.cancel(byTag: "log")
 
 #### Lifecycle
 
-You can observe the life cycle of task in real time:
+You can inspect the life cycle of task in real time:
 
 ```swift
 let timeline = task.timeline
@@ -196,7 +197,7 @@ print(timeline.lastExecution)
 print(timeline.estimatedNextExecution)
 ```
 
-Specify task’s lifetime:
+And assign task’s lifetime:
 
 ```swift
 task.setLifetime(10.hours) // will be cancelled after 10 hours.
@@ -208,7 +209,7 @@ task.restOfLifetime == 11.hours
 
 - Swift 4.x
 - iOS 8.0+ / macOS 10.10+ / tvOS 9.0+ / watchOS 2.0+
-- And since there is no use of `NS` class, it should support Linux, too! (Still under testing)
+- Linux Support(Test on Ubuntu 16.04) 
 
 ## Installation
 
@@ -233,12 +234,26 @@ github "jianstm/Schedule"
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/jianstm/Schedule", .upToNextMinor("0.0.0"))
+    .package(url: "https://github.com/jianstm/Schedule", .upToNextMinor("0.1.0"))
 ]
 ```
 
 ## Contributing
 
-Schedule is a nascent project just to meet my own needs. If you have any problems or advice, feel free to open an issue on GitHub. 
+Like **Schedule**? Thank you! At the same time, I need your help:
 
-> Like **Schedule**? Please give me a star and tell your friends! 🍻
+### Find Bugs
+
+Schedule is a very nascent project for now. Even though I had tried to write a lot of test cases, it is still difficult to say how far the project is from bug free. If you could help the Schedule find or even fix bugs that haven't been discovered yet, I would appreciate it.
+
+### New Features
+
+Got some awesome ideas? Feel free to open an issue and submit your pull request directly!
+
+### Improve Documentaion
+
+Improvements to the README or documentation are welcome at all times. For users, the documentation is much more important than the specific code implementation.
+
+### Share
+
+The more users the project has, the more robust the project will become, so - star! fork! and tell your friends!
