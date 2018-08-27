@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		62AA63022133970A00A442A5 /* Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AA63012133970A00A442A5 /* Calendar.swift */; };
+		62AA63042133A0FB00A442A5 /* CalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AA63032133A0FB00A442A5 /* CalendarTests.swift */; };
 		667D2DF72132C5390071DC89 /* DeinitObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667D2DF62132C5390071DC89 /* DeinitObserver.swift */; };
 		667D2DF92132C95D0071DC89 /* DeinitObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667D2DF82132C95D0071DC89 /* DeinitObserverTests.swift */; };
 		OBJ_45 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Atomic.swift */; };
@@ -69,6 +71,8 @@
 
 /* Begin PBXFileReference section */
 		626D761B2113F9D100FCAFFE /* README.zh_cn.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.zh_cn.md; sourceTree = "<group>"; };
+		62AA63012133970A00A442A5 /* Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
+		62AA63032133A0FB00A442A5 /* CalendarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTests.swift; sourceTree = "<group>"; };
 		667D2DF62132C5390071DC89 /* DeinitObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeinitObserver.swift; sourceTree = "<group>"; };
 		667D2DF82132C95D0071DC89 /* DeinitObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeinitObserverTests.swift; sourceTree = "<group>"; };
 		668685ED210DCC0E009305C3 /* .swift-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
@@ -125,6 +129,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		62AA6300213396CE00A442A5 /* Platforms */ = {
+			isa = PBXGroup;
+			children = (
+				667D2DF62132C5390071DC89 /* DeinitObserver.swift */,
+				62AA63012133970A00A442A5 /* Calendar.swift */,
+			);
+			name = Platforms;
+			sourceTree = "<group>";
+		};
 		668685EC210DCBD4009305C3 /* Related */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,7 +159,6 @@
 				OBJ_10 /* Bucket.swift */,
 				OBJ_11 /* Extensions.swift */,
 				OBJ_13 /* Lock.swift */,
-				667D2DF62132C5390071DC89 /* DeinitObserver.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -168,8 +180,9 @@
 			children = (
 				OBJ_26 /* AtomicTests.swift */,
 				OBJ_27 /* BucketTests.swift */,
-				OBJ_29 /* ExtensionsTests.swift */,
+				62AA63032133A0FB00A442A5 /* CalendarTests.swift */,
 				667D2DF82132C95D0071DC89 /* DeinitObserverTests.swift */,
+				OBJ_29 /* ExtensionsTests.swift */,
 			);
 			name = UtilsTests;
 			sourceTree = "<group>";
@@ -235,6 +248,7 @@
 				OBJ_19 /* TaskHub.swift */,
 				OBJ_21 /* Timeline.swift */,
 				668685F5210DD226009305C3 /* DateTime */,
+				62AA6300213396CE00A442A5 /* Platforms */,
 				668685F4210DD21A009305C3 /* Utils */,
 			);
 			name = Schedule;
@@ -345,6 +359,7 @@
 				OBJ_45 /* Atomic.swift in Sources */,
 				OBJ_46 /* Bucket.swift in Sources */,
 				OBJ_47 /* Extensions.swift in Sources */,
+				62AA63022133970A00A442A5 /* Calendar.swift in Sources */,
 				OBJ_48 /* Interval.swift in Sources */,
 				OBJ_49 /* Lock.swift in Sources */,
 				OBJ_50 /* Monthday.swift in Sources */,
@@ -372,6 +387,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				62AA63042133A0FB00A442A5 /* CalendarTests.swift in Sources */,
 				OBJ_77 /* AtomicTests.swift in Sources */,
 				OBJ_78 /* BucketTests.swift in Sources */,
 				OBJ_79 /* DateTimeTests.swift in Sources */,

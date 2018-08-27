@@ -386,13 +386,12 @@ extension Schedule {
     public static func every(_ weekday: Weekday) -> DateMiddleware {
         let schedule = Schedule.make { () -> AnyIterator<Date> in
             let calendar = Calendar.gregorian
-            let components = weekday.toDateComponents()
             var date: Date!
             return AnyIterator<Date> {
                 if weekday.isToday {
                     date = Date().zeroClock()
                 } else if date == nil {
-                    date = calendar.nextDate(after: Date(), matching: components, matchingPolicy: .strict)
+                    date = calendar.next(weekday, after: Date())
                 } else {
                     date = calendar.date(byAdding: .day, value: 7, to: date)
                 }
@@ -414,16 +413,15 @@ extension Schedule {
     }
 
     /// Creates a schedule that executes the task every specific day in the month.
-    public static func every(_ monthDay: Monthday) -> DateMiddleware {
+    public static func every(_ monthday: Monthday) -> DateMiddleware {
         let schedule = Schedule.make { () -> AnyIterator<Date> in
             let calendar = Calendar.gregorian
-            let components = monthDay.toDateComponents()
             var date: Date!
             return AnyIterator<Date> {
-                if monthDay.isToday {
+                if monthday.isToday {
                     date = Date().zeroClock()
                 } else if date == nil {
-                    date = calendar.nextDate(after: Date(), matching: components, matchingPolicy: .strict)
+                    date = calendar.next(monthday, after: Date())
                 } else {
                     date = calendar.date(byAdding: .year, value: 1, to: date)
                 }

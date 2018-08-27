@@ -93,12 +93,12 @@ public struct Time {
                 formatter = DateFormatter()
                 formatter?.locale = Locale(identifier: "en_US_POSIX")
                 formatter?.calendar = Calendar.gregorian
-                formatter?.timeZone = TimeZone.autoupdatingCurrent
+                formatter?.timeZone = TimeZone.current
                 formatter.dateFormat = fmt
             }
             if let date = formatter.date(from: string) {
                 Time.FormatterCache.setObject(formatter, forKey: NSString(string: fmt))
-                let components = Calendar.gregorian.dateComponents(in: TimeZone.autoupdatingCurrent, from: date)
+                let components = Calendar.gregorian.dateComponents(in: TimeZone.current, from: date)
                 if let hour = components.hour,
                    let minute = components.minute,
                    let second = components.second,
@@ -119,7 +119,7 @@ public struct Time {
 
     func toDateComponents() -> DateComponents {
         return DateComponents(calendar: Calendar.gregorian,
-                              timeZone: TimeZone.autoupdatingCurrent,
+                              timeZone: TimeZone.current,
                               hour: hour, minute: minute,
                               second: second, nanosecond: nanosecond)
     }

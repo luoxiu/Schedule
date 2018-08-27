@@ -36,7 +36,7 @@ extension Date {
 
     func zeroClock() -> Date {
         let calendar = Calendar.gregorian
-        let timeZone = TimeZone.autoupdatingCurrent
+        let timeZone = TimeZone.current
         var dateComponents = calendar.dateComponents(in: timeZone, from: self)
         dateComponents.hour = 0
         dateComponents.minute = 0

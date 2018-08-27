@@ -14,12 +14,12 @@ public enum Weekday: Int {
 
     var isToday: Bool {
         return Calendar.gregorian
-            .dateComponents(in: .autoupdatingCurrent, from: Date()).weekday == rawValue
+            .dateComponents(in: .current, from: Date()).weekday == rawValue
     }
 
     func toDateComponents() -> DateComponents {
         return DateComponents(calendar: Calendar.gregorian,
-                              timeZone: TimeZone.autoupdatingCurrent,
+                              timeZone: TimeZone.current,
                               weekday: rawValue)
     }
 }

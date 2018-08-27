@@ -8,6 +8,8 @@
 import XCTest
 @testable import Schedule
 
+#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
+
 final class DeinitObserverTests: XCTestCase {
 
     func testObserver() {
@@ -26,3 +28,5 @@ final class DeinitObserverTests: XCTestCase {
         ("testObserver", testObserver)
     ]
 }
+
+#endif

@@ -1,6 +1,6 @@
 import XCTest
 
-#if !os(macOS)
+#if os(Linux)
 public func allTests() -> [XCTestCaseEntry] {
     return [
         testCase(DateTimeTests.allTests),
@@ -9,6 +9,7 @@ public func allTests() -> [XCTestCaseEntry] {
         testCase(TaskTests.allTests),
         testCase(AtomicTests.allTests),
         testCase(BucketTests.allTests),
+        testCase(CalendarTests.allTests),
         testCase(ExtensionsTests.allTests)
     ]
 }
