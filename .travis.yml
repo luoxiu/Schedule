@@ -1,29 +1,50 @@
-language: objective-c
-sudo: required
-osx_image: xcode9.4
 branches:
   only:
     - master
-env:
-  global:
-    - PROJECT="Schedule.xcodeproj"
-    - SCHEME="Schedule-Package"
-    - FRAMEWORK="Schedule"
-    - IOS_SDK="iphonesimulator11.3"
-    - TVOS_SDK="appletvsimulator11.3"
-    - MACOS_SDK="macosx10.13"
 
-  matrix:
-    - SDK="$IOS_SDK"      DESTINATION="platform=iOS Simulator,name=iPhone 8,OS=11.3"
-    - SDK="$MACOS_SDK"    DESTINATION="arch=x86_64"
-    - SDK="$TVOS_SDK"     DESTINATION="OS=11.3,name=Apple TV 4K"
+osx_image: xcode9.3
+language: generic
+
+matrix:
+  include:
+    - os: osx
+      env: 
+        - SDK="iphonesimulator11.4"         
+        - DESTINATION="OS=11.4,name=iPhone X"
+    - os: osx
+      env: 
+        - SDK="macosx10.13"       
+        - DESTINATION="arch=x86_64"
+    - os: osx
+      env: 
+        - SDK="watchsimulator4.3"     
+        - DESTINATION="OS=4.3,name=Apple Watch - 42mm"
+    - os: osx
+      env: 
+        - SDK="appletvsimulator11.4"        
+        - DESTINATION="OS=11.4,name=Apple TV 4K"
+    - os: linux
+      sudo: required
+      dist: trusty
 
 before_install:
-  - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
+  - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then 
+      gem install xcpretty --no-rdoc --no-ri --no-document --quiet; 
+    fi
+  - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then 
+      eval "$(curl -sL https://swiftenv.fuller.li/install.sh)";
+    fi
 
 script:
-  - xcodebuild clean build test -project "$PROJECT" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug -enableCodeCoverage YES CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty -c
+  - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+      - xcodebuild clean build test -project "travis-test.xcodeproj" -scheme "travis-test-Package" -sdk "$SDK" -destination "$DESTINATION" -enableCodeCoverage YES | xcpretty;
+    fi
+  - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
+      swift build;
+      swift test;
+    fi
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash) -J 'Schedule'
-  - sleep 5
+  if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+    bash <(curl -s https://codecov.io/bash) -J 'Schedule';
+  fi  

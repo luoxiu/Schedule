@@ -248,7 +248,7 @@ Schedule is a very nascent project for now. Even though I had tried to write a l
 
 ### New Features
 
-Got some awesome ideas? Feel free to open an issue and submit your pull request directly!
+Got some awesome ideas? Feel free to open an issue or submit your pull request directly!
 
 ### Improve Documentaion
 
