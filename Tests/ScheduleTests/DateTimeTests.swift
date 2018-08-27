@@ -21,6 +21,10 @@ final class DateTimeTests: XCTestCase {
         XCTAssertEqual(7.day, 1.week)
 
         XCTAssertEqual((-2).seconds.compare(1.second), .orderedAscending)
+        XCTAssertTrue(1.1.second > 1.0.second)
+        XCTAssertTrue(3.days < 1.week)
+        XCTAssertTrue(4.day >= 4.days)
+        XCTAssertTrue(-2.seconds < 1.seconds)
 
         XCTAssertTrue(1.1.second.isLonger(than: 1.0.second))
         XCTAssertTrue(3.days.isShorter(than: 1.week))

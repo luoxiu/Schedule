@@ -116,6 +116,17 @@ extension Interval {
     }
 }
 
+extension Interval: Comparable {
+
+    /// Returns a Boolean value indicating whether the first interval is
+    /// less than the second interval.
+    ///
+    /// A negative interval is always less than a positive interval.
+    public static func < (lhs: Interval, rhs: Interval) -> Bool {
+        return lhs.compare(rhs) == .orderedAscending
+    }
+}
+
 // MARK: - Adding & Subtracting
 extension Interval {
     /// Returns a new interval by multipling this interval by the given number.

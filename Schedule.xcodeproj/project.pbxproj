@@ -70,17 +70,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		626D761B2113F9D100FCAFFE /* README.zh_cn.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.zh_cn.md; sourceTree = "<group>"; };
 		62AA63012133970A00A442A5 /* Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
 		62AA63032133A0FB00A442A5 /* CalendarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTests.swift; sourceTree = "<group>"; };
 		667D2DF62132C5390071DC89 /* DeinitObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeinitObserver.swift; sourceTree = "<group>"; };
 		667D2DF82132C95D0071DC89 /* DeinitObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeinitObserverTests.swift; sourceTree = "<group>"; };
-		668685ED210DCC0E009305C3 /* .swift-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
-		668685EE210DCC0E009305C3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		668685EF210DCC0E009305C3 /* .codecov.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .codecov.yml; sourceTree = "<group>"; };
-		668685F0210DCC0E009305C3 /* Schedule.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Schedule.podspec; sourceTree = "<group>"; };
-		668685F1210DCC0F009305C3 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
-		668685F2210DCC0F009305C3 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
 		668685F3210DCEB0009305C3 /* Schedule.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Schedule.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		OBJ_10 /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
 		OBJ_11 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -136,20 +129,6 @@
 				62AA63012133970A00A442A5 /* Calendar.swift */,
 			);
 			name = Platforms;
-			sourceTree = "<group>";
-		};
-		668685EC210DCBD4009305C3 /* Related */ = {
-			isa = PBXGroup;
-			children = (
-				668685EF210DCC0E009305C3 /* .codecov.yml */,
-				668685ED210DCC0E009305C3 /* .swift-version */,
-				668685F2210DCC0F009305C3 /* .swiftlint.yml */,
-				668685F1210DCC0F009305C3 /* .travis.yml */,
-				668685EE210DCC0E009305C3 /* README.md */,
-				668685F0210DCC0E009305C3 /* Schedule.podspec */,
-				626D761B2113F9D100FCAFFE /* README.zh_cn.md */,
-			);
-			name = Related;
 			sourceTree = "<group>";
 		};
 		668685F4210DD21A009305C3 /* Utils */ = {
@@ -225,7 +204,6 @@
 				668685F3210DCEB0009305C3 /* Schedule.playground */,
 				OBJ_6 /* Package.swift */,
 				OBJ_37 /* Products */,
-				668685EC210DCBD4009305C3 /* Related */,
 				OBJ_7 /* Sources */,
 				OBJ_24 /* Tests */,
 			);
