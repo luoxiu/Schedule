@@ -40,8 +40,8 @@ script:
       - xcodebuild clean build test -project "travis-test.xcodeproj" -scheme "travis-test-Package" -sdk "$SDK" -destination "$DESTINATION" -enableCodeCoverage YES | xcpretty;
     fi
   - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
-      swift build;
-      swift test;
+      # swift build;
+      # swift test;
     fi
 
 after_success:
