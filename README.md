@@ -24,14 +24,14 @@
 - [x] Variety of Scheduling Rules 
 - [x] Suspend, Resume, Cancel
 - [x] Reschedule
-- [x] Tag-based Management
+- [x] Tag-based Task Management
 - [x] Child-action Add/Remove
-- [x] Human Readable Period Parse
-- [x] Thread safe
-- [x] Full Control Over the LifeCycle 
+- [x] Natural Language Parse
+- [x] Thread Safe
+- [x] Full Control Over the Life Cycle 
 - [x] 95%+ Test Coverage
 - [x] Extensive Documention(All Public Types & Methods)
-- [x] Linux Support(Test on Ubuntu 16.04) 
+- [x] Linux Support(Tested on Ubuntu 16.04)
 - [x] **Incredibly Human-friendly APIs**  
 
 ### Why You Should Use Schedule
@@ -45,17 +45,17 @@ A chart is worth a thousand words:
 | 🌈 Mixing Rules Schedule | | | ✓ |
 | 🚦 Suspend, Resume, Cancel | | ✓ | ✓ |
 | 🎡 Reschedule | | ✓ | ✓ |
-| 🏷 Tag-based Management | | | ✓ |
+| 🏷 Tag-based Task Management | | | ✓ |
 | 🍰 Child-action Add/Remove | | | ✓ |
-| 📝 Human Readable Period Parse | | | ✓ |
-| 🚔 Atomic Operations | | | ✓ |
+| 📝 Natural Language Parse | | | ✓ |
+| 🚔 Atomic Operation | | | ✓ |
 | 🚀 Realtime Timeline Inspect | | | ✓ |
-| 🎯 Lifetime Assign | | | ✓ |
+| 🎯 Lifetime Specify | | | ✓ |
 | 🍭 **Incredibly Human Friendly APIs** | | | ✓ |
 
 ## Usage
 
-Scheduling a task has never been so easy and intuitive:
+Scheduling a task has never been so simple and intuitive:
 
 ```swift
 Schedule.after(3.seconds).do {
@@ -63,7 +63,11 @@ Schedule.after(3.seconds).do {
 }
 ```
 
-### Interval-based Schedule
+### Schedule
+
+#### Interval-based Schedule
+
+Schedule uses a built-in type `Interval` to configure timed tasks, so there is no pollution of the namespace. The elegant constructors make the entire configuration work like an easy conversation with an old firend:
 
 ```swift
 Schedule.every(1.second).do { }
@@ -73,7 +77,9 @@ Schedule.after(1.hour, repeating: 1.minute).do { }
 Schedule.of(1.second, 2.minutes, 3.hours).do { }
 ```
 
-### Date-based Schedule
+#### Date-based Schedule
+
+Configuring date-based timing tasks is the same:
 
 ```swift
 Schedule.at(when).do { }
@@ -87,9 +93,25 @@ Schedule.every("one month and ten days").do { }
 Schedule.of(date0, date1, date2).do { }
 ```
 
-### Mixing Rules Schedule
+#### Natural Language Parse
 
-Schedule provides several collection operators, so you can use them to customize your own awesome rules:
+And, Schedule supports basic natural language parsing, which greatly improves the readability of your code: 
+
+```swift
+Schedule.every("one hour and ten minutes").do { }
+
+Schedule.every("1 hour, 5 minutes and 10 seconds").do { }
+
+Schedule.every(.firday).at("9:00 pm").do { }
+
+// Extensions
+Period.registerQuantifier("many", for: 100 * 1000)
+let period = Period("many days")
+```
+
+#### Mixing Rules Schedule
+
+Schedule provides several collection operators, this means you can use them to customize your awesome rules:
 
 ```swift
 /// Concat
@@ -117,43 +139,40 @@ let s7 = Schedule.every(.monday).at(11, 12)
 let s8 = s7.until(date)
 ```
 
-### Human Readable Period Parse
+### Management
 
-Schedule supports simple natural language parsing: 
-
-```swift
-Schedule.every("one hour and ten minutes").do { }
-
-Schedule.every("1 hour, 5 minutes and 10 seconds").do { }
-
-Period.registerQuantifier("many", for: 100 * 1000)
-let period = Period("many days")
-```
-
-### Task Management
-
-In schedule, every newly created task will be automatically held by an internal global variable and will not be released until you actively cancel it. So you don't have to add variables to the controller and write nonsense like `weak var timer: Timer`, `self.timer = timer`:
+In schedule, every newly created task is automatically held by an internal global variable and will not be released until you cancel it actively. So you don't have to add variables to your controller and write nonsense like `weak var timer: Timer`, `self.timer = timer`:
 
 ```swift
 let task = Schedule.every(1.minute).do { }
-task.suspend()		// will increase task's suspensions
-task.resume() 		// will decrease task's suspensions, but no over resume at all, I will handle this for you~
-task.cancel() 		// cancel a task will remove it from the internal holder, that is, will decrease task's reference count by one, if there are no other holders, task will be released.
+
+// will increase task's suspensions
+task.suspend()
+
+// will decrease task's suspensions, 
+// but don't worry about excessive resumptions, I will handle these for you~
+task.resume()
+
+// cancel task, this will remove task from the internal holder, 
+// in other words, will reduce task's reference count, 
+// if there are no other holders, task will be released.
+task.cancel()
 ```
 
 #### Parasitism
 
-Schedule provides parasitic mechanism to handle one of the most common scenarios in a more elegant way:
+Schedule provides a parasitic mechanism, that allows you to handle one of the most common scenarios in a more elegant way:
 
 ```swift
 Schedule.every(1.second).do(host: self) {
-    // do something, and cancel the task when `self` is deallocated, it's very useful when you want to bind a task's lifetime to a controller.
+    // do something, and cancel the task when host is deallocated.
+    // this's very useful when you want to bind a task's lifetime to a controller.
 }
 ```
 
 #### Action
 
-You can add more actions to the same task and delete them at any time you want:
+You can add more actions to a task and delete them at any time you want:
 
 ```swift
 let dailyTask = Schedule.every(1.day)
@@ -171,7 +190,7 @@ dailyTask.removeAction(byKey: key)
 
 #### Tag
 
-You can organize tasks with tag, and use queue to define to where the task should be dispatched:
+You can organize tasks with tags, and use queue to specify to where the task should be dispatched:
 
 ```swift
 let s = Schedule.every(1.day)
@@ -186,9 +205,9 @@ Task.resume(byTag: "log")
 Task.cancel(byTag: "log")
 ```
 
-#### Lifecycle
+#### Timeline
 
-You can inspect the life cycle of task in real time:
+You can inspect the timeline of a task in real time:
 
 ```swift
 let timeline = task.timeline
@@ -197,11 +216,17 @@ print(timeline.lastExecution)
 print(timeline.estimatedNextExecution)
 ```
 
-And assign task’s lifetime:
+#### Lifetime
+
+And specify the lifetime of task:
 
 ```swift
-task.setLifetime(10.hours) // will be cancelled after 10 hours.
-task.addLifetime(1.hour)  // will add 1 hour to tasks lifetime
+// will be cancelled after 10 hours.
+task.setLifetime(10.hours)
+
+// will add 1 hour to tasks lifetime 
+task.addLifetime(1.hour)  
+
 task.restOfLifetime == 11.hours
 ```
 
@@ -209,7 +234,7 @@ task.restOfLifetime == 11.hours
 
 - Swift 4.x
 - iOS 8.0+ / macOS 10.10+ / tvOS 9.0+ / watchOS 2.0+
-- Linux Support(Test on Ubuntu 16.04) 
+- Linux(Tested on Ubuntu 16.04) 
 
 ## Installation
 
@@ -240,20 +265,20 @@ dependencies: [
 
 ## Contributing
 
-Like **Schedule**? Thank you! At the same time, I need your help:
+Like **Schedule**? Thank you so much! At the same time, I need your help:
 
-### Find Bugs
+### Finding Bugs
 
-Schedule is a very nascent project for now. Even though I had tried to write a lot of test cases, it is still difficult to say how far the project is from bug free. If you could help the Schedule find or even fix bugs that haven't been discovered yet, I would appreciate it.
+Schedule is just getting started. Although I had tried to write a lot of test cases(over 95%), it is still difficult to say how far the project is from bug free. If you could help the Schedule find or even fix bugs that haven't been discovered yet, I would appreciate it!
 
 ### New Features
 
-Got some awesome ideas? Feel free to open an issue or submit your pull request directly!
+Any awesome ideas? Feel free to open an issue or submit your pull request directly!
 
-### Improve Documentaion
+### Documentation improvements.
 
-Improvements to the README or documentation are welcome at all times. For users, the documentation is much more important than the specific code implementation.
+Improvements to README and documentation are welcome at all times. For users, the documentation is sometimes much more important than the specific code implementation.
 
 ### Share
 
-The more users the project has, the more robust the project will become, so - star! fork! and tell your friends!
+The more users the project has, the more robust the project will become, so, star! fork! and tell your friends!

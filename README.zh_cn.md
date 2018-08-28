@@ -29,12 +29,12 @@ Schedule 是一个轻量级的调度框架，它可以让你用难以置信的�
 - [x] 自然语言解析
 - [x] 线程安全
 - [x] 对生命周期的全面控制
-- [x] 测试覆盖 95%+
+- [x] 95%+ 测试覆盖
 - [x] 完善的文档（所有 public 类型和方法）
-- [x] Linux Support(Test on Ubuntu 16.04) 
+- [x] Linux Support(Tested on Ubuntu 16.04) 
 - [x] **难以置信的友好语法**
 
-### 为什么你应该使用 Schedule
+### 为什么你该用 Schedule
 
 一表胜千言：
 
@@ -63,7 +63,11 @@ Schedule.after(3.seconds).do {
 }
 ```
 
-### 基于时间间隔调度
+### 调度
+
+#### 基于时间间隔调度
+
+Schedule 使用内置的 `Interval` 类型来配置定时任务，所以你不用担心对你的命名空间的污染。优雅的构造方式使整个配置过程就像一场与老友的对话：
 
 ```swift
 Schedule.every(1.second).do { }
@@ -73,7 +77,9 @@ Schedule.after(1.hour, repeating: 1.minute).do { }
 Schedule.of(1.second, 2.minutes, 3.hours).do { }
 ```
 
-### 基于日期调度
+#### 基于日期调度
+
+配置基于日期的任务调度同样如此：
 
 ```swift
 Schedule.at(when).do { }
@@ -87,9 +93,24 @@ Schedule.every("one month and ten days").do { }
 Schedule.of(date0, date1, date2).do { }
 ```
 
-### 自定义规则调度
+#### 自然语言解析
 
-Schedule 提供了几个简单的集合操作符，你可以使用它们自定义属于你的强大规则：
+同时，Schedule 支持基础的自然语言解析，这大大增加了你的代码的可读性：
+
+```swift
+Schedule.every("one hour and ten minutes").do { }
+
+Schedule.every("1 hour, 5 minutes and 10 seconds").do { }
+
+Schedule.every(.firday).at("9:00 pm").do { }
+
+Period.registerQuantifier("many", for: 100 * 1000)
+Schedule.every("many days").do { }
+```
+
+#### 自定义规则调度
+
+Schedule 提供了几个简单的集合操作符，这意味着你可以使用它们定制属于你的强大规则：
 
 ```swift
 import Schedule
@@ -119,41 +140,38 @@ let s7 = Schedule.every(.monday).at(11, 12)
 let s8 = s7.until(date)
 ```
 
-### 自然语言解析
+### 管理
 
-Schedule 支持简单的自然语言解析：
-
-```swift
-Schedule.every("one hour and ten minutes").do { }
-
-Schedule.every("1 hour, 5 minutes and 10 seconds").do { }
-
-Period.registerQuantifier("many", for: 100 * 1000)
-Schedule.every("many days").do { }
-```
-
-### 任务管理
-
-在 Schedule 里，每一个新创建的 task 都会被一个内部的全局变量持有，除非你显式地 cancel 它们，否则它们不会被提前释放，也就是说你不用再在控制器里写那些诸如 `weak var timer: Timer`, `self.timer = timer` 之类的啰唆代码了：
+在 Schedule 里，每一个新创建的 task 都会被一个内部的全局变量自动持有，除非你显式地 cancel 它们，否则它们不会被提前释放。也就是说你不用再在控制器里写那些诸如 `weak var timer: Timer`, `self.timer = timer` 之类的啰唆代码了：
 
 ```swift
 let task = Schedule.every(1.minute).do { }
-task.suspend()		// will increase task's suspensions
-task.resume() 		// will decrease task's suspensions, but no over resume at all, I will handle this for you~
-task.cancel() 		// cancel a task will remove it from the internal holder, that is, will decrease task's reference count by one, if there are no other holders, task will be released.
+
+// 会增加 task 的暂停计数
+task.suspend()
+
+// 会减少 task 的暂停计数，不过不用担心过度减少，
+// 我会帮你处理好这些~
+task.resume()
+
+// 取消任务，这会把任务从内部持有者那儿移除
+// 也就是说，会减少 task 的引用计数
+// 如果没有其它持有者的话，这个任务就会被释放
+task.cancel()
 ```
 
 #### 寄生
 
-Schedule 提供了寄生机制可以让你用一种更优雅的方式处理 task 的生命周期：
+Schedule 提供了一种寄生机制，它可以让你以一种更优雅的方式处理 task 的生命周期：
 
 ```swift
 Schedule.every(1.second).do(host: self) {
-	// do something, task 会在 host 被 deallocated 后自动 cancel, 这在你想要把该 task 的生命周期绑定到一个控制器上时非常有用
+	// do something, task 会在 host 被 deallocated 后自动被 cancel
+	// 这在你想要把一个 task 的生命周期绑定到控制器上时非常有用
 }
 ```
 
-#### Action
+#### 子动作
 
 你可以添加更多的 action 到一个 task 上去，并在任意时刻移除它们：
 
@@ -173,7 +191,7 @@ dailyTask.removeAction(byKey: key)
 
 #### 标签
 
-你可以通过 tag 来组织 tasks，用 queue 指定这个 task 派发到哪里：
+你可以用 tag 来组织 tasks，用 queue 指定这个 task 派发到哪里：
 
 ```swift
 let s = Schedule.every(1.day)
@@ -188,9 +206,9 @@ Task.resume(byTag: "log")
 Task.cancel(byTag: "log")
 ```
 
-#### Lifecycle
+#### 时间线
 
-你可以实时地获取 task 的当前时间线：
+你可以实时地观察 task 的当前时间线：
 
 ```swift
 let timeline = task.timeline
@@ -199,11 +217,17 @@ print(timeline.lastExecution)
 print(timeline.estimatedNextExecution)
 ```
 
-也可以精确设置 task 的寿命：
+#### 寿命
+
+也可以精确地设置 task 的寿命：
 
 ```swift
-task.setLifetime(10.hours) // will be cancelled after 10 hours.
-task.addLifetime(1.hour)   // will add 1 hour to tasks lifetime
+// 会再 10 小时后取消该 task
+task.setLifetime(10.hours)
+
+// 会给该 task 的寿命增加 1 小时
+task.addLifetime(1.hour)
+
 task.restOfLifetime == 11.hours
 ```
 
@@ -211,7 +235,7 @@ task.restOfLifetime == 11.hours
 
 - Swift 4.x
 - iOS 8.0+ / macOS 10.10+ / tvOS 9.0+ / watchOS 2.0+
-- Linux Support(Test on Ubuntu 16.04) 
+- Linux(Tested on Ubuntu 16.04) 
 
 ## 安装
 
@@ -246,16 +270,16 @@ dependencies: [
 
 ### 找 Bugs
 
-Schedule 还是一个非常年轻的项目，虽然我已经尽力地写了大量的测试用例，但还是很难说离 bug free 还有多远。如果你能帮 Schedule 找到甚至解决还没被发现的 bug 的话，我将感激不尽。
+Schedule 还是一个非常年轻的项目，即使我已经尽力写了大量的测试用例（超过 95%），但还是很难说项目离 bug free 还有多远。如果你能帮 Schedule 找到甚至解决还没被发现的 bug 的话，我将感激不尽！
 
 ### 新功能
 
-有感觉很酷的想法吗？尽管在 issue 里分享出来，或者直接提交你的 Pull Request！
+有超酷的想法吗？尽管在 issue 里分享出来，或者直接提交你的 Pull Request！
 
 ### 改善文档
 
-对 README 或者文档注释的改善意见在任何时候都无比欢迎。对使用者来说，文档要比具体的代码实现要重要得多。
+对 README 或者文档注释的改善建议在任何时候都非常欢迎。对使用者来说，文档有时要比具体的代码实现要重要得多。
 
 ### 分享
 
-无疑用的人越多，系统就会变得越健壮，所以——star！fork！然后告诉你的朋友们吧！
+无疑，用的人越多，项目就会变得越健壮，所以，star！fork！然后告诉你的朋友们吧！
