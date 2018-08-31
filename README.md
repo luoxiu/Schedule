@@ -245,7 +245,7 @@ task.restOfLifetime == 11.hours
 use_frameworks!
 
 target 'YOUR_TARGET_NAME' do
-  pod 'Schedule'
+  pod 'Schedule' '~> 0.1'
 end
 ```
 
@@ -259,7 +259,7 @@ github "jianstm/Schedule"
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/jianstm/Schedule", .upToNextMinor("0.1.0"))
+    .package(url: "https://github.com/jianstm/Schedule", .upToNextMajor(from: "0.1.0"))
 ]
 ```
 
