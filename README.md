@@ -263,6 +263,10 @@ dependencies: [
 ]
 ```
 
+## Acknowledgement
+
+The design of APIs is inspired by Dan Bader's python package [schedule](https://github.com/dbader/schedule) and ruby's **slick** Syntax!
+
 ## Contributing
 
 Like **Schedule**? Thank you so much! At the same time, I need your help:

@@ -264,6 +264,10 @@ dependencies: [
 ]
 ```
 
+## 致谢
+
+API 的设计灵感来自于 Dan Bader 的作品 [schedule](https://github.com/dbader/schedule) 和 ruby 的语法！
+
 ## 贡献
 
 喜欢 **Schedule** 吗？谢谢！与此同时我需要你的帮助：
