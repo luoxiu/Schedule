@@ -102,7 +102,7 @@ Schedule.every("one hour and ten minutes").do { }
 
 Schedule.every("1 hour, 5 minutes and 10 seconds").do { }
 
-Schedule.every(.firday).at("9:00 pm").do { }
+Schedule.every(.friday).at("9:00 pm").do { }
 
 // Extensions
 Period.registerQuantifier("many", for: 100 * 1000)
@@ -245,7 +245,7 @@ task.restOfLifetime == 11.hours
 use_frameworks!
 
 target 'YOUR_TARGET_NAME' do
-  pod 'Schedule' '~> 0.1'
+  pod 'Schedule', '~> 0.1'
 end
 ```
 
