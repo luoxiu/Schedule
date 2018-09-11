@@ -30,7 +30,7 @@ extension Schedule {
                      tag: String? = nil,
                      host: AnyObject,
                      onElapse: @escaping (Task) -> Void) -> Task {
-        return ParasiticTask(schedule: self, queue: queue, host: host, onElapse: onElapse)
+        return ParasiticTask(schedule: self, queue: queue, tag: tag, host: host, onElapse: onElapse)
     }
 
     /// Schedules a task with this schedule.
@@ -54,7 +54,7 @@ extension Schedule {
                      tag: String? = nil,
                      host: AnyObject,
                      onElapse: @escaping () -> Void) -> Task {
-        return self.do(queue: queue, host: host, onElapse: { (_) in onElapse() })
+        return self.do(queue: queue, tag: tag, host: host, onElapse: { (_) in onElapse() })
     }
 }
 
@@ -62,8 +62,8 @@ private final class ParasiticTask: Task {
 
     weak var parasitifer: AnyObject?
 
-    init(schedule: Schedule, queue: DispatchQueue?, host: AnyObject, onElapse: @escaping (Task) -> Void) {
-        super.init(schedule: schedule, queue: queue) { (task) in
+    init(schedule: Schedule, queue: DispatchQueue?, tag: String?, host: AnyObject, onElapse: @escaping (Task) -> Void) {
+        super.init(schedule: schedule, queue: queue, tag: tag) { (task) in
             guard (task as? ParasiticTask)?.parasitifer != nil else {
                 task.cancel()
                 return
