@@ -81,12 +81,14 @@ public class Task {
 
     private func scheduleNext() {
         _lock.withLock {
-            guard let interval = _iterator.next() else {
-                _timeline.estimatedNextExecution = nil
-                return
-            }
-            _timeline.estimatedNextExecution = _timeline.estimatedNextExecution?.adding(interval)
-            _timer.schedule(after: (_timeline.estimatedNextExecution ?? Date.distantFuture).interval(since: Date()))
+            repeat {
+                guard let interval = _iterator.next() else {
+                    _timeline.estimatedNextExecution = nil
+                    return
+                }
+                _timeline.estimatedNextExecution = _timeline.estimatedNextExecution!.adding(interval)
+            } while (_timeline.estimatedNextExecution! <= Date())
+            _timer.schedule(after: _timeline.estimatedNextExecution!.timeIntervalSinceNow.seconds)
         }
     }
 
