@@ -30,7 +30,7 @@ public struct Schedule {
     ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
     @discardableResult
-    public func `do`(queue: DispatchQueue? = nil,
+    public func `do`(queue: DispatchQueue,
                      tag: String? = nil,
                      onElapse: @escaping (Task) -> Void) -> Task {
         return Task(schedule: self, queue: queue, tag: tag, onElapse: onElapse)
@@ -44,7 +44,7 @@ public struct Schedule {
     ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
     @discardableResult
-    public func `do`(queue: DispatchQueue? = nil,
+    public func `do`(queue: DispatchQueue,
                      tag: String? = nil,
                      onElapse: @escaping () -> Void) -> Task {
         return self.do(queue: queue, tag: tag, onElapse: { (_) in onElapse() })

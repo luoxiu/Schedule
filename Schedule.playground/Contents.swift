@@ -14,7 +14,7 @@ Schedule.after(1.minute, repeating: 0.5.seconds).do {
 }
 
 Schedule.every("one minute and ten seconds").do {
-    print("One minute and ten seconds elapsed!")
+    print("One minute and ten seconds have elapsed!")
 }
 
 Schedule.every(.monday, .tuesday, .wednesday, .thursday, .friday).at(6, 30).do {

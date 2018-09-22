@@ -71,4 +71,11 @@ extension DispatchQueue {
     func async(after delay: Interval, execute body: @escaping () -> Void) {
         asyncAfter(wallDeadline: .now() + delay.seconds, execute: body)
     }
+
+    static func `is`(_ queue: DispatchQueue) -> Bool {
+        let key = DispatchSpecificKey<()>()
+        queue.setSpecific(key: key, value: ())
+        defer { queue.setSpecific(key: key, value: nil) }
+        return DispatchQueue.getSpecific(key: key) != nil
+    }
 }

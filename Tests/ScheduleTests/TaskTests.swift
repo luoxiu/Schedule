@@ -21,6 +21,44 @@ final class TaskTests: XCTestCase {
         task.cancel()
     }
 
+    func testRepeat() {
+        let e = expectation(description: "testRepeat")
+        var t = 0
+        let task = Schedule.every(0.2.second).first(3).do {
+            t += 1
+            if t == 3 { e.fulfill() }
+        }
+        waitForExpectations(timeout: 1)
+        task.cancel()
+    }
+
+    func testQueue() {
+        let e = expectation(description: "testQueue")
+        let queue = DispatchQueue(label: "testQueue")
+
+        let task = Schedule.after(0.1.second).do(queue: queue) {
+            XCTAssertTrue(DispatchQueue.is(queue))
+            e.fulfill()
+        }
+        waitForExpectations(timeout: 0.5)
+        task.cancel()
+    }
+
+    func testThread() {
+        let e = expectation(description: "testThread")
+        DispatchQueue.global().async {
+            let thread = Thread.current
+            Schedule.after(0.1.second).do { task in
+                XCTAssertTrue(thread === Thread.current)
+                e.fulfill()
+                task.cancel()
+            }
+
+            RunLoop.current.run()
+        }
+        waitForExpectations(timeout: 0.5)
+    }
+
     func testSuspendResume() {
         let block = {
             let task = Schedule.distantFuture.do { }
@@ -103,7 +141,7 @@ final class TaskTests: XCTestCase {
         let e = expectation(description: "testParasiticTask")
         let fn = {
             let obj = NSObject()
-            Schedule.after(0.5.second).do(host: obj, onElapse: {
+            Schedule.after(0.5.second).do(queue: .main, host: obj, onElapse: {
                 XCTFail("should never come here")
             })
         }

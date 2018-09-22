@@ -1,8 +1,8 @@
 //
-//  ParasiticTask.swift
+//  RunLoopTask.swift
 //  Schedule
 //
-//  Created by Quentin Jin on 2018/7/17.
+//  Created by Quentin Jin on 2018/9/22.
 //
 
 import Foundation
@@ -26,11 +26,10 @@ extension Schedule {
     ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
     @discardableResult
-    public func `do`(queue: DispatchQueue,
+    public func `do`(mode: RunLoop.Mode = .default,
                      tag: String? = nil,
-                     host: AnyObject,
                      onElapse: @escaping (Task) -> Void) -> Task {
-        return ParasiticTask(schedule: self, queue: queue, tag: tag, host: host, onElapse: onElapse)
+        return RunLoopTask(schedule: self, mode: mode, tag: tag, onElapse: onElapse)
     }
 
     /// Schedules a task with this schedule.
@@ -50,32 +49,40 @@ extension Schedule {
     ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
     @discardableResult
-    public func `do`(queue: DispatchQueue,
+    public func `do`(mode: RunLoop.Mode = .default,
                      tag: String? = nil,
-                     host: AnyObject,
                      onElapse: @escaping () -> Void) -> Task {
-        return self.do(queue: queue, tag: tag, host: host, onElapse: { (_) in onElapse() })
+        return self.do(mode: mode, tag: tag) { (_) in
+            onElapse()
+        }
     }
 }
 
-private final class ParasiticTask: Task {
+private final class RunLoopTask: Task {
 
-    weak var parasitifer: AnyObject?
+    var timer: Timer!
 
-    init(schedule: Schedule, queue: DispatchQueue?, tag: String?, host: AnyObject, onElapse: @escaping (Task) -> Void) {
-        super.init(schedule: schedule, queue: queue, tag: tag) { (task) in
-            guard (task as? ParasiticTask)?.parasitifer != nil else {
-                task.cancel()
-                return
-            }
+    init(schedule: Schedule, mode: RunLoop.Mode, tag: String?, onElapse: @escaping (Task) -> Void) {
+
+        var this: Task?
+
+        let distant = Date.distantFuture.timeIntervalSinceReferenceDate
+        timer = CFRunLoopTimerCreateWithHandler(kCFAllocatorDefault, distant, distant, 0, 0) { _ in
+            guard let task = this else { return }
             onElapse(task)
         }
-        self.parasitifer = host
 
-        #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
-        DeinitObserver.observe(host) { [weak self] in
-            self?.cancel()
+        RunLoop.current.add(timer, forMode: mode)
+
+        super.init(schedule: schedule, queue: nil, tag: tag) { (task) in
+            guard let task = task as? RunLoopTask else { return }
+            task.timer.fireDate = Date()
         }
-        #endif
+
+        this = self
+    }
+
+    deinit {
+        timer.invalidate()
     }
 }

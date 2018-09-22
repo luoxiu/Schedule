@@ -25,6 +25,7 @@
 		62AA63042133A0FB00A442A5 /* CalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AA63032133A0FB00A442A5 /* CalendarTests.swift */; };
 		667D2DF72132C5390071DC89 /* DeinitObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667D2DF62132C5390071DC89 /* DeinitObserver.swift */; };
 		667D2DF92132C95D0071DC89 /* DeinitObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667D2DF82132C95D0071DC89 /* DeinitObserverTests.swift */; };
+		66D9F43321563D7700D9F441 /* RunLoopTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D9F43221563D7700D9F441 /* RunLoopTask.swift */; };
 		OBJ_45 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Atomic.swift */; };
 		OBJ_46 /* Bucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Bucket.swift */; };
 		OBJ_47 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Extensions.swift */; };
@@ -75,6 +76,7 @@
 		667D2DF62132C5390071DC89 /* DeinitObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeinitObserver.swift; sourceTree = "<group>"; };
 		667D2DF82132C95D0071DC89 /* DeinitObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeinitObserverTests.swift; sourceTree = "<group>"; };
 		668685F3210DCEB0009305C3 /* Schedule.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Schedule.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		66D9F43221563D7700D9F441 /* RunLoopTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunLoopTask.swift; sourceTree = "<group>"; };
 		OBJ_10 /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
 		OBJ_11 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		OBJ_12 /* Interval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interval.swift; sourceTree = "<group>"; };
@@ -100,7 +102,7 @@
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		OBJ_9 /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
 		"Schedule::Schedule::Product" /* Schedule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Schedule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		"Schedule::ScheduleTests::Product" /* ScheduleTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = ScheduleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		"Schedule::ScheduleTests::Product" /* ScheduleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = ScheduleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,6 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_15 /* ParasiticTask.swift */,
+				66D9F43221563D7700D9F441 /* RunLoopTask.swift */,
 				OBJ_17 /* Schedule.swift */,
 				OBJ_18 /* Task.swift */,
 				OBJ_19 /* TaskHub.swift */,
@@ -291,6 +294,14 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 9999;
+				TargetAttributes = {
+					"Schedule::Schedule" = {
+						LastSwiftMigration = 1000;
+					};
+					"Schedule::ScheduleTests" = {
+						LastSwiftMigration = 1000;
+					};
+				};
 			};
 			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "Schedule" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -348,6 +359,7 @@
 				OBJ_55 /* TaskHub.swift in Sources */,
 				667D2DF72132C5390071DC89 /* DeinitObserver.swift in Sources */,
 				OBJ_56 /* Time.swift in Sources */,
+				66D9F43321563D7700D9F441 /* RunLoopTask.swift in Sources */,
 				OBJ_57 /* Timeline.swift in Sources */,
 				OBJ_59 /* Weekday.swift in Sources */,
 			);
@@ -455,7 +467,7 @@
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGET_NAME = Schedule;
 			};
 			name = Debug;
@@ -478,7 +490,7 @@
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGET_NAME = Schedule;
 			};
 			name = Release;
@@ -527,7 +539,7 @@
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGET_NAME = ScheduleTests;
 			};
 			name = Debug;
@@ -546,7 +558,7 @@
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGET_NAME = ScheduleTests;
 			};
 			name = Release;
