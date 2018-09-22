@@ -2,42 +2,42 @@ branches:
   only:
     - master
 
-osx_image: xcode9.3
+osx_image: xcode10
 language: generic
 
 matrix:
   include:
     - os: osx
-      env: 
-        - SDK="iphonesimulator11.4"         
-        - DESTINATION="OS=11.4,name=iPhone X"
+      env:
+        - SDK="iphonesimulator12.0"
+        - DESTINATION="OS=12.0,name=iPhone X"
     - os: osx
-      env: 
-        - SDK="macosx10.13"       
+      env:
+        - SDK="macosx10.13"
         - DESTINATION="arch=x86_64"
     - os: osx
-      env: 
-        - SDK="watchsimulator4.3"     
-        - DESTINATION="OS=4.3,name=Apple Watch - 42mm"
+      env:
+        - SDK="watchsimulator5.0"
+        - DESTINATION="OS=5.0,name=Apple Watch Series 4 - 44mm"
     - os: osx
-      env: 
-        - SDK="appletvsimulator11.4"        
-        - DESTINATION="OS=11.4,name=Apple TV 4K"
+      env:
+        - SDK="appletvsimulator12.0"
+        - DESTINATION="OS=12.0,name=Apple TV 4K"
     - os: linux
       sudo: required
       dist: trusty
 
 before_install:
-  - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then 
-      gem install xcpretty --no-rdoc --no-ri --no-document --quiet; 
+  - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+      gem install xcpretty --no-rdoc --no-ri --no-document --quiet;
     fi
-  - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then 
+  - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
       eval "$(curl -sL https://swiftenv.fuller.li/install.sh)";
     fi
 
 script:
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
-      - xcodebuild clean build test -project "travis-test.xcodeproj" -scheme "travis-test-Package" -sdk "$SDK" -destination "$DESTINATION" -enableCodeCoverage YES | xcpretty;
+      - xcodebuild clean build test -project Schedule.xcodeproj -scheme Schedule-Package -sdk "$SDK" -destination "$DESTINATION" -enableCodeCoverage YES | xcpretty;
     fi
   - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
       swift build;
@@ -47,4 +47,4 @@ script:
 after_success:
   if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
     bash <(curl -s https://codecov.io/bash) -J 'Schedule';
-  fi  
+  fi
