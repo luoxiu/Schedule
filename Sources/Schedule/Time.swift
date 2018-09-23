@@ -104,3 +104,23 @@ public struct Time {
                               second: second, nanosecond: nanosecond)
     }
 }
+
+extension Time: CustomStringConvertible {
+
+    /// A textual representation of this time.
+    public var description: String {
+        let h = "\(hour)".padding(toLength: 2, withPad: "0", startingAt: 0)
+        let m = "\(minute)".padding(toLength: 2, withPad: "0", startingAt: 0)
+        let s = "\(second)".padding(toLength: 2, withPad: "0", startingAt: 0)
+        let ns = "\(nanosecond / 1_000_000)".padding(toLength: 3, withPad: "0", startingAt: 0)
+        return "Time: \(h):\(m):\(s).\(ns)"
+    }
+}
+
+extension Time: CustomDebugStringConvertible {
+
+    /// A textual representation of this time for debugging.
+    public var debugDescription: String {
+        return description
+    }
+}

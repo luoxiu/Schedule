@@ -23,3 +23,29 @@ public struct Timeline {
 
     init() { }
 }
+
+extension Timeline: CustomStringConvertible {
+
+    /// A textual representation of this timeline.
+    public var description: String {
+
+        let desc = { (d: Date?) -> String in
+            guard let d = d else { return "nil" }
+            return String(format: "%.3f", d.timeIntervalSinceReferenceDate)
+        }
+
+        return "Timeline: { " +
+        "\"firstExecution\": \(desc(firstExecution)), " +
+        "\"lastExecution\": \(desc(lastExecution)), " +
+        "\"estimatedNextExecution\": \(desc(estimatedNextExecution))" +
+        " }"
+    }
+}
+
+extension Timeline: CustomDebugStringConvertible {
+
+    /// A textual representation of this timeline for debugging.
+    public var debugDescription: String {
+        return description
+    }
+}

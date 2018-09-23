@@ -62,3 +62,23 @@ public enum Monthday {
                               day: day)
     }
 }
+
+extension Monthday: CustomStringConvertible {
+
+    /// A textual representation of this monthday.
+    public var description: String {
+        let month = toDateComponents().month!
+        let day = toDateComponents().day!
+
+        let monthDesc = Calendar.gregorian.monthSymbols[month - 1]
+        return "Monthday: \(monthDesc) \(day)"
+    }
+}
+
+extension Monthday: CustomDebugStringConvertible {
+
+    /// A textual representation of this monthday for debugging.
+    public var debugDescription: String {
+        return description
+    }
+}

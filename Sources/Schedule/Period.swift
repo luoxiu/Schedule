@@ -200,3 +200,28 @@ extension Int {
         return months
     }
 }
+
+extension Period: CustomStringConvertible {
+
+    /// A textual representation of this period.
+    public var description: String {
+        let period = tidied(to: .day)
+        var desc = "Period:"
+        if period.years != 0 { desc += " \(period.years) year(s)" }
+        if period.months != 0 { desc += " \(period.months) month(s)" }
+        if period.days != 0 { desc += " \(period.days) day(s)" }
+        if period.hours != 0 { desc += " \(period.hours) hour(s)" }
+        if period.minutes != 0 { desc += " \(period.minutes) minute(s)" }
+        if period.seconds != 0 { desc += " \(period.seconds) second(s)" }
+        if period.nanoseconds != 0 { desc += " \(period.nanoseconds) nanosecond(s)" }
+        return desc
+    }
+}
+
+extension Period: CustomDebugStringConvertible {
+
+    /// A textual representation of this period for debugging.
+    public var debugDescription: String {
+        return description
+    }
+}

@@ -393,3 +393,25 @@ extension Task: Hashable {
         return lhs.hashValue == rhs.hashValue
     }
 }
+
+extension Task: CustomStringConvertible {
+
+    /// A textual representation of this task.
+    public var description: String {
+        return "Task: { " +
+        "\"isCancelled\": \(_timer.isCancelled)" +
+        "\"tags\": \(_tags), " +
+        "\"countOfActions\": \(_actions.count), " +
+        "\"countOfExecutions\": \(_countOfExecutions), " +
+        "\"timeline\": \(_timeline)" +
+        "} "
+    }
+}
+
+extension Task: CustomDebugStringConvertible {
+
+    /// A textual representation of this task for debugging.
+    public var debugDescription: String {
+        return description
+    }
+}

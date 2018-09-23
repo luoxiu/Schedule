@@ -23,3 +23,19 @@ public enum Weekday: Int {
                               weekday: rawValue)
     }
 }
+
+extension Weekday: CustomStringConvertible {
+
+    /// A textual representation of this weekday.
+    public var description: String {
+        return "Weekday: \(Calendar.gregorian.weekdaySymbols[rawValue - 1])"
+    }
+}
+
+extension Weekday: CustomDebugStringConvertible {
+
+    /// A textual representation of this weekday for debugging.
+    public var debugDescription: String {
+        return description
+    }
+}
