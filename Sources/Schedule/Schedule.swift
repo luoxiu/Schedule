@@ -26,28 +26,30 @@ public struct Schedule {
     ///
     /// - Parameters:
     ///   - queue: The queue to which the task will be dispatched.
-    ///   - tag: The tag to be associated to the task.
+    ///   - host: The object to be hosted on. When this object is dealloced,
+    ///           the task will not scheduled any more.
     ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
     @discardableResult
     public func `do`(queue: DispatchQueue,
-                     tag: String? = nil,
+                     host: AnyObject? = nil,
                      onElapse: @escaping (Task) -> Void) -> Task {
-        return Task(schedule: self, queue: queue, tag: tag, onElapse: onElapse)
+        return Task(schedule: self, queue: queue, host: host, onElapse: onElapse)
     }
 
     /// Schedules a task with this schedule.
     ///
     /// - Parameters:
     ///   - queue: The queue to which the task will be dispatched.
-    ///   - tag: The tag to be associated to the task.
+    ///   - host: The object to be hosted on. When this object is dealloced,
+    ///           the task will not scheduled any more.
     ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
     @discardableResult
     public func `do`(queue: DispatchQueue,
-                     tag: String? = nil,
+                     host: AnyObject? = nil,
                      onElapse: @escaping () -> Void) -> Task {
-        return self.do(queue: queue, tag: tag, onElapse: { (_) in onElapse() })
+        return self.do(queue: queue, host: host, onElapse: { (_) in onElapse() })
     }
 }
 

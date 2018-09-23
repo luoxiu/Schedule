@@ -34,6 +34,10 @@ public class Task {
     private lazy var _tags: Set<String> = []
     private lazy var _countOfExecutions: Int = 0
 
+    #if os(Linux)
+    private weak var _host: AnyObject? = TaskHub.shared
+    #endif
+
     private lazy var _lifetime: Interval = Int.max.second
     private lazy var _lifetimeTimer: DispatchSourceTimer = {
         let timer = DispatchSource.makeTimerSource()
@@ -47,8 +51,8 @@ public class Task {
     }()
 
     init(schedule: Schedule,
-         queue: DispatchQueue? = nil,
-         tag: String? = nil,
+         queue: DispatchQueue?,
+         host: AnyObject?,
          onElapse: @escaping (Task) -> Void) {
 
         _iterator = schedule.makeIterator()
@@ -57,6 +61,14 @@ public class Task {
         _actions.append(onElapse)
 
         _timer.setEventHandler { [weak self] in
+
+            #if os(Linux)
+            guard self?._host != nil else {
+                self?.cancel()
+                return
+            }
+            #endif
+
             self?.elapse()
         }
 
@@ -65,7 +77,18 @@ public class Task {
         _timer.schedule(after: interval)
         _timeline.estimatedNextExecution = Date().adding(interval)
 
-        TaskHub.shared.add(self, withTag: tag)
+        #if os(Linux)
+        _host = host
+        #else
+        if let host = host {
+            DeinitObserver.observe(host) { [weak self] in
+                self?.cancel()
+            }
+        }
+        #endif
+
+        TaskHub.shared.add(self)
+
         _timer.resume()
     }
 
@@ -341,9 +364,6 @@ public class Task {
     public func removeTag(_ tag: String) {
         removeTags(tag)
     }
-}
-
-extension Task {
 
     /// Suspends all tasks that have the tag.
     public static func suspend(byTag tag: String) {

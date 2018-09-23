@@ -32,7 +32,6 @@
 		OBJ_48 /* Interval.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Interval.swift */; };
 		OBJ_49 /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* Lock.swift */; };
 		OBJ_50 /* Monthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* Monthday.swift */; };
-		OBJ_51 /* ParasiticTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* ParasiticTask.swift */; };
 		OBJ_52 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* Period.swift */; };
 		OBJ_53 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* Schedule.swift */; };
 		OBJ_54 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* Task.swift */; };
@@ -82,7 +81,6 @@
 		OBJ_12 /* Interval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interval.swift; sourceTree = "<group>"; };
 		OBJ_13 /* Lock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
 		OBJ_14 /* Monthday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Monthday.swift; sourceTree = "<group>"; };
-		OBJ_15 /* ParasiticTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParasiticTask.swift; sourceTree = "<group>"; };
 		OBJ_16 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
 		OBJ_17 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		OBJ_18 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
@@ -222,7 +220,6 @@
 		OBJ_8 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_15 /* ParasiticTask.swift */,
 				66D9F43221563D7700D9F441 /* RunLoopTask.swift */,
 				OBJ_17 /* Schedule.swift */,
 				OBJ_18 /* Task.swift */,
@@ -352,7 +349,6 @@
 				OBJ_48 /* Interval.swift in Sources */,
 				OBJ_49 /* Lock.swift in Sources */,
 				OBJ_50 /* Monthday.swift in Sources */,
-				OBJ_51 /* ParasiticTask.swift in Sources */,
 				OBJ_52 /* Period.swift in Sources */,
 				OBJ_53 /* Schedule.swift in Sources */,
 				OBJ_54 /* Task.swift in Sources */,
