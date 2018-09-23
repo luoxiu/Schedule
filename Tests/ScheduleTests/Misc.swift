@@ -59,10 +59,10 @@ extension Sequence where Element == Interval {
     }
 }
 
-extension Schedule {
+extension Plan {
 
-    func isAlmostEqual(to schedule: Schedule, leeway: Interval) -> Bool {
-        return makeIterator().isAlmostEqual(to: schedule.makeIterator(), leeway: leeway)
+    func isAlmostEqual(to plan: Plan, leeway: Interval) -> Bool {
+        return makeIterator().isAlmostEqual(to: plan.makeIterator(), leeway: leeway)
     }
 }
 

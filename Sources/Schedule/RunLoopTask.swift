@@ -7,12 +7,12 @@
 
 import Foundation
 
-extension Schedule {
+extension Plan {
 
-    /// Schedules a task with this schedule.
+    /// Schedules a task with this plan.
     ///
     /// - Parameters:
-    ///   - mode: The mode in which to add the schedule.
+    ///   - mode: The mode in which to add the task.
     ///   - host: The object to be hosted on.
     ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
@@ -20,13 +20,13 @@ extension Schedule {
     public func `do`(mode: RunLoop.Mode = .default,
                      host: AnyObject? = nil,
                      onElapse: @escaping (Task) -> Void) -> Task {
-        return RunLoopTask(schedule: self, mode: mode, host: host, onElapse: onElapse)
+        return RunLoopTask(plan: self, mode: mode, host: host, onElapse: onElapse)
     }
 
-    /// Schedules a task with this schedule.
+    /// Schedules a task with this plan.
     ///
     /// - Parameters:
-    ///   - mode: The mode in which to add the schedule.
+    ///   - mode: The mode in which to add the task.
     ///   - host: The object to be hosted on.
     ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
@@ -44,7 +44,7 @@ private final class RunLoopTask: Task {
 
     var timer: Timer!
 
-    init(schedule: Schedule, mode: RunLoop.Mode, host: AnyObject?, onElapse: @escaping (Task) -> Void) {
+    init(plan: Plan, mode: RunLoop.Mode, host: AnyObject?, onElapse: @escaping (Task) -> Void) {
 
         var this: Task?
 
@@ -56,7 +56,7 @@ private final class RunLoopTask: Task {
 
         RunLoop.current.add(timer, forMode: mode)
 
-        super.init(schedule: schedule, queue: nil, host: host) { (task) in
+        super.init(plan: plan, queue: nil, host: host) { (task) in
             guard let task = task as? RunLoopTask else { return }
             task.timer.fireDate = Date()
         }

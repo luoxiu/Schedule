@@ -13,7 +13,7 @@ final class TaskTests: XCTestCase {
     func testSchedule() {
         let e = expectation(description: "testSchedule")
         let date = Date()
-        let task = Schedule.after(0.5.second).do {
+        let task = Plan.after(0.5.second).do {
             XCTAssertTrue(Date().timeIntervalSince(date).isAlmostEqual(to: 0.5, leeway: 0.1))
             e.fulfill()
         }
@@ -24,7 +24,7 @@ final class TaskTests: XCTestCase {
     func testRepeat() {
         let e = expectation(description: "testRepeat")
         var t = 0
-        let task = Schedule.every(0.2.second).first(3).do {
+        let task = Plan.every(0.2.second).first(3).do {
             t += 1
             if t == 3 { e.fulfill() }
         }
@@ -36,7 +36,7 @@ final class TaskTests: XCTestCase {
         let e = expectation(description: "testQueue")
         let queue = DispatchQueue(label: "testQueue")
 
-        let task = Schedule.after(0.1.second).do(queue: queue) {
+        let task = Plan.after(0.1.second).do(queue: queue) {
             XCTAssertTrue(DispatchQueue.is(queue))
             e.fulfill()
         }
@@ -48,7 +48,7 @@ final class TaskTests: XCTestCase {
         let e = expectation(description: "testThread")
         DispatchQueue.global().async {
             let thread = Thread.current
-            Schedule.after(0.1.second).do { task in
+            Plan.after(0.1.second).do { task in
                 XCTAssertTrue(thread === Thread.current)
                 e.fulfill()
                 task.cancel()
@@ -61,7 +61,7 @@ final class TaskTests: XCTestCase {
 
     func testSuspendResume() {
         let block = {
-            let task = Schedule.distantFuture.do { }
+            let task = Plan.distantFuture.do { }
             XCTAssertEqual(task.suspensions, 0)
             task.suspend()
             task.suspend()
@@ -73,7 +73,7 @@ final class TaskTests: XCTestCase {
         block()
 
         let tag = UUID().uuidString
-        let task = Schedule.distantFuture.do { }
+        let task = Plan.distantFuture.do { }
         task.addTag(tag)
         Task.suspend(byTag: tag)
         XCTAssertEqual(task.suspensions, 1)
@@ -85,7 +85,7 @@ final class TaskTests: XCTestCase {
 
     func testAddAndRemoveActions() {
         let e = expectation(description: "testAddAndRemoveActions")
-        let task = Schedule.after(0.5.second).do { }
+        let task = Plan.after(0.5.second).do { }
         let date = Date()
         let key = task.addAction { _ in
             XCTAssertTrue(Date().timeIntervalSince(date).isAlmostEqual(to: 0.5, leeway: 0.1))
@@ -102,7 +102,7 @@ final class TaskTests: XCTestCase {
     }
 
     func testAddAndRemoveTags() {
-        let task = Schedule.never.do { }
+        let task = Plan.never.do { }
         let tagA = UUID().uuidString
         let tagB = UUID().uuidString
         let tagC = UUID().uuidString
@@ -121,7 +121,7 @@ final class TaskTests: XCTestCase {
     func testReschedule() {
         let e = expectation(description: "testReschedule")
         var i = 0
-        let task = Schedule.after(0.1.second).do { (task) in
+        let task = Plan.after(0.1.second).do { (task) in
             i += 1
             if task.countOfExecution == 6 && task.timeline.estimatedNextExecution == nil {
                 e.fulfill()
@@ -131,7 +131,7 @@ final class TaskTests: XCTestCase {
             }
         }
         DispatchQueue.global().async(after: 0.5.second) {
-            task.reschedule(Schedule.every(0.1.second).first(5))
+            task.reschedule(Plan.every(0.1.second).first(5))
         }
         waitForExpectations(timeout: 2)
         task.cancel()
@@ -141,7 +141,7 @@ final class TaskTests: XCTestCase {
         let e = expectation(description: "testParasiticTask")
         let fn = {
             let obj = NSObject()
-            Schedule.after(0.5.second).do(queue: .main, host: obj, onElapse: {
+            Plan.after(0.5.second).do(queue: .main, host: obj, onElapse: {
                 XCTFail("should never come here")
             })
         }
@@ -154,7 +154,7 @@ final class TaskTests: XCTestCase {
 
     func testLifetime() {
         let e = expectation(description: "testLifetime")
-        let task = Schedule.after(1.hour).do { }
+        let task = Plan.after(1.hour).do { }
         task.setLifetime(1.second)
         XCTAssertEqual(task.lifetime, 1.second)
 

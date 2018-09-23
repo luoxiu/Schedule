@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// `Timeline` records a task's schedule.
+/// `Timeline` records a task's lifecycle.
 public struct Timeline {
 
     /// The time of first execution.

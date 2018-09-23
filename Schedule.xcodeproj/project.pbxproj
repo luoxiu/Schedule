@@ -33,7 +33,7 @@
 		OBJ_49 /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* Lock.swift */; };
 		OBJ_50 /* Monthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* Monthday.swift */; };
 		OBJ_52 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* Period.swift */; };
-		OBJ_53 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* Schedule.swift */; };
+		OBJ_53 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* Plan.swift */; };
 		OBJ_54 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* Task.swift */; };
 		OBJ_55 /* TaskHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* TaskHub.swift */; };
 		OBJ_56 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* Time.swift */; };
@@ -45,7 +45,7 @@
 		OBJ_79 /* DateTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* DateTimeTests.swift */; };
 		OBJ_80 /* ExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* ExtensionsTests.swift */; };
 		OBJ_81 /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* Misc.swift */; };
-		OBJ_82 /* SchedulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* SchedulesTests.swift */; };
+		OBJ_82 /* PlanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* PlanTests.swift */; };
 		OBJ_83 /* TaskHubTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* TaskHubTests.swift */; };
 		OBJ_84 /* TaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* TaskTests.swift */; };
 		OBJ_86 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* XCTestManifests.swift */; };
@@ -82,7 +82,7 @@
 		OBJ_13 /* Lock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
 		OBJ_14 /* Monthday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Monthday.swift; sourceTree = "<group>"; };
 		OBJ_16 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
-		OBJ_17 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
+		OBJ_17 /* Plan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plan.swift; sourceTree = "<group>"; };
 		OBJ_18 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		OBJ_19 /* TaskHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskHub.swift; sourceTree = "<group>"; };
 		OBJ_20 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
@@ -93,7 +93,7 @@
 		OBJ_28 /* DateTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeTests.swift; sourceTree = "<group>"; };
 		OBJ_29 /* ExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsTests.swift; sourceTree = "<group>"; };
 		OBJ_30 /* Misc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Misc.swift; sourceTree = "<group>"; };
-		OBJ_31 /* SchedulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulesTests.swift; sourceTree = "<group>"; };
+		OBJ_31 /* PlanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanTests.swift; sourceTree = "<group>"; };
 		OBJ_32 /* TaskHubTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskHubTests.swift; sourceTree = "<group>"; };
 		OBJ_33 /* TaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTests.swift; sourceTree = "<group>"; };
 		OBJ_35 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
@@ -179,7 +179,7 @@
 			children = (
 				OBJ_28 /* DateTimeTests.swift */,
 				OBJ_30 /* Misc.swift */,
-				OBJ_31 /* SchedulesTests.swift */,
+				OBJ_31 /* PlanTests.swift */,
 				OBJ_32 /* TaskHubTests.swift */,
 				OBJ_33 /* TaskTests.swift */,
 				OBJ_35 /* XCTestManifests.swift */,
@@ -221,7 +221,7 @@
 			isa = PBXGroup;
 			children = (
 				66D9F43221563D7700D9F441 /* RunLoopTask.swift */,
-				OBJ_17 /* Schedule.swift */,
+				OBJ_17 /* Plan.swift */,
 				OBJ_18 /* Task.swift */,
 				OBJ_19 /* TaskHub.swift */,
 				OBJ_21 /* Timeline.swift */,
@@ -350,7 +350,7 @@
 				OBJ_49 /* Lock.swift in Sources */,
 				OBJ_50 /* Monthday.swift in Sources */,
 				OBJ_52 /* Period.swift in Sources */,
-				OBJ_53 /* Schedule.swift in Sources */,
+				OBJ_53 /* Plan.swift in Sources */,
 				OBJ_54 /* Task.swift in Sources */,
 				OBJ_55 /* TaskHub.swift in Sources */,
 				667D2DF72132C5390071DC89 /* DeinitObserver.swift in Sources */,
@@ -379,7 +379,7 @@
 				OBJ_79 /* DateTimeTests.swift in Sources */,
 				OBJ_80 /* ExtensionsTests.swift in Sources */,
 				OBJ_81 /* Misc.swift in Sources */,
-				OBJ_82 /* SchedulesTests.swift in Sources */,
+				OBJ_82 /* PlanTests.swift in Sources */,
 				667D2DF92132C95D0071DC89 /* DeinitObserverTests.swift in Sources */,
 				OBJ_83 /* TaskHubTests.swift in Sources */,
 				OBJ_84 /* TaskTests.swift in Sources */,

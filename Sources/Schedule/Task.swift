@@ -50,12 +50,12 @@ public class Task {
         return timer
     }()
 
-    init(schedule: Schedule,
+    init(plan: Plan,
          queue: DispatchQueue?,
          host: AnyObject?,
          onElapse: @escaping (Task) -> Void) {
 
-        _iterator = schedule.makeIterator()
+        _iterator = plan.makeIterator()
         _timer = DispatchSource.makeTimerSource(queue: queue)
 
         _actions.append(onElapse)
@@ -115,7 +115,7 @@ public class Task {
         }
     }
 
-    /// Execute this task now, without disrupting its schedule.
+    /// Execute this task now, without disrupting its plan.
     public func execute() {
         let actions = _lock.withLock { () -> Bucket<Task.Action> in
             let now = Date()
@@ -150,8 +150,8 @@ public class Task {
 
     // MARK: - Manage
 
-    /// Reschedules this task with the new schedule.
-    public func reschedule(_ new: Schedule) {
+    /// Reschedules this task with the new plan.
+    public func reschedule(_ new: Plan) {
         _lock.withLock {
             _iterator = new.makeIterator()
             _timeline.estimatedNextExecution = Date()

@@ -12,7 +12,7 @@ final class TaskHubTests: XCTestCase {
 
     @discardableResult
     func makeTask() -> Task {
-        return Schedule.never.do { }
+        return Plan.never.do { }
     }
 
     var shared: TaskHub {
