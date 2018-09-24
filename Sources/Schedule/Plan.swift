@@ -391,7 +391,7 @@ extension Plan {
             var date: Date!
             return AnyIterator<Date> {
                 if weekday.isToday {
-                    date = Date().zeroClock()
+                    date = Date().zeroToday()
                 } else if date == nil {
                     date = calendar.next(weekday, after: Date())
                 } else {
@@ -421,7 +421,7 @@ extension Plan {
             var date: Date!
             return AnyIterator<Date> {
                 if monthday.isToday {
-                    date = Date().zeroClock()
+                    date = Date().zeroToday()
                 } else if date == nil {
                     date = calendar.next(monthday, after: Date())
                 } else {

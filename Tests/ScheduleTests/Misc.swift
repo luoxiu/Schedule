@@ -69,7 +69,7 @@ extension Plan {
 extension DispatchQueue {
 
     func async(after delay: Interval, execute body: @escaping () -> Void) {
-        asyncAfter(wallDeadline: .now() + delay.seconds, execute: body)
+        asyncAfter(wallDeadline: .now() + delay.asSeconds(), execute: body)
     }
 
     static func `is`(_ queue: DispatchQueue) -> Bool {

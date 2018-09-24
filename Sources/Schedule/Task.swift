@@ -30,16 +30,15 @@ public class Task {
     private lazy var _tags: Set<String> = []
     private lazy var _countOfExecutions: Int = 0
 
-    #if os(Linux)
+    #if !canImport(ObjectiveC)
     private weak var _host: AnyObject? = TaskHub.shared
     #endif
 
-    private lazy var _lifetime: Interval = Int.max.second
+    private lazy var _lifetime: Interval = Int.max.seconds
     private lazy var _lifetimeTimer: DispatchSourceTimer = {
         let timer = DispatchSource.makeTimerSource()
         timer.setEventHandler {
             self.cancel()
-            timer.cancel()
         }
         timer.schedule(after: _lifetime)
         timer.resume()
@@ -58,7 +57,7 @@ public class Task {
 
         _timer.setEventHandler { [weak self] in
 
-            #if os(Linux)
+            #if !canImport(ObjectiveC)
             guard self?._host != nil else {
                 self?.cancel()
                 return
@@ -73,14 +72,14 @@ public class Task {
         _timer.schedule(after: interval)
         _timeline.estimatedNextExecution = Date().adding(interval)
 
-        #if os(Linux)
-        _host = host
-        #else
+        #if canImport(ObjectiveC)
         if let host = host {
             DeinitObserver.observe(host) { [weak self] in
                 self?.cancel()
             }
         }
+        #else
+        _host = host
         #endif
 
         TaskHub.shared.add(self)
@@ -400,7 +399,7 @@ extension Task: CustomStringConvertible {
         "\"countOfActions\": \(_actions.count), " +
         "\"countOfExecutions\": \(_countOfExecutions), " +
         "\"timeline\": \(_timeline)" +
-        "} "
+        " }"
     }
 }
 

@@ -34,13 +34,16 @@ public enum Monthday {
 
     case december(Int)
 
-    var isToday: Bool {
+    /// A Boolean value indicating whether today is the weekday.
+    public var isToday: Bool {
         let lhs = Calendar.gregorian.dateComponents(in: TimeZone.current, from: Date())
         let rhs = toDateComponents()
         return lhs.month == rhs.month && lhs.day == rhs.day
     }
 
-    func toDateComponents() -> DateComponents {
+    /// Returns a dateComponenets of the monthday, using gregorian calender and
+    /// current time zone.
+    public func toDateComponents() -> DateComponents {
         var month, day: Int
         switch self {
         case .january(let n):       month = 1; day = n

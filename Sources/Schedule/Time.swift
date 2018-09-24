@@ -97,11 +97,15 @@ public struct Time {
         return hour.hours + minute.minutes + second.seconds + nanosecond.nanoseconds
     }
 
-    func toDateComponents() -> DateComponents {
+    /// Returns a dateComponenets of the time, using gregorian calender and
+    /// current time zone.
+    public func toDateComponents() -> DateComponents {
         return DateComponents(calendar: Calendar.gregorian,
                               timeZone: TimeZone.current,
-                              hour: hour, minute: minute,
-                              second: second, nanosecond: nanosecond)
+                              hour: hour,
+                              minute: minute,
+                              second: second,
+                              nanosecond: nanosecond)
     }
 }
 

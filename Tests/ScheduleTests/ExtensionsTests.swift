@@ -28,10 +28,10 @@ final class ExtensionsTests: XCTestCase {
     }
 
     func testZeroClock() {
-        let z = Date().zeroClock()
+        let z = Date().zeroToday()
         let components = z.dateComponents
         guard let h = components.hour, let m = components.minute, let s = components.second else {
-            XCTFail("should not get nil here")
+            XCTFail()
             return
         }
         XCTAssertEqual(h, 0)

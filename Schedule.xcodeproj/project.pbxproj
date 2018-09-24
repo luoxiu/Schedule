@@ -160,7 +160,6 @@
 				OBJ_26 /* AtomicTests.swift */,
 				OBJ_27 /* BucketTests.swift */,
 				62AA63032133A0FB00A442A5 /* CalendarTests.swift */,
-				667D2DF82132C95D0071DC89 /* DeinitObserverTests.swift */,
 				OBJ_29 /* ExtensionsTests.swift */,
 			);
 			name = UtilsTests;
@@ -183,6 +182,7 @@
 				OBJ_32 /* TaskHubTests.swift */,
 				OBJ_33 /* TaskTests.swift */,
 				OBJ_35 /* XCTestManifests.swift */,
+				667D2DF82132C95D0071DC89 /* DeinitObserverTests.swift */,
 				6695C99A21329DDB00934290 /* UtilsTests */,
 			);
 			name = ScheduleTests;

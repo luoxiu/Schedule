@@ -12,12 +12,14 @@ public enum Weekday: Int {
 
     case sunday = 1, monday, tuesday, wednesday, thursday, friday, saturday
 
-    var isToday: Bool {
-        return Calendar.gregorian
-            .dateComponents(in: .current, from: Date()).weekday == rawValue
+    /// A Boolean value indicating whether today is the weekday.
+    public var isToday: Bool {
+        return Calendar.gregorian.dateComponents(in: .current, from: Date()).weekday == rawValue
     }
 
-    func toDateComponents() -> DateComponents {
+    /// Returns a dateComponenets of the weekday, using gregorian calender and
+    /// current time zone.
+    public func toDateComponents() -> DateComponents {
         return DateComponents(calendar: Calendar.gregorian,
                               timeZone: TimeZone.current,
                               weekday: rawValue)

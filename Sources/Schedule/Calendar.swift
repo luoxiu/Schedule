@@ -23,7 +23,7 @@ extension Calendar {
         if days <= 0 {
             days += 7
         }
-        return self.date(byAdding: .day, value: days, to: date)?.zeroClock()
+        return self.date(byAdding: .day, value: days, to: date)?.zeroToday()
 
         #endif
     }

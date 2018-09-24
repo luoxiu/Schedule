@@ -160,7 +160,9 @@ public struct Period {
         return period
     }
 
-    func toDateComponents() -> DateComponents {
+    /// Returns a dateComponenets of the period, using gregorian calender and
+    /// current time zone.
+    public func toDateComponents() -> DateComponents {
         return DateComponents(year: years, month: months, day: days,
                               hour: hours, minute: minutes, second: seconds,
                               nanosecond: nanoseconds)
