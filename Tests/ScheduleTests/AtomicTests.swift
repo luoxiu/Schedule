@@ -10,28 +10,25 @@ import XCTest
 
 final class AtomicTests: XCTestCase {
 
-    func testExecute() {
+    func testRead() {
         let atom = Atomic<Int>(1)
-        atom.execute {
+        atom.read {
             XCTAssertEqual($0, 1)
         }
     }
 
-    func testMutate() {
+    func testWrite() {
         let atom = Atomic<Int>(1)
-        atom.mutate { $0 = 2 }
-        XCTAssertEqual(atom.read(), 2)
-    }
-
-    func testReadWrite() {
-        let atom = Atomic<Int>(1)
-        atom.write(3)
-        XCTAssertEqual(atom.read(), 3)
+        atom.write {
+            $0 = 2
+        }
+        atom.read {
+            XCTAssertEqual($0, 2)
+        }
     }
 
     static var allTests = [
-        ("testExecute", testExecute),
-        ("testMutate", testMutate),
-        ("testReadWrite", testReadWrite)
+        ("testRead", testRead),
+        ("testWrite", testWrite)
     ]
 }

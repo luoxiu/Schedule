@@ -47,19 +47,17 @@ public struct Period {
         self.nanoseconds = nanoseconds
     }
 
-    private static var map: Atomic<[String: Int]> = Atomic([
+    private static let quantifiers: Atomic<[String: Int]> = Atomic([
         "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6,
         "seven": 7, "eight": 8, "nine": 9, "ten": 10, "eleven": 11, "twelve": 12
-    ])
+        ])
 
-    /// Register your own quantifier.
+    /// Registers your own quantifier.
     ///
     ///     Period.registerQuantifier("fifty", for: 15)
     ///     let period = Period("fifty minutes")
     public static func registerQuantifier(_ word: String, for number: Int) {
-        map.mutate {
-            $0[word] = number
-        }
+        quantifiers.write { $0[word] = number }
     }
 
     /// Creates a period from a natural expression.
@@ -69,7 +67,7 @@ public struct Period {
     ///     Period("1 year, 2 months and 3 days") => Period(years: 1, months: 2, days: 3)
     public init?(_ string: String) {
         var period = string
-        for (word, number) in Period.map.read() {
+        for (word, number) in Period.quantifiers.read({ $0 }) {
             period = period.replacingOccurrences(of: word, with: "\(number)")
         }
         guard let regex = try? NSRegularExpression(pattern: "( and |, )") else {

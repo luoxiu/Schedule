@@ -7,28 +7,22 @@
 
 import Foundation
 
-class Atomic<T> {
+final class Atomic<T> {
 
     private var value: T
-    private var lock = Lock()
+    private let lock = Lock()
 
     init(_ value: T) {
         self.value = value
     }
 
-    func execute(_ body: (T) -> Void) {
-        lock.withLock { body(value) }
+    @inline(__always)
+    func read<U>(_ body: (T) -> U) -> U {
+        return lock.withLock { body(value) }
     }
 
-    func mutate(_ body: (inout T) -> Void) {
-        lock.withLock { body(&value) }
-    }
-
-    func read() -> T {
-        return lock.withLock { value }
-    }
-
-    func write(_ new: T) {
-        lock.withLock { value = new }
+    @inline(__always)
+    func write<U>(_ body: (inout T) -> U) -> U {
+        return lock.withLock { body(&value) }
     }
 }
