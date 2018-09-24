@@ -220,8 +220,8 @@
 		OBJ_8 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
-				66D9F43221563D7700D9F441 /* RunLoopTask.swift */,
 				OBJ_17 /* Plan.swift */,
+				66D9F43221563D7700D9F441 /* RunLoopTask.swift */,
 				OBJ_18 /* Task.swift */,
 				OBJ_19 /* TaskHub.swift */,
 				OBJ_21 /* Timeline.swift */,

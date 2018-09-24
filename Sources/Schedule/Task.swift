@@ -12,11 +12,7 @@ public protocol ActionKey {
     var underlying: UInt64 { get }
 }
 
-extension BucketKey: ActionKey {
-    var underlying: UInt64 {
-        return rawValue
-    }
-}
+extension BucketKey: ActionKey { }
 
 /// `Task` represents a job to be scheduled.
 public class Task {
@@ -290,7 +286,7 @@ public class Task {
     /// Removes action by key from this task.
     public func removeAction(byKey key: ActionKey) {
         _lock.withLock {
-            _ = _actions.removeElement(for: BucketKey(rawValue: key.underlying))
+            _ = _actions.removeElement(for: BucketKey(key.underlying))
         }
     }
 
