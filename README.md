@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/logo.png" width="700">
+<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/assets/logo.png" width="700">
 </p>
 
 <p align="center">
@@ -16,7 +16,7 @@
 ⏳ Schedule is a lightweight task scheduler for Swift. It allows you run timed tasks using an incredibly human-friendly syntax.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/demo.png" width="700">
+<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/assets/demo.png" width="700">
 </p>
 
 ## Features
