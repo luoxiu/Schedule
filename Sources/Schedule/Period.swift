@@ -1,10 +1,3 @@
-//
-//  Period.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/17.
-//
-
 import Foundation
 
 /// `Period` represents a period of time defined in terms of fields.

@@ -1,10 +1,3 @@
-//
-//  Task.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/2.
-//
-
 import Foundation
 
 /// `ActionKey` represents a token that can be used to remove the action.

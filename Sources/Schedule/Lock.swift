@@ -1,10 +1,3 @@
-//
-//  Lock.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/24.
-//
-
 import Foundation
 
 final class Lock {

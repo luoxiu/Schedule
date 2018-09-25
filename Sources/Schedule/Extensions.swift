@@ -1,10 +1,3 @@
-//
-//  Extensions.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/22.
-//
-
 import Foundation
 
 extension Double {

@@ -1,10 +1,3 @@
-//
-//  Weekday.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/17.
-//
-
 import Foundation
 
 /// `Weekday` represents a day of a week without time.

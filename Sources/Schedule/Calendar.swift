@@ -1,10 +1,3 @@
-//
-//  Calendar.swift
-//  Schedule
-//
-//  Created by Quentin MED on 2018/8/27.
-//
-
 import Foundation
 
 extension Calendar {

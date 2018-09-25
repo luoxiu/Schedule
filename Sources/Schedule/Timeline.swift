@@ -1,10 +1,3 @@
-//
-//  Timeline.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/25.
-//
-
 import Foundation
 
 /// `Timeline` records a task's lifecycle.

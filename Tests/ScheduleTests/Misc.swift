@@ -1,10 +1,3 @@
-//
-//  Misc.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/2.
-//
-
 import Foundation
 @testable import Schedule
 

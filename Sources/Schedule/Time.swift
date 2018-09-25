@@ -1,10 +1,3 @@
-//
-//  Time.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/17.
-//
-
 import Foundation
 
 /// `Time` represents a time without a date.

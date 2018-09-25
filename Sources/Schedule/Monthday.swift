@@ -1,10 +1,3 @@
-//
-//  Monthday.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/17.
-//
-
 import Foundation
 
 /// `Monthday` represents a day of a month without years.

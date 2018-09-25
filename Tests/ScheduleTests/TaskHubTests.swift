@@ -1,10 +1,3 @@
-//
-//  TaskHubTests.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/25.
-//
-
 import XCTest
 @testable import Schedule
 

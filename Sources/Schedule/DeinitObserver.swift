@@ -1,10 +1,3 @@
-//
-//  DeinitObserver.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/8/26.
-//
-
 import Foundation
 
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)

@@ -1,10 +1,3 @@
-//
-//  Atomic.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/26.
-//
-
 import Foundation
 
 final class Atomic<T> {

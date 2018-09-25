@@ -1,10 +1,3 @@
-//
-//  TaskTests.swift
-//  ScheduleTests
-//
-//  Created by Quentin MED on 2018/7/27.
-//
-
 import XCTest
 @testable import Schedule
 

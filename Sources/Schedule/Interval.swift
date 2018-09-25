@@ -1,10 +1,3 @@
-//
-//  Interval.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/17.
-//
-
 import Foundation
 
 /// `Interval` represents a length of time.

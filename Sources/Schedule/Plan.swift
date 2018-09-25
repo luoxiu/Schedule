@@ -1,10 +1,3 @@
-//
-//  Plan.swift
-//  Plan
-//
-//  Created by Quentin Jin on 2018/7/2.
-//
-
 import Foundation
 
 /// `Plan` represents a plan that gives time at which a task should be

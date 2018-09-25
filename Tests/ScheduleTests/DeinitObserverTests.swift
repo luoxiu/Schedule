@@ -1,10 +1,3 @@
-//
-//  DeinitObserverTests.swift
-//  ScheduleTests
-//
-//  Created by Quentin Jin on 2018/8/26.
-//
-
 import XCTest
 @testable import Schedule
 
