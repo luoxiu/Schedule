@@ -350,10 +350,7 @@ extension Date {
 extension DispatchSourceTimer {
 
     func schedule(after timeout: Interval) {
-        guard !timeout.isNegative else {
-            schedule(wallDeadline: .distantFuture)
-            return
-        }
+        guard !timeout.isNegative else { return }
         let ns = timeout.nanoseconds.clampedToInt()
         schedule(wallDeadline: .now() + DispatchTimeInterval.nanoseconds(ns))
     }

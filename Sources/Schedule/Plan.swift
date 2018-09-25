@@ -7,8 +7,8 @@
 
 import Foundation
 
-/// `Plan` represents a plan that gives the times
-/// at which a task should be executed.
+/// `Plan` represents a plan that gives time at which a task should be
+/// executed.
 ///
 /// `Plan` is `Interval` based.
 public struct Plan {
@@ -27,7 +27,7 @@ public struct Plan {
     /// - Parameters:
     ///   - queue: The queue to which the task will be dispatched.
     ///   - host: The object to be hosted on. When this object is dealloced,
-    ///           the task will not scheduled any more.
+    ///           the task will not executed any more.
     ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
     @discardableResult
@@ -42,7 +42,7 @@ public struct Plan {
     /// - Parameters:
     ///   - queue: The queue to which the task will be dispatched.
     ///   - host: The object to be hosted on. When this object is dealloced,
-    ///           the task will not scheduled any more.
+    ///           the task will not executed any more.
     ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
     @discardableResult
@@ -57,8 +57,8 @@ extension Plan {
 
     /// Creates a plan from a `makeUnderlyingIterator()` method.
     ///
-    /// The task will be executed after each interval
-    /// produced by the iterator that `makeUnderlyingIterator` returns.
+    /// The task will be executed after each interval produced by the iterator
+    /// that `makeUnderlyingIterator` returns.
     ///
     /// For example:
     ///

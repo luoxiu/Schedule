@@ -10,21 +10,21 @@ import XCTest
 
 final class TaskTests: XCTestCase {
 
-    func testSchedule() {
+    func testAfter() {
         let e = expectation(description: "testSchedule")
         let date = Date()
-        let task = Plan.after(0.5.second).do {
-            XCTAssertTrue(Date().timeIntervalSince(date).isAlmostEqual(to: 0.5, leeway: 0.1))
+        let task = Plan.after(0.1.second).do {
+            XCTAssertTrue(Date().timeIntervalSince(date).isAlmostEqual(to: 0.1, leeway: 0.1))
             e.fulfill()
         }
-        waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 0.5)
         task.cancel()
     }
 
     func testRepeat() {
         let e = expectation(description: "testRepeat")
         var t = 0
-        let task = Plan.every(0.2.second).first(3).do {
+        let task = Plan.every(0.1.second).first(3).do {
             t += 1
             if t == 3 { e.fulfill() }
         }
@@ -32,7 +32,7 @@ final class TaskTests: XCTestCase {
         task.cancel()
     }
 
-    func testQueue() {
+    func testDispatchQueue() {
         let e = expectation(description: "testQueue")
         let queue = DispatchQueue(label: "testQueue")
 
@@ -53,48 +53,46 @@ final class TaskTests: XCTestCase {
                 e.fulfill()
                 task.cancel()
             }
-
             RunLoop.current.run()
         }
         waitForExpectations(timeout: 0.5)
     }
 
     func testSuspendResume() {
-        let block = {
-            let task = Plan.distantFuture.do { }
-            XCTAssertEqual(task.suspensions, 0)
-            task.suspend()
-            task.suspend()
-            task.suspend()
-            XCTAssertEqual(task.suspensions, 3)
-            task.resume()
-            XCTAssertEqual(task.suspensions, 2)
-        }
-        block()
+        let task1 = Plan.distantFuture.do { }
+        XCTAssertEqual(task1.suspensions, 0)
+        task1.suspend()
+        task1.suspend()
+        task1.suspend()
+        XCTAssertEqual(task1.suspensions, 3)
+        task1.resume()
+        XCTAssertEqual(task1.suspensions, 2)
 
         let tag = UUID().uuidString
-        let task = Plan.distantFuture.do { }
-        task.addTag(tag)
+        let task2 = Plan.distantFuture.do { }
+        task2.addTag(tag)
         Task.suspend(byTag: tag)
-        XCTAssertEqual(task.suspensions, 1)
+        XCTAssertEqual(task2.suspensions, 1)
         Task.resume(byTag: tag)
-        XCTAssertEqual(task.suspensions, 0)
+        XCTAssertEqual(task2.suspensions, 0)
         Task.cancel(byTag: tag)
-        XCTAssertTrue(task.isCancelled)
+        XCTAssertTrue(task2.isCancelled)
     }
 
     func testAddAndRemoveActions() {
         let e = expectation(description: "testAddAndRemoveActions")
-        let task = Plan.after(0.5.second).do { }
+        let task = Plan.after(0.1.second).do { }
         let date = Date()
         let key = task.addAction { _ in
-            XCTAssertTrue(Date().timeIntervalSince(date).isAlmostEqual(to: 0.5, leeway: 0.1))
+            XCTAssertTrue(Date().timeIntervalSince(date).isAlmostEqual(to: 0.1, leeway: 0.1))
             e.fulfill()
         }
         XCTAssertEqual(task.countOfActions, 2)
-        waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 0.5)
+
         task.removeAction(byKey: key)
         XCTAssertEqual(task.countOfActions, 1)
+        
         task.cancel()
 
         task.removeAllActions()
@@ -123,10 +121,10 @@ final class TaskTests: XCTestCase {
         var i = 0
         let task = Plan.after(0.1.second).do { (task) in
             i += 1
-            if task.countOfExecution == 6 && task.timeline.estimatedNextExecution == nil {
+            if task.countOfExecutions == 6 && task.timeline.estimatedNextExecution == nil {
                 e.fulfill()
             }
-            if task.countOfExecution > 6 {
+            if task.countOfExecutions > 6 {
                 XCTFail("should never come here")
             }
         }
@@ -137,16 +135,16 @@ final class TaskTests: XCTestCase {
         task.cancel()
     }
 
-    func testParasiticTask() {
-        let e = expectation(description: "testParasiticTask")
+    func testHost() {
+        let e = expectation(description: "testHost")
         let fn = {
             let obj = NSObject()
-            Plan.after(0.5.second).do(queue: .main, host: obj, onElapse: {
-                XCTFail("should never come here")
+            Plan.after(0.1.second).do(queue: .main, host: obj, onElapse: {
+                XCTFail()
             })
         }
         fn()
-        DispatchQueue.main.async(after: 0.75.seconds) {
+        DispatchQueue.main.async(after: 0.2.seconds) {
             e.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -169,15 +167,18 @@ final class TaskTests: XCTestCase {
             XCTAssertTrue(task.isCancelled)
             e.fulfill()
         }
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 3)
     }
 
     static var allTests = [
-        ("testSchedule", testSchedule),
+        ("testAfter", testAfter),
+        ("testRepeat", testRepeat),
+        ("testDispatchQueue", testDispatchQueue),
+        ("testThread", testThread),
         ("testAddAndRemoveActions", testAddAndRemoveActions),
         ("testAddAndRemoveTags", testAddAndRemoveTags),
         ("testReschedule", testReschedule),
-        ("testParasiticTask", testParasiticTask),
+        ("testHost", testHost),
         ("testLifetime", testLifetime)
     ]
 }

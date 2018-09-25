@@ -10,16 +10,17 @@ import Foundation
 /// `Timeline` records a task's lifecycle.
 public struct Timeline {
 
+    /// The time of initialization.
+    public let initialization = Date()
+
     /// The time of first execution.
     public internal(set) var firstExecution: Date?
 
     /// The time of last execution.
     public internal(set) var lastExecution: Date?
 
-    /// The time of next execution.
+    /// The time of estimated next execution.
     public internal(set) var estimatedNextExecution: Date?
-
-    let initialize = Date()
 
     init() { }
 }
@@ -31,14 +32,17 @@ extension Timeline: CustomStringConvertible {
 
         let desc = { (d: Date?) -> String in
             guard let d = d else { return "nil" }
-            return String(format: "%.3f", d.timeIntervalSinceReferenceDate)
+            let f = DateFormatter()
+            f.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+            return f.string(from: d)
         }
 
         return "Timeline: { " +
-        "\"firstExecution\": \(desc(firstExecution)), " +
-        "\"lastExecution\": \(desc(lastExecution)), " +
-        "\"estimatedNextExecution\": \(desc(estimatedNextExecution))" +
-        " }"
+            "\"initialization\": \(desc(initialization))" +
+            "\"firstExecution\": \(desc(firstExecution)), " +
+            "\"lastExecution\": \(desc(lastExecution)), " +
+            "\"estimatedNextExecution\": \(desc(estimatedNextExecution))" +
+            " }"
     }
 }
 

@@ -7,14 +7,14 @@
 
 import Foundation
 
-/// `ActionKey` represents a token that can be used to manage action.
+/// `ActionKey` represents a token that can be used to remove the action.
 public protocol ActionKey {
     var underlying: UInt64 { get }
 }
 
 extension BucketKey: ActionKey { }
 
-/// `Task` represents a job to be scheduled.
+/// `Task` represents a timed task.
 public class Task {
 
     private let _lock = Lock()
@@ -56,34 +56,34 @@ public class Task {
         _actions.append(onElapse)
 
         _timer.setEventHandler { [weak self] in
+            guard let self = self else { return }
 
             #if !canImport(ObjectiveC)
-            guard self?._host != nil else {
-                self?.cancel()
+            guard self._host != nil else {
+                self.cancel()
                 return
             }
             #endif
 
-            self?.elapse()
+            self.elapse()
         }
 
-        // Consider `nil` a distant future.
-        let interval = _iterator.next() ?? Date.distantFuture.intervalSinceNow
-        _timer.schedule(after: interval)
-        _timeline.estimatedNextExecution = Date().adding(interval)
+        if let interval = _iterator.next(), !interval.isNegative {
+            _timer.schedule(after: interval)
+            _timeline.estimatedNextExecution = Date().adding(interval)
+        }
 
-        #if canImport(ObjectiveC)
         if let host = host {
+            #if canImport(ObjectiveC)
             DeinitObserver.observe(host) { [weak self] in
                 self?.cancel()
             }
+            #else
+            _host = host
+            #endif
         }
-        #else
-        _host = host
-        #endif
 
         TaskHub.shared.add(self)
-
         _timer.resume()
     }
 
@@ -99,14 +99,18 @@ public class Task {
 
     private func scheduleNext() {
         _lock.withLock {
+            let now = Date()
+            var estimated = _timeline.estimatedNextExecution ?? now
             repeat {
-                guard let interval = _iterator.next() else {
+                guard let interval = _iterator.next(), !interval.isNegative else {
                     _timeline.estimatedNextExecution = nil
                     return
                 }
-                _timeline.estimatedNextExecution = _timeline.estimatedNextExecution!.adding(interval)
-            } while (_timeline.estimatedNextExecution! <= Date())
-            _timer.schedule(after: _timeline.estimatedNextExecution!.timeIntervalSinceNow.seconds)
+                estimated = estimated.adding(interval)
+            } while (estimated < now)
+
+            _timeline.estimatedNextExecution = estimated
+            _timer.schedule(after: _timeline.estimatedNextExecution!.interval(since: now))
         }
     }
 
@@ -129,8 +133,8 @@ public class Task {
         execute()
     }
 
-    /// The number of times this task has been executed.
-    public var countOfExecution: Int {
+    /// The number of times the task has been executed.
+    public var countOfExecutions: Int {
         return _lock.withLock {
             _countOfExecutions
         }
@@ -149,7 +153,6 @@ public class Task {
     public func reschedule(_ new: Plan) {
         _lock.withLock {
             _iterator = new.makeIterator()
-            _timeline.estimatedNextExecution = Date()
         }
         scheduleNext()
     }
@@ -208,7 +211,7 @@ public class Task {
     /// The rest of lifetime.
     public var restOfLifetime: Interval {
         return _lock.withLock {
-            _lifetime - Date().interval(since: _timeline.initialize)
+            _lifetime - Date().interval(since: _timeline.initialization)
         }
     }
 
@@ -223,7 +226,7 @@ public class Task {
         guard restOfLifetime.isPositive else { return false }
 
         _lock.lock()
-        let age = Date().interval(since: _timeline.initialize)
+        let age = Date().interval(since: _timeline.initialization)
         guard age.isShorter(than: interval) else {
             _lock.unlock()
             return false
