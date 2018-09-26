@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.author           = { "Quentin Jin" => "jianstm@gmail.com" }
   s.source           = { :git => "https://github.com/jianstm/Schedule.git",
                          :tag => "#{s.version}" }
-  s.source_files     = "Sources/*.swift"
+  s.source_files     = "Sources/Schedule/*.swift"
   s.requires_arc     = true
   s.swift_version    = "4.2"
 

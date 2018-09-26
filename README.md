@@ -28,7 +28,6 @@ Schedule is a lightweight timed tasks scheduler for Swift. It allows you run tim
 - [x] 95%+ Test Coverage
 - [x] Complete Documentation(All Public Types & Methods)
 - [x] Linux Support(Tested on Ubuntu 16.04)
-- [x] **Incredibly Human-friendly APIs**  
 
 ### Why You Should Use Schedule
 
@@ -43,9 +42,9 @@ Schedule is a lightweight timed tasks scheduler for Swift. It allows you run tim
 | 🍰 Child-action Add/Remove | | | ✓ |
 | 📝 Natural Language Parse | | | ✓ |
 | 🚔 Atomic Operation | | | ✓ |
+| 🕕 Lifecycly Bind | | | ✓ |
 | 🚀 Realtime Timeline Inspect | | | ✓ |
 | 🎯 Lifetime Specify | | | ✓ |
-| 🍭 **Incredibly Human Friendly APIs** | | | ✓ |
 
 ## Usage
 
@@ -67,7 +66,7 @@ plan.do {
 
 #### Interval-based Schedule
 
-Schedule uses a self-defined type `Interval` to configure timed tasks, so you don't have to worry about extensions of built-in type polluting your namespace. The elegant constructors make the entire configuration process like an comfortable conversation:
+Schedule uses a self-defined type `Interval` to configure timed tasks, so you don't have to worry about extensions of built-in type polluting your namespace. The smooth constructors make the configuration like a comfortable conversation:
 
 ```swift
 Plan.every(1.second).do { }
@@ -79,7 +78,7 @@ Plan.of(1.second, 2.minutes, 3.hours).do { }
 
 #### Date-based Schedule
 
-Configuring date-based timing tasks is the same, Schedule has defined all the commonly used date time types to make your writing experience incredibly intuitive and smooth::
+Configuring date-based timing tasks is the same, Schedule defines all the commonly used date time types, trying to make your writing experience intuitive and smooth::
 
 ```swift
 Plan.at(when).do { }
@@ -154,9 +153,9 @@ Plan.every(1.second).do(host: self) {
 
 #### RunLoop
 
-The task will be executed on the current thread by default, and its implementation implementation is based on RunLoop. So you need to make sure that the current thread has a RunLoop available. If the task is created on a child thread, you may need to run `RunLoop.current.run()`.
+The task will be executed on the current thread by default, and its implementation is based on RunLoop. So you need to ensure that the current thread has a RunLoop available. If the task is created on a child thread, you may need to run `RunLoop.current.run()`.
 
-By default, Task will be added to `.common` mode, you can specify mode when creating a task:
+By default, Task will be added to `.common` mode, you can specify another mode when creating a task:
 
 ```swift
 Plan.every(1.second).do(mode: .default) {
@@ -166,7 +165,7 @@ Plan.every(1.second).do(mode: .default) {
 
 #### DispatchQueue
 
-You can use queue to specify which DispatchQueue the task will be dispatched to when time is up. This method does not depend on RunLoop, you can use it safely on a child thread:
+You can use `queue` to specify which DispatchQueue the task will be dispatched to. In this case, the execution of the task is no longer dependent on RunLoop, you can use it safely on a child thread:
 
 ```swift
 Plan.every(1.second).do(queue: .global()) {
@@ -194,7 +193,6 @@ task.resume()
 task.cancel()
 ```
 
-
 #### Action
 
 You can add more actions to a task and delete them at any time you want:
@@ -219,10 +217,11 @@ You can organize tasks with tags, and use queue to specify to where the task sho
 
 ```swift
 let s = Plan.every(1.day)
-let task0 = s.do(queue: myTaskQueue, tag: "log") { }
-let task1 = s.do(queue: myTaskQueue, tag: "log") { }
+let task0 = s.do(queue: myTaskQueue) { }
+let task1 = s.do(queue: myTaskQueue) { }
 
 task0.addTag("database")
+task1.addTags("database", "log")
 task1.removeTag("log")
 
 Task.suspend(byTag: "log")
@@ -259,7 +258,7 @@ task.restOfLifetime == 11.hours
 ## Support
 
 - iOS 8.0+ / macOS 10.10+ / tvOS 9.0+ / watchOS 2.0+
-- Linux(Tested on Ubuntu 16.04) 
+- Linux(Tested on Ubuntu 16.04)
 
 ## Installation
 
@@ -276,7 +275,7 @@ end
 
 ### Carthage
 
-```
+```ruby
 github "jianstm/Schedule"
 ```
 

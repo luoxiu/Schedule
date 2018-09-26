@@ -9,10 +9,10 @@
 <img src="https://img.shields.io/badge/platform-iOS%20%7C%20macOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20Linux-lightgrey.svg">
 </p>
 
-Schedule 是一个轻量级的调度框架，它可以让你用难以置信的友好语法执行定时任务.
+Schedule 是一个轻量级的调度框架，它能让你用难以置信的友好语法执行定时任务。
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/demo.png" width="700">
+<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/assets/demo.png" width="700">
 </p>
 
 ## 功能
@@ -26,9 +26,8 @@ Schedule 是一个轻量级的调度框架，它可以让你用难以置信的�
 - [x] 原子操作
 - [x] 对生命周期的完全控制
 - [x] 95%+ 测试覆盖
-- [x] 完整的文档（所有 public 类型和方法）
+- [x] 完善的文档（所有 public 类型和方法）
 - [x] 支持 Linux(通过 Ubuntu 16.04 测试) 
-- [x] **难以置信的友好语法**
 
 ### 为什么你该用 Schedule
 
@@ -43,16 +42,16 @@ Schedule 是一个轻量级的调度框架，它可以让你用难以置信的�
 | 🍰 添加、移除子动作 | | | ✓ |
 | 📝 自然语言解析 | | | ✓ |
 | 🚔 原子操作 | | | ✓ |
+| 🕕 生命周期绑定 | | | ✓ |
 | 🚀 实时观察时间线 | | | ✓ |
 | 🏌 寿命设置 | | | ✓ |
-| 🍭 **难以置信的友好语法** | | | ✓ |
 
 ## 用法
 
 ### 一瞥
 
 调度一个定时任务从未如此简单直观，你要做的只有：
-   
+
 ```swift
 // 1. 定义你的计划：
 let plan = Plan.after(3.seconds)
@@ -67,7 +66,7 @@ plan.do {
 
 #### 基于时间间隔调度
 
-Schedule 使用自定义的 `Interval` 类型来配置定时任务，你不用担心对内置类型的扩展可能会污染你的命名空间。优雅的构造方式使整个配置过程就像一场舒服的对话：
+Schedule 使用自定义的 `Interval` 类型来配置定时任务，你不必担心对内置类型的扩展会污染你的命名空间。流畅的构造方法让配置像一场舒服的对话：
 
 ```swift
 Plan.every(1.second).do { }
@@ -79,7 +78,7 @@ Plan.of(1.second, 2.minutes, 3.hours).do { }
 
 #### 基于日期调度
 
-配置基于日期的任务调度同样如此，Schedule 定义了所有常用的日期类型，让你的书写无比直观，流畅：
+配置基于日期的调度同样如此，Schedule 定义了所有常用的日期类型，尽力让你的书写直观、流畅：
 
 ```swift
 Plan.at(when).do { }
@@ -142,18 +141,18 @@ let p8 = p7.until(date)
 
 #### 寄生
 
-Schedule 提供了一种寄生机制，它可以让你以一种更优雅的方式处理 task 的生命周期：
+Schedule 提供了一种寄生机制，它让你可以以一种更优雅的方式处理 task 的生命周期：
 
 ```swift
 Plan.every(1.second).do(host: self) {
-	// task 会在 host 被 deallocated 后自动被 cancel
-	// 这在你想要把一个 task 的生命周期绑定到控制器上时非常有用
+    // task 会在 host 被 deallocated 后自动被 cancel
+    // 这在你想要把一个 task 的生命周期绑定到控制器上时非常有用
 }
 ```
 
 #### RunLoop
 
-Task 默认会在当前线程上执行，它的实现依赖于 RunLoop。所以你需要确保当前线程有一个可用的 RunLoop；如果 task 是在子线程创建的，你可能需要执行 `RunLoop.current.run()`。默认情况下 Task 会被添加到 `.common` mode 上，你可以在创建 task 时指定 mode：
+Task 默认会在当前线程上执行，它的实现依赖于 RunLoop，所以你需要保证当前线程有一个可用的 RunLoop。如果 task 的创建在子线程上，你可能需要执行 `RunLoop.current.run()`。默认情况下， task 会被添加到 `.common` mode 上，你可以在创建 task 时指定其它 mode：
 
 ```swift
 Plan.every(1.second).do(mode: .default) {
@@ -163,7 +162,7 @@ Plan.every(1.second).do(mode: .default) {
 
 #### DispatchQueue
 
-你可以使用 queue 来指定时间到时 task 会被派发到哪条 DispatchQueue，这个方法不依赖于 RunLoop，你可以在子线程中放心的使用：
+你也可以使用 queue 来指定 task 会被派发到哪个 DispatchQueue 上，这时，task 的执行不再依赖于 RunLoop，意味着你可以放心地子线程上使用：
 
 ```swift
 Plan.every(1.second).do(queue: .global()) {
@@ -198,13 +197,13 @@ task.cancel()
 ```swift
 let dailyTask = Plan.every(1.day)
 dailyTask.addAction {
-	print("open eyes")
+    print("open eyes")
 }
 dailyTask.addAction {
-	print("get up")
+    print("get up")
 }
 let key = dailyTask.addAction {
-	print("take a shower")
+    print("take a shower")
 }
 dailyTask.removeAction(byKey: key)
 ```
@@ -215,10 +214,11 @@ dailyTask.removeAction(byKey: key)
 
 ```swift
 let s = Plan.every(1.day)
-let task0 = s.do(queue: myTaskQueue, tag: "log") { }
-let task1 = s.do(queue: myTaskQueue, tag: "log") { }
+let task0 = s.do(queue: myTaskQueue) { }
+let task1 = s.do(queue: myTaskQueue) { }
 
 task0.addTag("database")
+task1.addTags("database", "log")
 task1.removeTag("log")
 
 Task.suspend(byTag: "log")
@@ -255,7 +255,7 @@ task.restOfLifetime == 11.hours
 ## 支持
 
 - iOS 8.0+ / macOS 10.10+ / tvOS 9.0+ / watchOS 2.0+
-- Linux(Tested on Ubuntu 16.04) 
+- Linux(Tested on Ubuntu 16.04)
 
 ## 安装
 
@@ -272,7 +272,7 @@ end
 
 ### Carthage
 
-```
+```ruby
 github "jianstm/Schedule"
 ```
 
@@ -280,13 +280,13 @@ github "jianstm/Schedule"
 
 ```swift
 dependencies: [
-	.package(url: "https://github.com/jianstm/Schedule", .upToNextMajor("1.0.0"))
+    .package(url: "https://github.com/jianstm/Schedule", .upToNextMajor("1.0.0"))
 ]
 ```
 
 ## 致谢
 
-项目灵感来自于 Dan Bader 的 [schedule](https://github.com/dbader/schedule)！语法设计参考了 Ruby!
+项目灵感来自于 Dan Bader 的 [schedule](https://github.com/dbader/schedule)！语法设计深受 Ruby 影响!
 
 ## 贡献
 
