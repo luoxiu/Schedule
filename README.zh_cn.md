@@ -266,14 +266,14 @@ task.restOfLifetime == 11.hours
 use_frameworks!
 
 target 'YOUR_TARGET_NAME' do
-  pod 'Schedule'
+  pod 'Schedule', '~> 1.0'
 end
 ```
 
 ### Carthage
 
 ```ruby
-github "jianstm/Schedule"
+github "jianstm/Schedule" ~> 1.0
 ```
 
 ### Swift Package Manager
