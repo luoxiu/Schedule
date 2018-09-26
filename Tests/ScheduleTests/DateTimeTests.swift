@@ -1,10 +1,3 @@
-//
-//  DateTimeTests.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/2.
-//
-
 import XCTest
 @testable import Schedule
 
@@ -41,13 +34,13 @@ final class DateTimeTests: XCTestCase {
 
         let i1 = Interval(seconds: 24 * 60 * 60)
         XCTAssertEqual(1.nanosecond * i1.nanoseconds, 1.day)
-        XCTAssertEqual(2.microsecond * i1.microseconds, 2.days)
-        XCTAssertEqual(3.millisecond * i1.milliseconds, 3.days)
-        XCTAssertEqual(4.second * i1.seconds, 4.days)
-        XCTAssertEqual(5.1.minute * i1.minutes, 5.1.days)
-        XCTAssertEqual(6.2.hour * i1.hours, 6.2.days)
-        XCTAssertEqual(7.3.day * i1.days, 7.3.days)
-        XCTAssertEqual(1.week * i1.weeks, 1.days)
+        XCTAssertEqual(2.microsecond * i1.asMicroseconds(), 2.days)
+        XCTAssertEqual(3.millisecond * i1.asMilliseconds(), 3.days)
+        XCTAssertEqual(4.second * i1.asSeconds(), 4.days)
+        XCTAssertEqual(5.1.minute * i1.asMinutes(), 5.1.days)
+        XCTAssertEqual(6.2.hour * i1.asHours(), 6.2.days)
+        XCTAssertEqual(7.3.day * i1.asDays(), 7.3.days)
+        XCTAssertEqual(1.week * i1.asWeeks(), 1.days)
 
         let date0 = Date()
         let date1 = date0.addingTimeInterval(100)

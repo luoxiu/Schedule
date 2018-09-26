@@ -1,10 +1,3 @@
-//
-//  Extensions.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/22.
-//
-
 import Foundation
 
 extension Double {
@@ -29,12 +22,16 @@ extension Int {
 
 extension Calendar {
 
-    static let gregorian = Calendar(identifier: .gregorian)
+    static var gregorian: Calendar {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.locale = Locale(identifier: "en_US_POSIX")
+        return calendar
+    }
 }
 
 extension Date {
 
-    func zeroClock() -> Date {
+    func zeroToday() -> Date {
         let calendar = Calendar.gregorian
         let timeZone = TimeZone.current
         var dateComponents = calendar.dateComponents(in: timeZone, from: self)

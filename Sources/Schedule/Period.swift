@@ -1,10 +1,3 @@
-//
-//  Period.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/17.
-//
-
 import Foundation
 
 /// `Period` represents a period of time defined in terms of fields.
@@ -47,19 +40,17 @@ public struct Period {
         self.nanoseconds = nanoseconds
     }
 
-    private static var map: Atomic<[String: Int]> = Atomic([
+    private static let quantifiers: Atomic<[String: Int]> = Atomic([
         "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6,
         "seven": 7, "eight": 8, "nine": 9, "ten": 10, "eleven": 11, "twelve": 12
-    ])
+        ])
 
-    /// Register your own quantifier.
+    /// Registers your own quantifier.
     ///
     ///     Period.registerQuantifier("fifty", for: 15)
     ///     let period = Period("fifty minutes")
     public static func registerQuantifier(_ word: String, for number: Int) {
-        map.mutate {
-            $0[word] = number
-        }
+        quantifiers.write { $0[word] = number }
     }
 
     /// Creates a period from a natural expression.
@@ -69,7 +60,7 @@ public struct Period {
     ///     Period("1 year, 2 months and 3 days") => Period(years: 1, months: 2, days: 3)
     public init?(_ string: String) {
         var period = string
-        for (word, number) in Period.map.read() {
+        for (word, number) in Period.quantifiers.read({ $0 }) {
             period = period.replacingOccurrences(of: word, with: "\(number)")
         }
         guard let regex = try? NSRegularExpression(pattern: "( and |, )") else {
@@ -162,7 +153,9 @@ public struct Period {
         return period
     }
 
-    func toDateComponents() -> DateComponents {
+    /// Returns a dateComponenets of the period, using gregorian calender and
+    /// current time zone.
+    public func toDateComponents() -> DateComponents {
         return DateComponents(year: years, month: months, day: days,
                               hour: hours, minute: minutes, second: seconds,
                               nanosecond: nanoseconds)
@@ -198,5 +191,30 @@ extension Int {
 
     public var month: Period {
         return months
+    }
+}
+
+extension Period: CustomStringConvertible {
+
+    /// A textual representation of this period.
+    public var description: String {
+        let period = tidied(to: .day)
+        var desc = "Period:"
+        if period.years != 0 { desc += " \(period.years) year(s)" }
+        if period.months != 0 { desc += " \(period.months) month(s)" }
+        if period.days != 0 { desc += " \(period.days) day(s)" }
+        if period.hours != 0 { desc += " \(period.hours) hour(s)" }
+        if period.minutes != 0 { desc += " \(period.minutes) minute(s)" }
+        if period.seconds != 0 { desc += " \(period.seconds) second(s)" }
+        if period.nanoseconds != 0 { desc += " \(period.nanoseconds) nanosecond(s)" }
+        return desc
+    }
+}
+
+extension Period: CustomDebugStringConvertible {
+
+    /// A textual representation of this period for debugging.
+    public var debugDescription: String {
+        return description
     }
 }

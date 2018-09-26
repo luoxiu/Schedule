@@ -1,46 +1,55 @@
-//
-//  Bucket.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/22.
-//
-
 import Foundation
 
-struct BucketKey: Hashable, RawRepresentable {
+struct BucketKey {
 
-    let rawValue: UInt64
+    let underlying: UInt64
 
-    var hashValue: Int {
-        return rawValue.hashValue
-    }
-
-    static func == (lhs: BucketKey, rhs: BucketKey) -> Bool {
-        return lhs.rawValue == rhs.rawValue
+    init(_ underlying: UInt64) {
+        self.underlying = underlying
     }
 
     func next() -> BucketKey {
-        return BucketKey(rawValue: rawValue &+ 1)
+        return BucketKey(underlying &+ 1)
     }
 }
 
 struct Bucket<Element> {
 
-    private var nextKey = BucketKey(rawValue: 0)
-
     private typealias Entry = (key: BucketKey, element: Element)
-    private var entries: [Entry] = []
+
+    private var key = BucketKey(0)
+    private var entry: Entry?
+    private var entries: [Entry]?
 
     @discardableResult
     mutating func append(_ new: Element) -> BucketKey {
-        defer { nextKey = nextKey.next() }
+        defer { key = key.next() }
+        let entry = (key: key, element: new)
 
-        entries.append((key: nextKey, element: new))
-        return nextKey
+        if self.entry == nil {
+            self.entry = entry
+            return key
+        }
+
+        if entries == nil {
+            entries = [entry]
+        } else {
+            entries!.append(entry)
+        }
+
+        return key
     }
 
     func element(for key: BucketKey) -> Element? {
-        for entry in entries where entry.key == key {
+        if entry?.key == key {
+            return entry?.element
+        }
+
+        if entries == nil {
+            return nil
+        }
+
+        for entry in entries! where entry.key == key {
             return entry.element
         }
         return nil
@@ -48,28 +57,50 @@ struct Bucket<Element> {
 
     @discardableResult
     mutating func removeElement(for key: BucketKey) -> Element? {
-        for (idx, entry) in entries.enumerated() where entry.key == key {
-            entries.remove(at: idx)
+        if entry?.key == key {
+            defer { entry = nil }
+            return entry?.element
+        }
+
+        if entries == nil {
+            return nil
+        }
+
+        for (idx, entry) in entries!.enumerated() where entry.key == key {
+            entries!.remove(at: idx)
             return entry.element
         }
+
         return nil
     }
 
     mutating func removeAll() {
-        entries.removeAll()
+        entry = nil
+        entries = nil
     }
 
     var count: Int {
-        return entries.count
+        return (entry == nil ? 0 : 1) + (entries?.count ?? 0)
     }
 }
 
 extension Bucket: Sequence {
 
     func makeIterator() -> AnyIterator<Element> {
-        var it = entries.makeIterator()
+        var bucket = self
+        var iterator = bucket.entries?.makeIterator()
         return AnyIterator {
-            return it.next()?.element
+            if bucket.entry != nil {
+                return bucket.removeElement(for: bucket.entry!.key)
+            }
+            return iterator?.next()?.element
         }
+    }
+}
+
+extension BucketKey: Equatable {
+
+    static func == (lhs: BucketKey, rhs: BucketKey) -> Bool {
+        return lhs.underlying == rhs.underlying
     }
 }

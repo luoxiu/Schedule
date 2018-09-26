@@ -1,32 +1,35 @@
-//
-//  DeinitObserver.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/8/26.
-//
-
 import Foundation
 
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
 
-class DeinitObserver<T: AnyObject> {
+private var deinitObserverKey: Void = ()
 
-    private weak var observed: T?
+class DeinitObserver {
 
-    private var block: () -> Void
+    private(set) weak var observable: AnyObject?
+
+    private var block: (() -> Void)?
 
     private init(_ block: @escaping () -> Void) {
         self.block = block
     }
 
-    static func observe(_ observed: T, whenDeinit: @escaping () -> Void) {
-        let observer = DeinitObserver(whenDeinit)
-        var key: Void = ()
-        objc_setAssociatedObject(observed, &key, observer, .OBJC_ASSOCIATION_RETAIN)
+    @discardableResult
+    static func observe(_ observable: AnyObject, whenDeinit block: @escaping () -> Void) -> DeinitObserver {
+        let observer = DeinitObserver(block)
+        objc_setAssociatedObject(observable, &deinitObserverKey, observer, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        return observer
+    }
+
+    func clear() {
+        block = nil
+        if let o = observable {
+            objc_setAssociatedObject(o, &deinitObserverKey, nil, .OBJC_ASSOCIATION_ASSIGN)
+        }
     }
 
     deinit {
-        block()
+        block?()
     }
 }
 

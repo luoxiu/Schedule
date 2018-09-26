@@ -1,10 +1,3 @@
-//
-//  TaskHub.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/17.
-//
-
 import Foundation
 
 final class TaskHub {

@@ -1,10 +1,3 @@
-//
-//  Misc.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/2.
-//
-
 import Foundation
 @testable import Schedule
 
@@ -59,16 +52,23 @@ extension Sequence where Element == Interval {
     }
 }
 
-extension Schedule {
+extension Plan {
 
-    func isAlmostEqual(to schedule: Schedule, leeway: Interval) -> Bool {
-        return makeIterator().isAlmostEqual(to: schedule.makeIterator(), leeway: leeway)
+    func isAlmostEqual(to plan: Plan, leeway: Interval) -> Bool {
+        return makeIterator().isAlmostEqual(to: plan.makeIterator(), leeway: leeway)
     }
 }
 
 extension DispatchQueue {
 
     func async(after delay: Interval, execute body: @escaping () -> Void) {
-        asyncAfter(wallDeadline: .now() + delay.seconds, execute: body)
+        asyncAfter(wallDeadline: .now() + delay.asSeconds(), execute: body)
+    }
+
+    static func `is`(_ queue: DispatchQueue) -> Bool {
+        let key = DispatchSpecificKey<()>()
+        queue.setSpecific(key: key, value: ())
+        defer { queue.setSpecific(key: key, value: nil) }
+        return DispatchQueue.getSpecific(key: key) != nil
     }
 }

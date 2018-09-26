@@ -1,24 +1,13 @@
-//
-//  Task.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/2.
-//
-
 import Foundation
 
-/// `ActionKey` represents a token that can be used to manage action.
+/// `ActionKey` represents a token that can be used to remove the action.
 public protocol ActionKey {
     var underlying: UInt64 { get }
 }
 
-extension BucketKey: ActionKey {
-    var underlying: UInt64 {
-        return rawValue
-    }
-}
+extension BucketKey: ActionKey { }
 
-/// `Task` represents a job to be scheduled.
+/// `Task` represents a timed task.
 public class Task {
 
     private let _lock = Lock()
@@ -34,38 +23,60 @@ public class Task {
     private lazy var _tags: Set<String> = []
     private lazy var _countOfExecutions: Int = 0
 
-    private lazy var _lifetime: Interval = Int.max.second
+    #if !canImport(ObjectiveC)
+    private weak var _host: AnyObject? = TaskHub.shared
+    #endif
+
+    private lazy var _lifetime: Interval = Int.max.seconds
     private lazy var _lifetimeTimer: DispatchSourceTimer = {
         let timer = DispatchSource.makeTimerSource()
         timer.setEventHandler {
             self.cancel()
-            timer.cancel()
         }
         timer.schedule(after: _lifetime)
         timer.resume()
         return timer
     }()
 
-    init(schedule: Schedule,
-         queue: DispatchQueue? = nil,
-         tag: String? = nil,
+    init(plan: Plan,
+         queue: DispatchQueue?,
+         host: AnyObject?,
          onElapse: @escaping (Task) -> Void) {
 
-        _iterator = schedule.makeIterator()
+        _iterator = plan.makeIterator()
         _timer = DispatchSource.makeTimerSource(queue: queue)
 
         _actions.append(onElapse)
 
         _timer.setEventHandler { [weak self] in
-            self?.elapse()
+            guard let self = self else { return }
+
+            #if !canImport(ObjectiveC)
+            guard self._host != nil else {
+                self.cancel()
+                return
+            }
+            #endif
+
+            self.elapse()
         }
 
-        // Consider `nil` a distant future.
-        let interval = _iterator.next() ?? Date.distantFuture.intervalSinceNow
-        _timer.schedule(after: interval)
-        _timeline.estimatedNextExecution = Date().adding(interval)
+        if let interval = _iterator.next(), !interval.isNegative {
+            _timer.schedule(after: interval)
+            _timeline.estimatedNextExecution = Date().adding(interval)
+        }
 
-        TaskHub.shared.add(self, withTag: tag)
+        if let host = host {
+            #if canImport(ObjectiveC)
+            DeinitObserver.observe(host) { [weak self] in
+                self?.cancel()
+            }
+            #else
+            _host = host
+            #endif
+        }
+
+        TaskHub.shared.add(self)
         _timer.resume()
     }
 
@@ -81,18 +92,22 @@ public class Task {
 
     private func scheduleNext() {
         _lock.withLock {
+            let now = Date()
+            var estimated = _timeline.estimatedNextExecution ?? now
             repeat {
-                guard let interval = _iterator.next() else {
+                guard let interval = _iterator.next(), !interval.isNegative else {
                     _timeline.estimatedNextExecution = nil
                     return
                 }
-                _timeline.estimatedNextExecution = _timeline.estimatedNextExecution!.adding(interval)
-            } while (_timeline.estimatedNextExecution! <= Date())
-            _timer.schedule(after: _timeline.estimatedNextExecution!.timeIntervalSinceNow.seconds)
+                estimated = estimated.adding(interval)
+            } while (estimated < now)
+
+            _timeline.estimatedNextExecution = estimated
+            _timer.schedule(after: _timeline.estimatedNextExecution!.interval(since: now))
         }
     }
 
-    /// Execute this task now, without disrupting its schedule.
+    /// Execute this task now, without disrupting its plan.
     public func execute() {
         let actions = _lock.withLock { () -> Bucket<Task.Action> in
             let now = Date()
@@ -111,8 +126,8 @@ public class Task {
         execute()
     }
 
-    /// The number of times this task has been executed.
-    public var countOfExecution: Int {
+    /// The number of times the task has been executed.
+    public var countOfExecutions: Int {
         return _lock.withLock {
             _countOfExecutions
         }
@@ -127,11 +142,10 @@ public class Task {
 
     // MARK: - Manage
 
-    /// Reschedules this task with the new schedule.
-    public func reschedule(_ new: Schedule) {
+    /// Reschedules this task with the new plan.
+    public func reschedule(_ new: Plan) {
         _lock.withLock {
             _iterator = new.makeIterator()
-            _timeline.estimatedNextExecution = Date()
         }
         scheduleNext()
     }
@@ -190,7 +204,7 @@ public class Task {
     /// The rest of lifetime.
     public var restOfLifetime: Interval {
         return _lock.withLock {
-            _lifetime - Date().interval(since: _timeline.initialize)
+            _lifetime - Date().interval(since: _timeline.initialization)
         }
     }
 
@@ -205,7 +219,7 @@ public class Task {
         guard restOfLifetime.isPositive else { return false }
 
         _lock.lock()
-        let age = Date().interval(since: _timeline.initialize)
+        let age = Date().interval(since: _timeline.initialization)
         guard age.isShorter(than: interval) else {
             _lock.unlock()
             return false
@@ -267,7 +281,7 @@ public class Task {
     /// Removes action by key from this task.
     public func removeAction(byKey key: ActionKey) {
         _lock.withLock {
-            _ = _actions.removeElement(for: BucketKey(rawValue: key.underlying))
+            _ = _actions.removeElement(for: BucketKey(key.underlying))
         }
     }
 
@@ -341,9 +355,6 @@ public class Task {
     public func removeTag(_ tag: String) {
         removeTags(tag)
     }
-}
-
-extension Task {
 
     /// Suspends all tasks that have the tag.
     public static func suspend(byTag tag: String) {
@@ -371,5 +382,27 @@ extension Task: Hashable {
     /// Returns a boolean value indicating whether two tasks are equal.
     public static func == (lhs: Task, rhs: Task) -> Bool {
         return lhs.hashValue == rhs.hashValue
+    }
+}
+
+extension Task: CustomStringConvertible {
+
+    /// A textual representation of this task.
+    public var description: String {
+        return "Task: { " +
+        "\"isCancelled\": \(_timer.isCancelled)" +
+        "\"tags\": \(_tags), " +
+        "\"countOfActions\": \(_actions.count), " +
+        "\"countOfExecutions\": \(_countOfExecutions), " +
+        "\"timeline\": \(_timeline)" +
+        " }"
+    }
+}
+
+extension Task: CustomDebugStringConvertible {
+
+    /// A textual representation of this task for debugging.
+    public var debugDescription: String {
+        return description
     }
 }

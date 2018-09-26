@@ -1,10 +1,3 @@
-//
-//  Monthday.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/17.
-//
-
 import Foundation
 
 /// `Monthday` represents a day of a month without years.
@@ -34,13 +27,16 @@ public enum Monthday {
 
     case december(Int)
 
-    var isToday: Bool {
+    /// A Boolean value indicating whether today is the weekday.
+    public var isToday: Bool {
         let lhs = Calendar.gregorian.dateComponents(in: TimeZone.current, from: Date())
         let rhs = toDateComponents()
         return lhs.month == rhs.month && lhs.day == rhs.day
     }
 
-    func toDateComponents() -> DateComponents {
+    /// Returns a dateComponenets of the monthday, using gregorian calender and
+    /// current time zone.
+    public func toDateComponents() -> DateComponents {
         var month, day: Int
         switch self {
         case .january(let n):       month = 1; day = n
@@ -60,5 +56,25 @@ public enum Monthday {
                               timeZone: TimeZone.current,
                               month: month,
                               day: day)
+    }
+}
+
+extension Monthday: CustomStringConvertible {
+
+    /// A textual representation of this monthday.
+    public var description: String {
+        let month = toDateComponents().month!
+        let day = toDateComponents().day!
+
+        let monthDesc = Calendar.gregorian.monthSymbols[month - 1]
+        return "Monthday: \(monthDesc) \(day)"
+    }
+}
+
+extension Monthday: CustomDebugStringConvertible {
+
+    /// A textual representation of this monthday for debugging.
+    public var debugDescription: String {
+        return description
     }
 }

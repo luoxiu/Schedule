@@ -1,10 +1,3 @@
-//
-//  ExtensionsTests.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/24.
-//
-
 import XCTest
 @testable import Schedule
 
@@ -28,10 +21,10 @@ final class ExtensionsTests: XCTestCase {
     }
 
     func testZeroClock() {
-        let z = Date().zeroClock()
+        let z = Date().zeroToday()
         let components = z.dateComponents
         guard let h = components.hour, let m = components.minute, let s = components.second else {
-            XCTFail("should not get nil here")
+            XCTFail()
             return
         }
         XCTAssertEqual(h, 0)

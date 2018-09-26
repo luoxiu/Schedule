@@ -1,10 +1,3 @@
-//
-//  Time.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/17.
-//
-
 import Foundation
 
 /// `Time` represents a time without a date.
@@ -97,10 +90,34 @@ public struct Time {
         return hour.hours + minute.minutes + second.seconds + nanosecond.nanoseconds
     }
 
-    func toDateComponents() -> DateComponents {
+    /// Returns a dateComponenets of the time, using gregorian calender and
+    /// current time zone.
+    public func toDateComponents() -> DateComponents {
         return DateComponents(calendar: Calendar.gregorian,
                               timeZone: TimeZone.current,
-                              hour: hour, minute: minute,
-                              second: second, nanosecond: nanosecond)
+                              hour: hour,
+                              minute: minute,
+                              second: second,
+                              nanosecond: nanosecond)
+    }
+}
+
+extension Time: CustomStringConvertible {
+
+    /// A textual representation of this time.
+    public var description: String {
+        let h = "\(hour)".padding(toLength: 2, withPad: "0", startingAt: 0)
+        let m = "\(minute)".padding(toLength: 2, withPad: "0", startingAt: 0)
+        let s = "\(second)".padding(toLength: 2, withPad: "0", startingAt: 0)
+        let ns = "\(nanosecond / 1_000_000)".padding(toLength: 3, withPad: "0", startingAt: 0)
+        return "Time: \(h):\(m):\(s).\(ns)"
+    }
+}
+
+extension Time: CustomDebugStringConvertible {
+
+    /// A textual representation of this time for debugging.
+    public var debugDescription: String {
+        return description
     }
 }

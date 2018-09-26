@@ -1,10 +1,3 @@
-//
-//  Interval.swift
-//  Schedule
-//
-//  Created by Quentin Jin on 2018/7/17.
-//
-
 import Foundation
 
 /// `Interval` represents a length of time.
@@ -27,12 +20,12 @@ extension Interval {
     /// An interval can be negative:
     ///
     /// - The interval from 6:00 to 7:00 is `1.hour`,
-    /// but the interval from 7:00 to 6:00 is `-1.hour`.
-    /// In this case, `-1.hour` means **one hour ago**.
+    ///   but the interval from 7:00 to 6:00 is `-1.hour`.
+    ///   In this case, `-1.hour` means **one hour ago**.
     ///
     /// - The interval comparing `3.hour` to `1.hour` is `2.hour`,
-    /// but the interval comparing `1.hour` to `3.hour` is `-2.hour`.
-    /// In this case, `-2.hour` means **two hours shorter**
+    ///   but the interval comparing `1.hour` to `3.hour` is `-2.hour`.
+    ///   In this case, `-2.hour` means **two hours shorter**
     public var isNegative: Bool {
         return nanoseconds < 0
     }
@@ -194,39 +187,44 @@ extension Interval {
         self.init(nanoseconds: seconds * pow(10, 9))
     }
 
+    /// The length of this interval in nanoseconds.
+    public func asNanoseconds() -> Double {
+        return nanoseconds
+    }
+
     /// The length of this interval in microseconds.
-    public var microseconds: Double {
+    public func asMicroseconds() -> Double {
         return nanoseconds / pow(10, 3)
     }
 
     /// The length of this interval in milliseconds.
-    public var milliseconds: Double {
+    public func asMilliseconds() -> Double {
         return nanoseconds / pow(10, 6)
     }
 
     /// The length of this interval in seconds.
-    public var seconds: Double {
+    public func asSeconds() -> Double {
         return nanoseconds / pow(10, 9)
     }
 
     /// The length of this interval in minutes.
-    public var minutes: Double {
-        return seconds / 60
+    public func asMinutes() -> Double {
+        return asSeconds() / 60
     }
 
     /// The length of this interval in hours.
-    public var hours: Double {
-        return minutes / 60
+    public func asHours() -> Double {
+        return asMinutes() / 60
     }
 
     /// The length of this interval in days.
-    public var days: Double {
-        return hours / 24
+    public func asDays() -> Double {
+        return asHours() / 24
     }
 
     /// The length of this interval in weeks.
-    public var weeks: Double {
-        return days / 7
+    public func asWeeks() -> Double {
+        return asDays() / 7
     }
 }
 
@@ -313,6 +311,7 @@ extension IntervalConvertible {
     }
 }
 
+// MARK: - Date
 extension Date {
 
     /// The interval between this date and the current date and time.
@@ -331,7 +330,7 @@ extension Date {
 
     /// Returns a new date by adding an interval to this date.
     public func adding(_ interval: Interval) -> Date {
-        return addingTimeInterval(interval.seconds)
+        return addingTimeInterval(interval.asSeconds())
     }
 
     /// Returns a date with an interval added to it.
@@ -340,14 +339,12 @@ extension Date {
     }
 }
 
+// MARK: - DispatchSourceTimer
 extension DispatchSourceTimer {
 
-    func schedule(after delay: Interval) {
-        guard !delay.isNegative else {
-            schedule(wallDeadline: .distantFuture)
-            return
-        }
-        let ns = delay.nanoseconds.clampedToInt()
+    func schedule(after timeout: Interval) {
+        guard !timeout.isNegative else { return }
+        let ns = timeout.nanoseconds.clampedToInt()
         schedule(wallDeadline: .now() + DispatchTimeInterval.nanoseconds(ns))
     }
 }

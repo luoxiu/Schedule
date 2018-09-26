@@ -1,10 +1,3 @@
-//
-//  Calendar.swift
-//  Schedule
-//
-//  Created by Quentin MED on 2018/8/27.
-//
-
 import Foundation
 
 extension Calendar {
@@ -23,7 +16,7 @@ extension Calendar {
         if days <= 0 {
             days += 7
         }
-        return self.date(byAdding: .day, value: days, to: date)?.zeroClock()
+        return self.date(byAdding: .day, value: days, to: date)?.zeroToday()
 
         #endif
     }
