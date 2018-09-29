@@ -36,7 +36,7 @@ before_install:
 
 script:
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
-      - xcodebuild clean build test -project Schedule.xcodeproj -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -enableCodeCoverage YES | xcpretty;
+      xcodebuild clean build test -project Schedule.xcodeproj -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -enableCodeCoverage YES | xcpretty;
     fi
   - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
       swift build;
