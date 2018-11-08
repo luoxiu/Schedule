@@ -4,7 +4,9 @@
 
 [![Build Status](https://travis-ci.org/jianstm/Schedule.svg?branch=master)](https://travis-ci.org/jianstm/Schedule)
 [![codecov](https://codecov.io/gh/jianstm/Schedule/branch/master/graph/badge.svg)](https://codecov.io/gh/jianstm/Schedule)
-<img src="https://img.shields.io/badge/version-0.1.0-orange.svg">
+<a href="https://github.com/jianstm/Schedule/releases">
+  <img src="https://img.shields.io/github/tag/jianstm/Schedule.svg">
+</a>
 <img src="https://img.shields.io/badge/support-CocoaPods%20%7C%20Carthage%20%7C%20SwiftPM-brightgreen.svg">
 <img src="https://img.shields.io/badge/platform-iOS%20%7C%20macOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20Linux-lightgrey.svg">
 </p>
