@@ -498,6 +498,6 @@ extension Plan {
 
 extension Plan {
     public func isNever() -> Bool {
-        self.sequence.makeIterator().next() == nil
+        return self.sequence.makeIterator().next() == nil
     }
 }
