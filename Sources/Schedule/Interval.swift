@@ -99,22 +99,28 @@ extension Interval {
     }
 
     /// Returns the longest interval of the given values.
+    /// - Note: Returns initialized with `init(nanoseconds: 0)` if given no parameters.
     public static func longest(_ intervals: Interval...) -> Interval {
         return Interval.longest(intervals)
     }
         
     /// Returns the longest interval of the given values.
+    /// - Note: Returns initialized with `init(nanoseconds: 0)` if given an empty array.
     public static func longest(_ intervals: [Interval]) -> Interval {
+        guard !intervals.isEmpty else { return .init(nanoseconds: 0) }
         return intervals.sorted(by: { $0.magnitude > $1.magnitude })[0]
     }
 
     /// Returns the shortest interval of the given values.
+    /// - Note: Returns initialized with `init(nanoseconds: 0)` if given no parameters.
     public static func shortest(_ intervals: Interval...) -> Interval {
         return Interval.shortest(intervals)
     }
     
     /// Returns the shortest interval of the given values.
+    /// - Note: Returns initialized with `init(nanoseconds: 0)` if given an empty array.
     public static func shortest(_ intervals: [Interval]) -> Interval {
+        guard !intervals.isEmpty else { return .init(nanoseconds: 0) }
         return intervals.sorted(by: { $0.magnitude < $1.magnitude })[0]
     }
 }
