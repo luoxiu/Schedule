@@ -353,7 +353,7 @@ extension Plan {
 
         /// Returns a plan at the specific time.
         public func at(_ time: Time) -> Plan {
-            guard self.plan != .never else { return .never }
+            guard !self.plan.isNever() else { return .never }
             
             var interval = time.intervalSinceZeroClock
             return Plan.make { () -> AnyIterator<Interval> in
@@ -373,7 +373,7 @@ extension Plan {
         /// See Time's constructor
         public func at(_ time: String) -> Plan {
             guard
-                self.plan != .never,
+                !self.plan.isNever(),
                 let time = Time(time)
             else {
                 return .never
@@ -403,7 +403,7 @@ extension Plan {
         ///
         /// - Note: Returns `Plan.never` if given an empty array.
         public func at(_ time: [Int]) -> Plan {
-            guard !time.isEmpty, self.plan != .never else { return .never }
+            guard !time.isEmpty, !self.plan.isNever() else { return .never }
             
             let hour = time[0]
             let minute = time.count > 1 ? time[1] : 0
@@ -496,8 +496,8 @@ extension Plan {
     }
 }
 
-extension Plan: Equatable {
-    public static func == (lhs: Plan, rhs: Plan) -> Bool {
-        return lhs.sequence.elementsEqual(rhs.sequence)
+extension Plan {
+    public func isNever() -> Bool {
+        self.sequence.makeIterator().next() == nil
     }
 }
