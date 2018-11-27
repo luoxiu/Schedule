@@ -149,6 +149,7 @@ final class PlanTests: XCTestCase {
         ("testAfterAndRepeating", testAfterAndRepeating),
         ("testEveryPeriod", testEveryPeriod),
         ("testEveryWeekday", testEveryWeekday),
-        ("testEveryMonthday", testEveryMonthday)
+        ("testEveryMonthday", testEveryMonthday),
+        ("testPassingEmptyArrays", testPassingEmptyArrays),
     ]
 }
