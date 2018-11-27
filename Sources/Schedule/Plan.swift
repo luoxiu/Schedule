@@ -495,3 +495,9 @@ extension Plan {
         return DateMiddleware(plan: plan)
     }
 }
+
+extension Plan: Equatable {
+    public static func == (lhs: Plan, rhs: Plan) -> Bool {
+        return lhs.sequence.elementsEqual(rhs.sequence)
+    }
+}
