@@ -22,7 +22,9 @@ final class DateTimeTests: XCTestCase {
         XCTAssertTrue(1.1.second.isLonger(than: 1.0.second))
         XCTAssertTrue(3.days.isShorter(than: 1.week))
         XCTAssertEqual(Interval.longest(1.hour, 1.day, 1.week), 1.week)
+        XCTAssertEqual(Interval.longest([]), .init(nanoseconds: 0))
         XCTAssertEqual(Interval.shortest(1.hour, 59.minutes, 2999.seconds), 2999.seconds)
+        XCTAssertEqual(Interval.shortest([]), .init(nanoseconds: 0))
 
         XCTAssertEqual(1.second * 60, 1.minute)
         XCTAssertEqual(59.minutes + 60.seconds, 1.hour)

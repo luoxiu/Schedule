@@ -123,6 +123,18 @@ final class PlanTests: XCTestCase {
             XCTAssertEqual(i.dateComponents.hour, 11)
         }
     }
+    
+    func testPassingEmptyArrays() {
+        XCTAssertEqual(Plan.of([Interval]()), Plan.never)
+        XCTAssertEqual(Plan.of([Date]()), Plan.never)
+        
+        XCTAssertEqual(Plan.every([Weekday]()).at(11, 11), Plan.never)
+        XCTAssertEqual(Plan.every([Monthday]()).at(11, 11), Plan.never)
+        
+        XCTAssertEqual(Plan.every(.monday).at([]), Plan.never)
+        
+        XCTAssertEqual(Plan.every([Weekday]()).at("11:11:00"), Plan.never)
+    }
 
     static var allTests = [
         ("testMake", testMake),
