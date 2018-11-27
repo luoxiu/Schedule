@@ -123,6 +123,18 @@ final class PlanTests: XCTestCase {
             XCTAssertEqual(i.dateComponents.hour, 11)
         }
     }
+    
+    func testPassingEmptyArrays() {
+        XCTAssertTrue(Plan.of([Interval]()).isNever())
+        XCTAssertTrue(Plan.of([Date]()).isNever())
+        
+        XCTAssertTrue(Plan.every([Weekday]()).at(11, 11).isNever())
+        XCTAssertTrue(Plan.every([Monthday]()).at(11, 11).isNever())
+        
+        XCTAssertTrue(Plan.every(.monday).at([]).isNever())
+        
+        XCTAssertTrue(Plan.every([Weekday]()).at("11:11:00").isNever())
+    }
 
     static var allTests = [
         ("testMake", testMake),
@@ -137,6 +149,7 @@ final class PlanTests: XCTestCase {
         ("testAfterAndRepeating", testAfterAndRepeating),
         ("testEveryPeriod", testEveryPeriod),
         ("testEveryWeekday", testEveryWeekday),
-        ("testEveryMonthday", testEveryMonthday)
+        ("testEveryMonthday", testEveryMonthday),
+        ("testPassingEmptyArrays", testPassingEmptyArrays),
     ]
 }
