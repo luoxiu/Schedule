@@ -21,13 +21,16 @@ public struct Plan {
     ///   - queue: The queue to which the task will be dispatched.
     ///   - host: The object to be hosted on. When this object is dealloced,
     ///           the task will not executed any more.
+    ///   - offsetBy: An optional closure to specify the interval by which to
+    ///               offset the task's runs from the Plan.
     ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
     @discardableResult
     public func `do`(queue: DispatchQueue,
                      host: AnyObject? = nil,
+                     offsetBy intervalOffset: @autoclosure @escaping () -> Interval? = nil,
                      onElapse: @escaping (Task) -> Void) -> Task {
-        return Task(plan: self, queue: queue, host: host, onElapse: onElapse)
+        return Task(plan: self, queue: queue, host: host, offsetBy: intervalOffset, onElapse: onElapse)
     }
 
     /// Schedules a task with this plan.
@@ -36,13 +39,16 @@ public struct Plan {
     ///   - queue: The queue to which the task will be dispatched.
     ///   - host: The object to be hosted on. When this object is dealloced,
     ///           the task will not executed any more.
+    ///   - offsetBy: An optional closure to specify the interval by which to
+    ///               offset the task's runs from the Plan.
     ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
     @discardableResult
     public func `do`(queue: DispatchQueue,
                      host: AnyObject? = nil,
+                     offsetBy intervalOffset: @autoclosure @escaping () -> Interval? = nil,
                      onElapse: @escaping () -> Void) -> Task {
-        return self.do(queue: queue, host: host, onElapse: { (_) in onElapse() })
+        return self.do(queue: queue, host: host, offsetBy: intervalOffset, onElapse: { (_) in onElapse() })
     }
 }
 
@@ -480,7 +486,7 @@ extension Plan {
     public static func every(_ mondays: Monthday...) -> DateMiddleware {
         return Plan.every(mondays)
     }
-        
+    
     /// Creates a plan that executes the task every specific days in the months.
     /// - Note: Returns initialized with `Plan.never` if given an empty array.
     public static func every(_ mondays: [Monthday]) -> DateMiddleware {
