@@ -162,6 +162,29 @@ final class TaskTests: XCTestCase {
         }
         waitForExpectations(timeout: 3)
     }
+    
+    func testIntervalOffset() {
+        let e1 = expectation(description: "testIntervalOffset_1")
+        let e2 = expectation(description: "testIntetvalOffset_2")
+        
+        var date1: Date!
+        var date2: Date!
+        
+        let plan = Plan.of(0.1.second)
+        
+        plan.do {
+            date1 = Date()
+            e1.fulfill()
+        }
+        plan.do(offsetBy: 0.1.second) {
+            date2 = Date()
+            e2.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1)
+        
+        XCTAssertTrue(date2.interval(since: date1).isAlmostEqual(to: 0.1.seconds, leeway: 0.1.seconds))
+    }
 
     static var allTests = [
         ("testAfter", testAfter),
@@ -172,6 +195,7 @@ final class TaskTests: XCTestCase {
         ("testAddAndRemoveTags", testAddAndRemoveTags),
         ("testReschedule", testReschedule),
         ("testHost", testHost),
-        ("testLifetime", testLifetime)
+        ("testLifetime", testLifetime),
+        ("testIntervalOffset", testIntervalOffset),
     ]
 }
