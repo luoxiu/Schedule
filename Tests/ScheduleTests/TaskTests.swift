@@ -183,7 +183,7 @@ final class TaskTests: XCTestCase {
         
         waitForExpectations(timeout: 1)
         
-        XCTAssertTrue(date2.interval(since: date1).isAlmostEqual(to: 0.1.seconds, leeway: 0.1.seconds))
+        XCTAssertTrue(date2.interval(since: date1).isAlmostEqual(to: 0.1.seconds, leeway: 0.05.seconds))
     }
 
     static var allTests = [
