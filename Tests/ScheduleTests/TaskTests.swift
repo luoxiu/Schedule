@@ -176,7 +176,7 @@ final class TaskTests: XCTestCase {
             date1 = Date()
             e1.fulfill()
         }
-        plan.do(offsetBy: 0.1.second) {
+        plan.do(offsetBy: { 0.1.second }) {
             date2 = Date()
             e2.fulfill()
         }
@@ -193,7 +193,7 @@ final class TaskTests: XCTestCase {
         let plan = Plan.of(0.1.second)
         
         plan.do { e1Fulfilled = true }
-        plan.do(offsetBy: -1.second) { e2Fulfilled = true }
+        plan.do(offsetBy: { -1.second }) { e2Fulfilled = true }
         
         let e = expectation(description: "testNegativeIntervalOffset")
         DispatchQueue.main.async(after: 1.second) {

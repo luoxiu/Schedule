@@ -28,7 +28,7 @@ public struct Plan {
     @discardableResult
     public func `do`(queue: DispatchQueue,
                      host: AnyObject? = nil,
-                     offsetBy intervalOffset: @autoclosure @escaping () -> Interval? = nil,
+                     offsetBy intervalOffset: @escaping () -> Interval? = { nil },
                      onElapse: @escaping (Task) -> Void) -> Task {
         return Task(plan: self, queue: queue, host: host, offsetBy: intervalOffset, onElapse: onElapse)
     }
@@ -46,7 +46,7 @@ public struct Plan {
     @discardableResult
     public func `do`(queue: DispatchQueue,
                      host: AnyObject? = nil,
-                     offsetBy intervalOffset: @autoclosure @escaping () -> Interval? = nil,
+                     offsetBy intervalOffset: @escaping () -> Interval? = { nil },
                      onElapse: @escaping () -> Void) -> Task {
         return self.do(queue: queue, host: host, offsetBy: intervalOffset, onElapse: { (_) in onElapse() })
     }

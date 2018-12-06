@@ -22,7 +22,7 @@ extension Plan {
     @discardableResult
     public func `do`(mode: RunLoop.Mode = .common,
                      host: AnyObject? = nil,
-                     offsetBy intervalOffset: @autoclosure @escaping () -> Interval? = nil,
+                     offsetBy intervalOffset: @escaping () -> Interval? = { nil },
                      onElapse: @escaping (Task) -> Void) -> Task {
         return RunLoopTask(plan: self, mode: mode, host: host, offsetBy: intervalOffset, onElapse: onElapse)
     }
@@ -47,7 +47,7 @@ extension Plan {
     @discardableResult
     public func `do`(mode: RunLoop.Mode = .common,
                      host: AnyObject? = nil,
-                     offsetBy intervalOffset: @autoclosure @escaping () -> Interval? = nil,
+                     offsetBy intervalOffset: @escaping () -> Interval? = { nil },
                      onElapse: @escaping () -> Void) -> Task {
         return self.do(mode: mode, host: host, offsetBy: intervalOffset) { (_) in
             onElapse()
@@ -62,7 +62,7 @@ private final class RunLoopTask: Task {
     init(plan: Plan,
          mode: RunLoop.Mode,
          host: AnyObject?,
-         offsetBy intervalOffset: @autoclosure @escaping () -> Interval? = nil,
+         offsetBy intervalOffset: @escaping () -> Interval? = { nil },
          onElapse: @escaping (Task) -> Void) {
 
         var this: Task?
