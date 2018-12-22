@@ -511,7 +511,7 @@ extension Plan {
     ///
     /// If the returned interval offset is `nil`, then no offset is added
     /// to that next-run date.
-    public func offset(by intervalOffset: @autoclosure @escaping () -> Interval?) -> Plan {
+    public func offset(by intervalOffset: @escaping () -> Interval?) -> Plan {
         return Plan.make { () -> AnyIterator<Interval> in
             let it = self.makeIterator()
             return AnyIterator {
@@ -521,5 +521,13 @@ extension Plan {
                 return nil
             }
         }
+    }
+    
+    /// Creates a new plan that is offset by the specified interval.
+    ///
+    /// If the specified interval offset is `nil`, then no offset is
+    /// added to the plan (ie. it stays the same).
+    public func offset(by intervalOffset: Interval?) -> Plan {
+        return self.offset(by: { intervalOffset })
     }
 }
