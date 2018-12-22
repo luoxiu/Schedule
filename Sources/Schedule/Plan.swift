@@ -501,3 +501,25 @@ extension Plan {
         return self.sequence.makeIterator().next() == nil
     }
 }
+
+extension Plan {
+    /// Creates a new plan that is offset by the specified interval in the
+    /// closure body.
+    ///
+    /// The closure is evaluated each time the next-run date is evaluated,
+    /// so the interval can be calculated based on dynamic factors.
+    ///
+    /// If the returned interval offset is `nil`, then no offset is added
+    /// to that next-run date.
+    func offset(by intervalOffset: @autoclosure @escaping () -> Interval?) -> Plan {
+        return Plan.make { () -> AnyIterator<Interval> in
+            let it = self.makeIterator()
+            return AnyIterator {
+                if let next = it.next() {
+                    return next + (intervalOffset() ?? 0.second)
+                }
+                return nil
+            }
+        }
+    }
+}
