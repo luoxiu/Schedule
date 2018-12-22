@@ -135,7 +135,70 @@ final class PlanTests: XCTestCase {
         
         XCTAssertTrue(Plan.every([Weekday]()).at("11:11:00").isNever())
     }
-
+    
+    func testIntervalOffset() {
+        // Non-offset plan
+        let e1 = expectation(description: "testIntervalOffset_1")
+        let plan1 = Plan.after(1.second)
+        var date1: Date?
+        
+        // Offset plan
+        let e2 = expectation(description: "testIntervalOffset_2")
+        let plan2 = plan1.offset(by: 1.second)
+        var date2: Date?
+        
+        plan1.do { date1 = Date(); e1.fulfill() }
+        plan2.do { date2 = Date(); e2.fulfill() }
+        
+        waitForExpectations(timeout: 3.5)
+        
+        XCTAssertNotNil(date1)
+        XCTAssertNotNil(date2)
+        XCTAssertTrue(date2!.interval(since: date1!).isAlmostEqual(to: 1.second, leeway: 0.1.seconds))
+    }
+    
+    func testNegativeIntervalOffset() {
+        // Non-offset plan
+        let e1 = expectation(description: "testIntervalOffset_1")
+        let plan1 = Plan.after(2.seconds)
+        var date1: Date?
+        
+        // Offset plan
+        let e2 = expectation(description: "testIntervalOffset_2")
+        let plan2 = plan1.offset(by: -1.second)
+        var date2: Date?
+        
+        plan1.do { date1 = Date(); e1.fulfill() }
+        plan2.do { date2 = Date(); e2.fulfill() }
+        
+        waitForExpectations(timeout: 2.5)
+        
+        XCTAssertNotNil(date1)
+        XCTAssertNotNil(date2)
+        XCTAssertTrue(date2!.interval(since: date1!).isAlmostEqual(to: -1.second, leeway: 0.1.seconds))
+    }
+    
+    func testNilIntervalOffset() {
+        // Non-offset plan
+        let e1 = expectation(description: "testIntervalOffset_1")
+        let plan1 = Plan.after(1.second)
+        var date1: Date?
+        
+        // Offset plan
+        let e2 = expectation(description: "testIntervalOffset_2")
+        let plan2 = plan1.offset(by: nil)
+        var date2: Date?
+        
+        plan1.do { date1 = Date(); e1.fulfill() }
+        plan2.do { date2 = Date(); e2.fulfill() }
+        
+        waitForExpectations(timeout: 1.5)
+        
+        XCTAssertNotNil(date1)
+        XCTAssertNotNil(date2)
+        XCTAssertTrue(date2!.interval(since: date1!).isAlmostEqual(to: 0.seconds, leeway: 0.1.seconds))
+    }
+    
     static var allTests = [
         ("testMake", testMake),
         ("testDates", testDates),
@@ -151,5 +214,8 @@ final class PlanTests: XCTestCase {
         ("testEveryWeekday", testEveryWeekday),
         ("testEveryMonthday", testEveryMonthday),
         ("testPassingEmptyArrays", testPassingEmptyArrays),
+        ("testIntervalOffset", testIntervalOffset),
+        ("testNegativeIntervalOffset", testNegativeIntervalOffset),
+        ("testNilIntervalOffset", testNilIntervalOffset),
     ]
 }
