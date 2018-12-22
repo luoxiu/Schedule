@@ -162,47 +162,6 @@ final class TaskTests: XCTestCase {
         }
         waitForExpectations(timeout: 3)
     }
-    
-    func testIntervalOffset() {
-        let e1 = expectation(description: "testIntervalOffset_1")
-        let e2 = expectation(description: "testIntervalOffset_2")
-        
-        var date1: Date!
-        var date2: Date!
-        
-        let plan = Plan.of(0.1.second)
-        
-        plan.do {
-            date1 = Date()
-            e1.fulfill()
-        }
-        plan.do(offsetBy: { 0.1.second }) {
-            date2 = Date()
-            e2.fulfill()
-        }
-        
-        waitForExpectations(timeout: 1)
-        
-        XCTAssertTrue(date2.interval(since: date1).isAlmostEqual(to: 0.1.seconds, leeway: 0.05.seconds))
-    }
-    
-    func testNegativeIntervalOffset() {
-        var e1Fulfilled = false
-        var e2Fulfilled = false
-        
-        let plan = Plan.of(0.1.second)
-        
-        plan.do { e1Fulfilled = true }
-        plan.do(offsetBy: { -1.second }) { e2Fulfilled = true }
-        
-        let e = expectation(description: "testNegativeIntervalOffset")
-        DispatchQueue.main.async(after: 1.second) {
-            XCTAssertTrue(e1Fulfilled)
-            XCTAssertFalse(e2Fulfilled)
-            e.fulfill()
-        }
-        waitForExpectations(timeout: 1.5)
-    }
 
     static var allTests = [
         ("testAfter", testAfter),
@@ -213,8 +172,6 @@ final class TaskTests: XCTestCase {
         ("testAddAndRemoveTags", testAddAndRemoveTags),
         ("testReschedule", testReschedule),
         ("testHost", testHost),
-        ("testLifetime", testLifetime),
-        ("testIntervalOffset", testIntervalOffset),
-        ("testNegativeIntervalOffset", testNegativeIntervalOffset),
+        ("testLifetime", testLifetime)
     ]
 }

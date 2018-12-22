@@ -14,7 +14,6 @@ public class Task {
 
     private var _iterator: AnyIterator<Interval>
     private var _timer: DispatchSourceTimer
-    private var _intervalOffset: () -> Interval?
 
     private typealias Action = (Task) -> Void
     private lazy var _actions = Bucket<Action>()
@@ -42,13 +41,11 @@ public class Task {
     init(plan: Plan,
          queue: DispatchQueue?,
          host: AnyObject?,
-         offsetBy intervalOffset: @escaping () -> Interval?,
          onElapse: @escaping (Task) -> Void) {
 
         _iterator = plan.makeIterator()
         _timer = DispatchSource.makeTimerSource(queue: queue)
-        _intervalOffset = intervalOffset
-        
+
         _actions.append(onElapse)
 
         _timer.setEventHandler { [weak self] in
@@ -64,11 +61,7 @@ public class Task {
             self.elapse()
         }
 
-        if var interval = _iterator.next(), !interval.isNegative {
-            if let offset = _intervalOffset() {
-                interval = interval.adding(offset)
-            }
-
+        if let interval = _iterator.next(), !interval.isNegative {
             _timer.schedule(after: interval)
             _timeline.estimatedNextExecution = Date().adding(interval)
         }
@@ -107,10 +100,6 @@ public class Task {
                     return
                 }
                 estimated = estimated.adding(interval)
-                
-                if let offset = _intervalOffset() {
-                    estimated = estimated.adding(offset)
-                }
             } while (estimated < now)
 
             _timeline.estimatedNextExecution = estimated
