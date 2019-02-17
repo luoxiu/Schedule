@@ -55,7 +55,7 @@ private final class RunLoopTask: Task {
 
     init(plan: Plan, mode: RunLoop.Mode, host: AnyObject?, onElapse: @escaping (Task) -> Void) {
 
-        var this: Task?
+        weak var this: Task?
 
         let distant = Date.distantFuture.timeIntervalSinceReferenceDate
         timer = CFRunLoopTimerCreateWithHandler(kCFAllocatorDefault, distant, distant, 0, 0) { _ in
