@@ -16,7 +16,7 @@ extension Calendar {
         if days <= 0 {
             days += 7
         }
-        return self.date(byAdding: .day, _value: days, to: date)?.zeroToday()
+        return self.date(byAdding: .day, _value: days, to: date)?.start
 
         #endif
     }

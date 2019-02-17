@@ -20,9 +20,9 @@ final class ExtensionsTests: XCTestCase {
         XCTAssertEqual(a.clampedSubtracting(b), Int.min)
     }
 
-    func testZeroClock() {
-        let z = Date().zeroToday()
-        let components = z.dateComponents
+    func testStart() {
+        let start = Date().start
+        let components = start.dateComponents
         guard let h = components.hour, let m = components.minute, let s = components.second else {
             XCTFail()
             return
@@ -36,6 +36,6 @@ final class ExtensionsTests: XCTestCase {
         ("testClampedToInt", testClampedToInt),
         ("testClampedAdding", testClampedAdding),
         ("testClampedSubtracting", testClampedSubtracting),
-        ("testZeroClock", testZeroClock)
+        ("testStart", testStart)
     ]
 }

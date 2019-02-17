@@ -22,7 +22,7 @@ extension Int {
 
 extension Calendar {
 
-    static var gregorian: Calendar {
+    static var standard: Calendar {
         var calendar = Calendar(identifier: .gregorian)
         calendar.locale = Locale(identifier: "en_US_POSIX")
         return calendar
@@ -31,15 +31,8 @@ extension Calendar {
 
 extension Date {
 
-    func zeroToday() -> Date {
-        let calendar = Calendar.gregorian
-        let timeZone = TimeZone.current
-        var dateComponents = calendar.dateComponents(in: timeZone, from: self)
-        dateComponents.hour = 0
-        dateComponents.minute = 0
-        dateComponents.second = 0
-        dateComponents.nanosecond = 0
-        return calendar.date(from: dateComponents)!
+    var start: Date {
+        return Calendar.standard.startOfDay(for: self)
     }
 }
 

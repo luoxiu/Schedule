@@ -166,7 +166,7 @@ extension Date {
 
     /// Returns a new date by adding a period to this date.
     public func adding(_ period: Period) -> Date {
-        return Calendar.gregorian.date(byAdding: period.toDateComponents(), to: self) ?? .distantFuture
+        return Calendar.standard.date(byAdding: period.toDateComponents(), to: self) ?? .distantFuture
     }
 
     /// Returns a date with a period added to it.
