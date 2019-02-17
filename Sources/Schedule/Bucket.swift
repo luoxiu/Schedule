@@ -30,21 +30,13 @@ struct Bucket<Element> {
     private var entries: [Entry] = []
 
     @discardableResult
-    mutating func append(_ new: Element) -> BucketKey {
+    mutating func add(_ new: Element) -> BucketKey {
         defer { key = key.increased() }
 
         let entry = (key: key, element: new)
         entries.append(entry)
 
         return key
-    }
-
-    func element(for key: BucketKey) -> Element? {
-        if let entry = entries.first(where: { $0.key == key }) {
-            return entry.element
-        }
-
-        return nil
     }
 
     @discardableResult
@@ -55,6 +47,15 @@ struct Bucket<Element> {
 
         return nil
     }
+
+    func element(for key: BucketKey) -> Element? {
+        if let entry = entries.first(where: { $0.key == key }) {
+            return entry.element
+        }
+
+        return nil
+    }
+
 
     mutating func removeAll() {
         entries.removeAll()

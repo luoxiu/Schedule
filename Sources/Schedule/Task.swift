@@ -56,7 +56,7 @@ open class Task {
         _iterator = plan.makeIterator()
         _timer = DispatchSource.makeTimerSource(queue: queue)
 
-        _onElapseActions.append(onElapse)
+        _onElapseActions.add(onElapse)
 
         _timer.setEventHandler { [weak self] in
             guard let self = self else { return }
@@ -214,7 +214,7 @@ open class Task {
     @discardableResult
     open func onDeinit(_ body: @escaping Action) -> ActionKey {
         return _lock.withLock {
-            return _onDeinitActions.append(body).asActionKey()
+            return _onDeinitActions.add(body).asActionKey()
         }
     }
 
@@ -307,7 +307,7 @@ open class Task {
     @discardableResult
     public func addAction(_ action: @escaping (Task) -> Void) -> ActionKey {
         return _lock.withLock {
-            return _onElapseActions.append(action).asActionKey()
+            return _onElapseActions.add(action).asActionKey()
         }
     }
 

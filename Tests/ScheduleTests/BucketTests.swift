@@ -10,36 +10,19 @@ final class BucketTests: XCTestCase {
         XCTAssertEqual(key.increased(), BucketKey(underlying: 1))
     }
 
-    func testAppend() {
+    func testAdd() {
         var bucket = Bucket<Fn>()
-        bucket.append { 1 }
-        bucket.append { 2 }
-        bucket.append { 3 }
+        bucket.add { 1 }
+        bucket.add { 2 }
+        bucket.add { 3 }
         XCTAssertEqual(bucket.count, 3)
-    }
-
-    func testGet() {
-        var bucket = Bucket<Fn>()
-        let k1 = bucket.append { 1 }
-        let k2 = bucket.append { 2 }
-        XCTAssertNotNil(bucket.element(for: k1))
-        XCTAssertNotNil(bucket.element(for: k2))
-        guard let fn1 = bucket.element(for: k1), let fn2 = bucket.element(for: k2) else {
-            XCTFail()
-            return
-        }
-        XCTAssertEqual(fn1(), 1)
-        XCTAssertEqual(fn2(), 2)
-
-        XCTAssertNil(bucket.element(for: k2.increased()))
-
     }
 
     func testRemove() {
         var bucket = Bucket<Fn>()
 
-        let k1 = bucket.append { 1 }
-        let k2 = bucket.append { 2 }
+        let k1 = bucket.add { 1 }
+        let k2 = bucket.add { 2 }
 
         let fn1 = bucket.removeElement(for: k1)
         XCTAssertNotNil(fn1)
@@ -52,15 +35,31 @@ final class BucketTests: XCTestCase {
         bucket.removeAll()
         XCTAssertEqual(bucket.count, 0)
 
-        bucket.append { 3 }
+        bucket.add { 3 }
         XCTAssertEqual(bucket.count, 1)
+    }
+
+    func testGet() {
+        var bucket = Bucket<Fn>()
+        let k1 = bucket.add { 1 }
+        let k2 = bucket.add { 2 }
+        XCTAssertNotNil(bucket.element(for: k1))
+        XCTAssertNotNil(bucket.element(for: k2))
+        guard let fn1 = bucket.element(for: k1), let fn2 = bucket.element(for: k2) else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(fn1(), 1)
+        XCTAssertEqual(fn2(), 2)
+
+        XCTAssertNil(bucket.element(for: k2.increased()))
     }
 
     func testSequence() {
         var bucket = Bucket<Fn>()
-        bucket.append { 0 }
-        bucket.append { 1 }
-        bucket.append { 2 }
+        bucket.add { 0 }
+        bucket.add { 1 }
+        bucket.add { 2 }
 
         var i = 0
         for fn in bucket {
@@ -71,9 +70,9 @@ final class BucketTests: XCTestCase {
 
     static var allTests = [
         ("testBucketKey", testBucketKey),
-        ("testAppend", testAppend),
-        ("testGet", testGet),
+        ("testAdd", testAdd),
         ("testRemove", testRemove),
+        ("testGet", testGet),
         ("testSequence", testSequence)
     ]
 }
