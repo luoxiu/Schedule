@@ -33,10 +33,6 @@ open class Task {
     private lazy var _tags: Set<String> = []
     private lazy var _countOfExecutions: Int = 0
 
-    #if !canImport(ObjectiveC)
-    private weak var _host: AnyObject? = TaskCenter.default
-    #endif
-
     private lazy var _lifetime: Interval = Int.max.seconds
     private lazy var _lifetimeTimer: DispatchSourceTimer = {
         let timer = DispatchSource.makeTimerSource()
@@ -50,7 +46,6 @@ open class Task {
 
     init(plan: Plan,
          queue: DispatchQueue?,
-         host: AnyObject?,
          onElapse: @escaping (Task) -> Void) {
 
         _iterator = plan.makeIterator()
@@ -60,30 +55,12 @@ open class Task {
 
         _timer.setEventHandler { [weak self] in
             guard let self = self else { return }
-
-            #if !canImport(ObjectiveC)
-            guard self._host != nil else {
-                self.cancel()
-                return
-            }
-            #endif
-
             self.elapse()
         }
 
         if let interval = _iterator.next(), !interval.isNegative {
             _timer.schedule(after: interval)
             _timeline.estimatedNextExecution = Date().adding(interval)
-        }
-
-        if let host = host {
-            #if canImport(ObjectiveC)
-            DeinitObserver.observe(host) { [weak self] in
-                self?.cancel()
-            }
-            #else
-            _host = host
-            #endif
         }
 
         TaskCenter.default.add(self)
@@ -138,6 +115,14 @@ open class Task {
         scheduleNext()
         execute()
     }
+
+    #if canImport(ObjectiveC)
+    open func host(on target: AnyObject) {
+        DeinitObserver.observe(target) { [weak self] in
+            self?.cancel()
+        }
+    }
+    #endif
 
     open internal(set) var taskCenter: TaskCenter? {
         get {

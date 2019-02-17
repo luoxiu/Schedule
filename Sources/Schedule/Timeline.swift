@@ -22,11 +22,11 @@ extension Timeline: CustomStringConvertible {
 
     /// A textual representation of this timeline.
     public var description: String {
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
 
         let desc = { (d: Date?) -> String in
             guard let d = d else { return "nil" }
-            let f = DateFormatter()
-            f.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
             return f.string(from: d)
         }
 

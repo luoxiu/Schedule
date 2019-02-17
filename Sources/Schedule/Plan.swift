@@ -19,30 +19,22 @@ public struct Plan {
     ///
     /// - Parameters:
     ///   - queue: The queue to which the task will be dispatched.
-    ///   - host: The object to be hosted on. When this object is dealloced,
-    ///           the task will not executed any more.
     ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
-    @discardableResult
     public func `do`(queue: DispatchQueue,
-                     host: AnyObject? = nil,
                      onElapse: @escaping (Task) -> Void) -> Task {
-        return Task(plan: self, queue: queue, host: host, onElapse: onElapse)
+        return Task(plan: self, queue: queue, onElapse: onElapse)
     }
 
     /// Schedules a task with this plan.
     ///
     /// - Parameters:
     ///   - queue: The queue to which the task will be dispatched.
-    ///   - host: The object to be hosted on. When this object is dealloced,
-    ///           the task will not executed any more.
     ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
-    @discardableResult
     public func `do`(queue: DispatchQueue,
-                     host: AnyObject? = nil,
                      onElapse: @escaping () -> Void) -> Task {
-        return self.do(queue: queue, host: host, onElapse: { (_) in onElapse() })
+        return self.do(queue: queue, onElapse: { (_) in onElapse() })
     }
 }
 
