@@ -3,7 +3,7 @@ import Foundation
 final class Atomic<T> {
 
     private var value: T
-    private let lock = Lock()
+    private let lock = NSLock()
 
     init(_ value: T) {
         self.value = value

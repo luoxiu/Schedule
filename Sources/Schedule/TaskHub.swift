@@ -5,7 +5,7 @@ final class TaskHub {
     static let shared = TaskHub()
 
     private init() { }
-    private let lock = Lock()
+    private let lock = NSLock()
     private var tasks: Set<Task> = []
     private var registry: [String: Set<Task>] = [:]
 

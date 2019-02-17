@@ -20,10 +20,6 @@
 		621F88DF215B39EC0098D7EA /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621F88D4215B39EC0098D7EA /* Atomic.swift */; };
 		621F88E0215B39EC0098D7EA /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621F88D4215B39EC0098D7EA /* Atomic.swift */; };
 		621F88E1215B39EC0098D7EA /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621F88D4215B39EC0098D7EA /* Atomic.swift */; };
-		621F88E2215B39EC0098D7EA /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621F88D5215B39EC0098D7EA /* Lock.swift */; };
-		621F88E3215B39EC0098D7EA /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621F88D5215B39EC0098D7EA /* Lock.swift */; };
-		621F88E4215B39EC0098D7EA /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621F88D5215B39EC0098D7EA /* Lock.swift */; };
-		621F88E5215B39EC0098D7EA /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621F88D5215B39EC0098D7EA /* Lock.swift */; };
 		621F88E9215B3A040098D7EA /* DeinitObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621F88E7215B3A030098D7EA /* DeinitObserver.swift */; };
 		621F88EA215B3A040098D7EA /* DeinitObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621F88E7215B3A030098D7EA /* DeinitObserver.swift */; };
 		621F88EB215B3A040098D7EA /* DeinitObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621F88E7215B3A030098D7EA /* DeinitObserver.swift */; };
@@ -142,7 +138,6 @@
 		621F88D2215B39EC0098D7EA /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		621F88D3215B39EC0098D7EA /* Bucket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
 		621F88D4215B39EC0098D7EA /* Atomic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
-		621F88D5215B39EC0098D7EA /* Lock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
 		621F88E7215B3A030098D7EA /* DeinitObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeinitObserver.swift; sourceTree = "<group>"; };
 		621F88E8215B3A030098D7EA /* Calendar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
 		621F88F2215B3A220098D7EA /* Period.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
@@ -284,7 +279,6 @@
 				621F88D4215B39EC0098D7EA /* Atomic.swift */,
 				621F88D3215B39EC0098D7EA /* Bucket.swift */,
 				621F88D2215B39EC0098D7EA /* Extensions.swift */,
-				621F88D5215B39EC0098D7EA /* Lock.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -655,7 +649,6 @@
 				66BF0658215A62BA00ADA445 /* TaskHub.swift in Sources */,
 				621F8907215B3A220098D7EA /* Time.swift in Sources */,
 				66BF0664215A62BA00ADA445 /* Task.swift in Sources */,
-				621F88E2215B39EC0098D7EA /* Lock.swift in Sources */,
 				621F88DE215B39EC0098D7EA /* Atomic.swift in Sources */,
 				621F88E9215B3A040098D7EA /* DeinitObserver.swift in Sources */,
 				66BF0678215A62BA00ADA445 /* Timeline.swift in Sources */,
@@ -696,7 +689,6 @@
 				66BF065A215A62BA00ADA445 /* TaskHub.swift in Sources */,
 				621F8909215B3A220098D7EA /* Time.swift in Sources */,
 				66BF0666215A62BA00ADA445 /* Task.swift in Sources */,
-				621F88E4215B39EC0098D7EA /* Lock.swift in Sources */,
 				621F88E0215B39EC0098D7EA /* Atomic.swift in Sources */,
 				621F88EB215B3A040098D7EA /* DeinitObserver.swift in Sources */,
 				66BF067A215A62BA00ADA445 /* Timeline.swift in Sources */,
@@ -719,7 +711,6 @@
 				66BF065B215A62BA00ADA445 /* TaskHub.swift in Sources */,
 				621F890A215B3A220098D7EA /* Time.swift in Sources */,
 				66BF0667215A62BA00ADA445 /* Task.swift in Sources */,
-				621F88E5215B39EC0098D7EA /* Lock.swift in Sources */,
 				621F88E1215B39EC0098D7EA /* Atomic.swift in Sources */,
 				621F88EC215B3A040098D7EA /* DeinitObserver.swift in Sources */,
 				66BF067B215A62BA00ADA445 /* Timeline.swift in Sources */,
@@ -742,7 +733,6 @@
 				66BF0659215A62BA00ADA445 /* TaskHub.swift in Sources */,
 				621F8908215B3A220098D7EA /* Time.swift in Sources */,
 				66BF0665215A62BA00ADA445 /* Task.swift in Sources */,
-				621F88E3215B39EC0098D7EA /* Lock.swift in Sources */,
 				621F88DF215B39EC0098D7EA /* Atomic.swift in Sources */,
 				621F88EA215B3A040098D7EA /* DeinitObserver.swift in Sources */,
 				66BF0679215A62BA00ADA445 /* Timeline.swift in Sources */,

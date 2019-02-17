@@ -10,7 +10,7 @@ extension BucketKey: ActionKey { }
 /// `Task` represents a timed task.
 public class Task {
 
-    private let _lock = Lock()
+    private let _lock = NSLock()
 
     private var _iterator: AnyIterator<Interval>
     private var _timer: DispatchSourceTimer
