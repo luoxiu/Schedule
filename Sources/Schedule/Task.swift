@@ -1,22 +1,32 @@
 import Foundation
 
 /// `ActionKey` represents a token that can be used to remove the action.
-public protocol ActionKey {
-    var underlying: UInt64 { get }
+public struct ActionKey {
+
+    fileprivate let bucketKey: BucketKey
 }
 
-extension BucketKey: ActionKey { }
+extension BucketKey {
+
+    func asActionKey() -> ActionKey {
+        return ActionKey(bucketKey: self)
+    }
+}
 
 /// `Task` represents a timed task.
-public class Task {
+open class Task {
+
+    public typealias Action = (Task) -> Void
 
     private let _lock = NSLock()
+
+    private weak var _taskCenter: TaskCenter?
 
     private var _iterator: AnyIterator<Interval>
     private var _timer: DispatchSourceTimer
 
-    private typealias Action = (Task) -> Void
-    private lazy var _actions = Bucket<Action>()
+    private lazy var _onElapseActions = Bucket<Action>()
+    private var _onDeinitActions = Bucket<Action>()
 
     private lazy var _suspensions: UInt64 = 0
     private lazy var _timeline = Timeline()
@@ -24,7 +34,7 @@ public class Task {
     private lazy var _countOfExecutions: Int = 0
 
     #if !canImport(ObjectiveC)
-    private weak var _host: AnyObject? = TaskHub.shared
+    private weak var _host: AnyObject? = TaskCenter.default
     #endif
 
     private lazy var _lifetime: Interval = Int.max.seconds
@@ -46,7 +56,7 @@ public class Task {
         _iterator = plan.makeIterator()
         _timer = DispatchSource.makeTimerSource(queue: queue)
 
-        _actions.append(onElapse)
+        _onElapseActions.append(onElapse)
 
         _timer.setEventHandler { [weak self] in
             guard let self = self else { return }
@@ -76,17 +86,20 @@ public class Task {
             #endif
         }
 
-        TaskHub.shared.add(self)
+        TaskCenter.default.add(self)
         _timer.resume()
     }
 
     deinit {
-        _lock.withLock {
-            while _suspensions > 0 {
-                _timer.resume()
-                _suspensions -= 1
-            }
+        for action in _onDeinitActions {
+            action(self)
         }
+
+        while _suspensions > 0 {
+            _timer.resume()
+            _suspensions -= 1
+        }
+
         cancel()
     }
 
@@ -116,7 +129,7 @@ public class Task {
             }
             _timeline.lastExecution = now
             _countOfExecutions += 1
-            return _actions
+            return _onElapseActions
         }
         actions.forEach { $0(self) }
     }
@@ -124,6 +137,19 @@ public class Task {
     private func elapse() {
         scheduleNext()
         execute()
+    }
+
+    open internal(set) var taskCenter: TaskCenter? {
+        get {
+            return _lock.withLock {
+                _taskCenter
+            }
+        }
+        set {
+            _lock.withLock {
+                _taskCenter = newValue
+            }
+        }
     }
 
     /// The number of times the task has been executed.
@@ -182,7 +208,14 @@ public class Task {
         _lock.withLock {
             _timer.cancel()
         }
-        TaskHub.shared.remove(self)
+        TaskCenter.default.remove(self)
+    }
+
+    @discardableResult
+    open func onDeinit(_ body: @escaping Action) -> ActionKey {
+        return _lock.withLock {
+            return _onDeinitActions.append(body).asActionKey()
+        }
     }
 
     // MARK: - Lifecycle
@@ -266,7 +299,7 @@ public class Task {
     /// The number of actions in this task.
     public var countOfActions: Int {
         return _lock.withLock {
-            _actions.count
+            _onElapseActions.count
         }
     }
 
@@ -274,21 +307,21 @@ public class Task {
     @discardableResult
     public func addAction(_ action: @escaping (Task) -> Void) -> ActionKey {
         return _lock.withLock {
-            _actions.append(action)
+            return _onElapseActions.append(action).asActionKey()
         }
     }
 
     /// Removes action by key from this task.
     public func removeAction(byKey key: ActionKey) {
         _lock.withLock {
-            _ = _actions.removeElement(for: BucketKey(key.underlying))
+            _ = _onElapseActions.removeElement(for: key.bucketKey)
         }
     }
 
     /// Removes all actions from this task.
     public func removeAllActions() {
         _lock.withLock {
-            _actions.removeAll()
+            _onElapseActions.removeAll()
         }
     }
 
@@ -313,10 +346,6 @@ public class Task {
         }
         _tags.formUnion(set)
         _lock.unlock()
-
-        for tag in set {
-            TaskHub.shared.add(tag: tag, to: self)
-        }
     }
 
     /// Adds tags to this task.
@@ -340,10 +369,6 @@ public class Task {
         }
         _tags.subtract(set)
         _lock.unlock()
-
-        for tag in set {
-            TaskHub.shared.remove(tag: tag, from: self)
-        }
     }
 
     /// Removes tags from this task.
@@ -358,17 +383,17 @@ public class Task {
 
     /// Suspends all tasks that have the tag.
     public static func suspend(byTag tag: String) {
-        TaskHub.shared.tasks(forTag: tag).forEach { $0.suspend() }
+        TaskCenter.default.tasksWithTag(tag).forEach { $0.suspend() }
     }
 
     /// Resumes all tasks that have the tag.
     public static func resume(byTag tag: String) {
-        TaskHub.shared.tasks(forTag: tag).forEach { $0.resume() }
+        TaskCenter.default.tasksWithTag(tag).forEach { $0.resume() }
     }
 
     /// Cancels all tasks that have the tag.
     public static func cancel(byTag tag: String) {
-        TaskHub.shared.tasks(forTag: tag).forEach { $0.cancel() }
+        TaskCenter.default.tasksWithTag(tag).forEach { $0.cancel() }
     }
 }
 
@@ -381,7 +406,7 @@ extension Task: Hashable {
 
     /// Returns a boolean value indicating whether two tasks are equal.
     public static func == (lhs: Task, rhs: Task) -> Bool {
-        return lhs.hashValue == rhs.hashValue
+        return lhs === rhs
     }
 }
 
@@ -392,7 +417,7 @@ extension Task: CustomStringConvertible {
         return "Task: { " +
         "\"isCancelled\": \(_timer.isCancelled)" +
         "\"tags\": \(_tags), " +
-        "\"countOfActions\": \(_actions.count), " +
+        "\"countOfActions\": \(_onElapseActions.count), " +
         "\"countOfExecutions\": \(_countOfExecutions), " +
         "\"timeline\": \(_timeline)" +
         " }"

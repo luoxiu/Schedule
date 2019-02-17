@@ -6,8 +6,8 @@ final class BucketTests: XCTestCase {
     typealias Fn = () -> Int
 
     func testBucketKey() {
-        let key = BucketKey(0)
-        XCTAssertEqual(key.next(), BucketKey(1))
+        let key = BucketKey(underlying: 0)
+        XCTAssertEqual(key.increased(), BucketKey(underlying: 1))
     }
 
     func testAppend() {
@@ -31,7 +31,7 @@ final class BucketTests: XCTestCase {
         XCTAssertEqual(fn1(), 1)
         XCTAssertEqual(fn2(), 2)
 
-        XCTAssertNil(bucket.element(for: k2.next()))
+        XCTAssertNil(bucket.element(for: k2.increased()))
 
     }
 
@@ -47,7 +47,7 @@ final class BucketTests: XCTestCase {
         let fn2 = bucket.removeElement(for: k2)
         XCTAssertNotNil(fn2)
 
-        XCTAssertNil(bucket.removeElement(for: k2.next()))
+        XCTAssertNil(bucket.removeElement(for: k2.increased()))
 
         bucket.removeAll()
         XCTAssertEqual(bucket.count, 0)
