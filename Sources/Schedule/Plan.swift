@@ -418,7 +418,8 @@ extension Plan {
                 if weekday.isToday {
                     date = Date().start
                 } else if date == nil {
-                    date = calendar.next(weekday, after: Date())
+                    let components = weekday.toDateComponents()
+                    date = calendar.nextDate(after: date, matching: components, matchingPolicy: .strict)
                 } else {
                     date = calendar.date(byAdding: .day, value: 7, to: date)
                 }
@@ -457,7 +458,8 @@ extension Plan {
                 if monthday.isToday {
                     date = Date().start
                 } else if date == nil {
-                    date = calendar.next(monthday, after: Date())
+                    let components = monthday.toDateComponents()
+                    date = calendar.nextDate(after: date, matching: components, matchingPolicy: .strict)
                 } else {
                     date = calendar.date(byAdding: .year, value: 1, to: date)
                 }
