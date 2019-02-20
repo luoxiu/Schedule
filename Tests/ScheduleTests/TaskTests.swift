@@ -41,11 +41,12 @@ final class TaskTests: XCTestCase {
         let e = expectation(description: "testThread")
         DispatchQueue.global().async {
             let thread = Thread.current
-            Plan.after(0.1.second).do { task in
+            let task = Plan.after(0.1.second).do { task in
                 XCTAssertTrue(thread === Thread.current)
                 e.fulfill()
                 task.cancel()
             }
+            _ = task
             RunLoop.current.run()
         }
         waitForExpectations(timeout: 0.5)
@@ -132,9 +133,10 @@ final class TaskTests: XCTestCase {
         let e = expectation(description: "testHost")
         let fn = {
             let obj = NSObject()
-            Plan.after(0.1.second).do(queue: .main, host: obj, onElapse: {
+            let task = Plan.after(0.1.second).do(queue: .main, onElapse: {
                 XCTFail()
             })
+            task.host(on: obj)
         }
         fn()
         DispatchQueue.main.async(after: 0.2.seconds) {

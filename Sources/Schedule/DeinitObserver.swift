@@ -1,12 +1,12 @@
 import Foundation
 
-#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
+#if canImport(ObjectiveC)
 
 private var deinitObserverKey: Void = ()
 
 class DeinitObserver {
 
-    private(set) weak var observable: AnyObject?
+    private(set) weak var observed: AnyObject?
 
     private var block: (() -> Void)?
 
@@ -15,15 +15,19 @@ class DeinitObserver {
     }
 
     @discardableResult
-    static func observe(_ observable: AnyObject, whenDeinit block: @escaping () -> Void) -> DeinitObserver {
+    static func observe(_ observed: AnyObject, onDeinit block: @escaping () -> Void) -> DeinitObserver {
         let observer = DeinitObserver(block)
-        objc_setAssociatedObject(observable, &deinitObserverKey, observer, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        observer.observed = observed
+
+        objc_setAssociatedObject(observed, &deinitObserverKey, observer, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+
         return observer
     }
 
-    func clear() {
+    func cancel() {
         block = nil
-        if let o = observable {
+
+        if let o = observed {
             objc_setAssociatedObject(o, &deinitObserverKey, nil, .OBJC_ASSOCIATION_ASSIGN)
         }
     }

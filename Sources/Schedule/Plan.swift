@@ -19,30 +19,22 @@ public struct Plan {
     ///
     /// - Parameters:
     ///   - queue: The queue to which the task will be dispatched.
-    ///   - host: The object to be hosted on. When this object is dealloced,
-    ///           the task will not executed any more.
     ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
-    @discardableResult
     public func `do`(queue: DispatchQueue,
-                     host: AnyObject? = nil,
                      onElapse: @escaping (Task) -> Void) -> Task {
-        return Task(plan: self, queue: queue, host: host, onElapse: onElapse)
+        return Task(plan: self, queue: queue, onElapse: onElapse)
     }
 
     /// Schedules a task with this plan.
     ///
     /// - Parameters:
     ///   - queue: The queue to which the task will be dispatched.
-    ///   - host: The object to be hosted on. When this object is dealloced,
-    ///           the task will not executed any more.
     ///   - onElapse: The action to do when time is out.
     /// - Returns: The task just created.
-    @discardableResult
     public func `do`(queue: DispatchQueue,
-                     host: AnyObject? = nil,
                      onElapse: @escaping () -> Void) -> Task {
-        return self.do(queue: queue, host: host, onElapse: { (_) in onElapse() })
+        return self.do(queue: queue, onElapse: { (_) in onElapse() })
     }
 }
 
@@ -316,7 +308,7 @@ extension Plan {
     /// Creates a plan that executes the task every period.
     public static func every(_ period: Period) -> Plan {
         return Plan.make { () -> AnyIterator<Interval> in
-            let calendar = Calendar.gregorian
+            let calendar = Calendar.standard
             var last: Date!
             return AnyIterator {
                 last = last ?? Date()
@@ -420,13 +412,14 @@ extension Plan {
     /// Creates a plan that executes the task every specific weekday.
     public static func every(_ weekday: Weekday) -> DateMiddleware {
         let plan = Plan.make { () -> AnyIterator<Date> in
-            let calendar = Calendar.gregorian
+            let calendar = Calendar.standard
             var date: Date!
             return AnyIterator<Date> {
                 if weekday.isToday {
-                    date = Date().zeroToday()
+                    date = Date().start
                 } else if date == nil {
-                    date = calendar.next(weekday, after: Date())
+                    let components = weekday.toDateComponents()
+                    date = calendar.nextDate(after: date, matching: components, matchingPolicy: .strict)
                 } else {
                     date = calendar.date(byAdding: .day, value: 7, to: date)
                 }
@@ -459,13 +452,14 @@ extension Plan {
     /// Creates a plan that executes the task every specific day in the month.
     public static func every(_ monthday: Monthday) -> DateMiddleware {
         let plan = Plan.make { () -> AnyIterator<Date> in
-            let calendar = Calendar.gregorian
+            let calendar = Calendar.standard
             var date: Date!
             return AnyIterator<Date> {
                 if monthday.isToday {
-                    date = Date().zeroToday()
+                    date = Date().start
                 } else if date == nil {
-                    date = calendar.next(monthday, after: Date())
+                    let components = monthday.toDateComponents()
+                    date = calendar.nextDate(after: date, matching: components, matchingPolicy: .strict)
                 } else {
                     date = calendar.date(byAdding: .year, value: 1, to: date)
                 }

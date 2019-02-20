@@ -147,8 +147,10 @@ final class PlanTests: XCTestCase {
         let plan2 = plan1.offset(by: 1.second)
         var date2: Date?
         
-        plan1.do { date1 = Date(); e1.fulfill() }
-        plan2.do { date2 = Date(); e2.fulfill() }
+        let task1 = plan1.do { date1 = Date(); e1.fulfill() }
+        let task2 = plan2.do { date2 = Date(); e2.fulfill() }
+        _ = task1
+        _ = task2
         
         waitForExpectations(timeout: 3.5)
         
@@ -168,8 +170,10 @@ final class PlanTests: XCTestCase {
         let plan2 = plan1.offset(by: -1.second)
         var date2: Date?
         
-        plan1.do { date1 = Date(); e1.fulfill() }
-        plan2.do { date2 = Date(); e2.fulfill() }
+        let task1 = plan1.do { date1 = Date(); e1.fulfill() }
+        let task2 = plan2.do { date2 = Date(); e2.fulfill() }
+        _ = task1
+        _ = task2
         
         waitForExpectations(timeout: 2.5)
         
@@ -189,8 +193,11 @@ final class PlanTests: XCTestCase {
         let plan2 = plan1.offset(by: nil)
         var date2: Date?
         
-        plan1.do { date1 = Date(); e1.fulfill() }
-        plan2.do { date2 = Date(); e2.fulfill() }
+        let task1 = plan1.do { date1 = Date(); e1.fulfill() }
+        let task2 = plan2.do { date2 = Date(); e2.fulfill() }
+
+        _ = task1
+        _ = task2
         
         waitForExpectations(timeout: 1.5)
         

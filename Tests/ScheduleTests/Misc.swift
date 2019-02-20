@@ -4,18 +4,11 @@ import Foundation
 extension Date {
 
     var dateComponents: DateComponents {
-        return Calendar.gregorian.dateComponents(in: TimeZone.current, from: self)
-    }
-
-    var localizedDescription: String {
-        let formatter = DateFormatter()
-        formatter.timeZone = TimeZone.current
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
-        return formatter.string(from: self)
+        return Calendar.standard.dateComponents(in: TimeZone.current, from: self)
     }
 
     init(year: Int, month: Int, day: Int, hour: Int = 0, minute: Int = 0, second: Int = 0, nanosecond: Int = 0) {
-        let components = DateComponents(calendar: Calendar.gregorian,
+        let components = DateComponents(calendar: Calendar.standard,
                                         timeZone: TimeZone.current,
                                         year: year, month: month, day: day,
                                         hour: hour, minute: minute, second: second,
