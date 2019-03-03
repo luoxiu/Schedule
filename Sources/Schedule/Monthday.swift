@@ -29,7 +29,7 @@ public enum Monthday {
 
     /// A Boolean value indicating whether today is the weekday.
     public var isToday: Bool {
-        let lhs = Calendar.standard.dateComponents(in: TimeZone.current, from: Date())
+        let lhs = Calendar.gregorian.dateComponents(in: TimeZone.current, from: Date())
         let rhs = toDateComponents()
         return lhs.month == rhs.month && lhs.day == rhs.day
     }
@@ -52,7 +52,7 @@ public enum Monthday {
         case .november(let n):      month = 11; day = n
         case .december(let n):      month = 12; day = n
         }
-        return DateComponents(calendar: Calendar.standard,
+        return DateComponents(calendar: Calendar.gregorian,
                               timeZone: TimeZone.current,
                               month: month,
                               day: day)
@@ -66,7 +66,7 @@ extension Monthday: CustomStringConvertible {
         let month = toDateComponents().month!
         let day = toDateComponents().day!
 
-        let monthDesc = Calendar.standard.monthSymbols[month - 1]
+        let monthDesc = Calendar.gregorian.monthSymbols[month - 1]
         return "Monthday: \(monthDesc) \(day)"
     }
 }

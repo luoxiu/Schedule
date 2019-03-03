@@ -3,13 +3,13 @@ import Foundation
 /// `ActionKey` represents a token that can be used to remove the action.
 public struct ActionKey {
 
-    fileprivate let bucketKey: BucketKey
+    fileprivate let cabinetKey: CabinetKey
 }
 
-extension BucketKey {
+extension CabinetKey {
 
     func asActionKey() -> ActionKey {
-        return ActionKey(bucketKey: self)
+        return ActionKey(cabinetKey: self)
     }
 }
 
@@ -25,8 +25,8 @@ open class Task {
     private var _iterator: AnyIterator<Interval>
     private var _timer: DispatchSourceTimer
 
-    private lazy var _onElapseActions = Bucket<Action>()
-    private var _onDeinitActions = Bucket<Action>()
+    private lazy var _onElapseActions = Cabinet<Action>()
+    private var _onDeinitActions = Cabinet<Action>()
 
     private lazy var _suspensions: UInt64 = 0
     private lazy var _timeline = Timeline()
@@ -51,7 +51,7 @@ open class Task {
         _iterator = plan.makeIterator()
         _timer = DispatchSource.makeTimerSource(queue: queue)
 
-        _onElapseActions.add(onElapse)
+        _onElapseActions.append(onElapse)
 
         _timer.setEventHandler { [weak self] in
             guard let self = self else { return }
@@ -99,7 +99,7 @@ open class Task {
 
     /// Execute this task now, without disrupting its plan.
     public func execute() {
-        let actions = _lock.withLock { () -> Bucket<Task.Action> in
+        let actions = _lock.withLock { () -> Cabinet<Task.Action> in
             let now = Date()
             if _timeline.firstExecution == nil {
                 _timeline.firstExecution = now
@@ -199,7 +199,7 @@ open class Task {
     @discardableResult
     open func onDeinit(_ body: @escaping Action) -> ActionKey {
         return _lock.withLock {
-            return _onDeinitActions.add(body).asActionKey()
+            return _onDeinitActions.append(body).asActionKey()
         }
     }
 
@@ -292,21 +292,21 @@ open class Task {
     @discardableResult
     public func addAction(_ action: @escaping (Task) -> Void) -> ActionKey {
         return _lock.withLock {
-            return _onElapseActions.add(action).asActionKey()
+            return _onElapseActions.append(action).asActionKey()
         }
     }
 
     /// Removes action by key from this task.
     public func removeAction(byKey key: ActionKey) {
         _lock.withLock {
-            _ = _onElapseActions.removeElement(for: key.bucketKey)
+            _ = _onElapseActions.delete(key.cabinetKey)
         }
     }
 
     /// Removes all actions from this task.
     public func removeAllActions() {
         _lock.withLock {
-            _onElapseActions.removeAll()
+            _onElapseActions.clear()
         }
     }
 

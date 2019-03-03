@@ -1,21 +1,30 @@
 import Foundation
 
+/// A value box that can read and write the underlying value atomically.
 final class Atomic<T> {
 
-    private var _value: T
-    private let _lock = NSLock()
+    private var v: T
+    private let lock = NSLock()
 
     init(_ value: T) {
-        self._value = value
+        self.v = value
     }
 
+    /// Creates a snapshot of the value nonatomically.
+    @inline(__always)
+    func snapshot() -> T {
+        return v
+    }
+
+    /// Reads the value atomically.
     @inline(__always)
     func read<U>(_ body: (T) -> U) -> U {
-        return _lock.withLock { body(_value) }
+        return lock.withLock { body(v) }
     }
 
+    /// Writes the value atomically.
     @inline(__always)
     func write<U>(_ body: (inout T) -> U) -> U {
-        return _lock.withLock { body(&_value) }
+        return lock.withLock { body(&v) }
     }
 }

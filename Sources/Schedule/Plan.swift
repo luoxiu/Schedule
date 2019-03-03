@@ -308,7 +308,7 @@ extension Plan {
     /// Creates a plan that executes the task every period.
     public static func every(_ period: Period) -> Plan {
         return Plan.make { () -> AnyIterator<Interval> in
-            let calendar = Calendar.standard
+            let calendar = Calendar.gregorian
             var last: Date!
             return AnyIterator {
                 last = last ?? Date()
@@ -412,11 +412,11 @@ extension Plan {
     /// Creates a plan that executes the task every specific weekday.
     public static func every(_ weekday: Weekday) -> DateMiddleware {
         let plan = Plan.make { () -> AnyIterator<Date> in
-            let calendar = Calendar.standard
+            let calendar = Calendar.gregorian
             var date: Date!
             return AnyIterator<Date> {
                 if weekday.isToday {
-                    date = Date().start
+                    date = Date().startOfToday
                 } else if date == nil {
                     let components = weekday.toDateComponents()
                     date = calendar.nextDate(after: date, matching: components, matchingPolicy: .strict)
@@ -452,11 +452,11 @@ extension Plan {
     /// Creates a plan that executes the task every specific day in the month.
     public static func every(_ monthday: Monthday) -> DateMiddleware {
         let plan = Plan.make { () -> AnyIterator<Date> in
-            let calendar = Calendar.standard
+            let calendar = Calendar.gregorian
             var date: Date!
             return AnyIterator<Date> {
                 if monthday.isToday {
-                    date = Date().start
+                    date = Date().startOfToday
                 } else if date == nil {
                     let components = monthday.toDateComponents()
                     date = calendar.nextDate(after: date, matching: components, matchingPolicy: .strict)

@@ -93,7 +93,7 @@ public struct Time {
     /// Returns a dateComponenets of the time, using gregorian calender and
     /// current time zone.
     public func toDateComponents() -> DateComponents {
-        return DateComponents(calendar: Calendar.standard,
+        return DateComponents(calendar: Calendar.gregorian,
                               timeZone: TimeZone.current,
                               hour: hour,
                               minute: minute,
