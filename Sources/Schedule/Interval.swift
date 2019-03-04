@@ -62,6 +62,8 @@ extension Interval: Hashable {
 extension Interval: CustomStringConvertible {
 
     /// A textual representation of this interval.
+    ///
+    ///     Interval: 1000 nanoseconds
     public var description: String {
         return "Interval: \(nanoseconds.clampedToInt()) nanoseconds"
     }
@@ -70,13 +72,15 @@ extension Interval: CustomStringConvertible {
 extension Interval: CustomDebugStringConvertible {
 
     /// A textual representation of this interval for debugging.
+    ///
+    ///     Interval: 1000 nanoseconds
     public var debugDescription: String {
         return description
     }
 }
 
 // MARK: - Comparing
-extension Interval {
+extension Interval: Comparable {
 
     /// Compares two intervals.
     ///
@@ -84,6 +88,14 @@ extension Interval {
     public func compare(_ other: Interval) -> ComparisonResult {
         let now = Date()
         return now.adding(self).compare(now.adding(other))
+    }
+
+    /// Returns a boolean value indicating whether the first interval is
+    /// less than the second interval.
+    ///
+    /// A negative interval is always less than a positive interval.
+    public static func < (lhs: Interval, rhs: Interval) -> Bool {
+        return lhs.compare(rhs) == .orderedAscending
     }
 
     /// Returns a boolean value indicating whether this interval is longer
@@ -101,38 +113,27 @@ extension Interval {
     /// Returns the longest interval of the given values.
     /// - Note: Returns initialized with `init(nanoseconds: 0)` if given no parameters.
     public static func longest(_ intervals: Interval...) -> Interval {
-        return Interval.longest(intervals)
+        return longest(intervals)!
     }
         
     /// Returns the longest interval of the given values.
     /// - Note: Returns initialized with `init(nanoseconds: 0)` if given an empty array.
-    public static func longest(_ intervals: [Interval]) -> Interval {
-        guard !intervals.isEmpty else { return .init(nanoseconds: 0) }
+    public static func longest(_ intervals: [Interval]) -> Interval? {
+        guard !intervals.isEmpty else { return nil }
         return intervals.sorted(by: { $0.magnitude > $1.magnitude })[0]
     }
 
     /// Returns the shortest interval of the given values.
     /// - Note: Returns initialized with `init(nanoseconds: 0)` if given no parameters.
     public static func shortest(_ intervals: Interval...) -> Interval {
-        return Interval.shortest(intervals)
+        return shortest(intervals)!
     }
     
     /// Returns the shortest interval of the given values.
     /// - Note: Returns initialized with `init(nanoseconds: 0)` if given an empty array.
-    public static func shortest(_ intervals: [Interval]) -> Interval {
-        guard !intervals.isEmpty else { return .init(nanoseconds: 0) }
+    public static func shortest(_ intervals: [Interval]) -> Interval? {
+        guard !intervals.isEmpty else { return nil }
         return intervals.sorted(by: { $0.magnitude < $1.magnitude })[0]
-    }
-}
-
-extension Interval: Comparable {
-
-    /// Returns a Boolean value indicating whether the first interval is
-    /// less than the second interval.
-    ///
-    /// A negative interval is always less than a positive interval.
-    public static func < (lhs: Interval, rhs: Interval) -> Bool {
-        return lhs.compare(rhs) == .orderedAscending
     }
 }
 

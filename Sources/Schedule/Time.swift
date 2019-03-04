@@ -23,10 +23,12 @@ public struct Time {
     ///     Time(hour: 25)              => nil
     ///     Time(hour: 1, minute: 61)   => nil
     public init?(hour: Int, minute: Int = 0, second: Int = 0, nanosecond: Int = 0) {
-        guard (0..<24).contains(hour),
-              (0..<60).contains(minute),
-              (0..<60).contains(second),
-              (0..<Int(1.second.nanoseconds)).contains(nanosecond) else { return nil }
+        guard
+            (0..<24).contains(hour),
+            (0..<60).contains(minute),
+            (0..<60).contains(second),
+            (0..<Int(1.second.nanoseconds)).contains(nanosecond)
+        else { return nil }
 
         self.hour = hour
         self.minute = minute
@@ -85,8 +87,8 @@ public struct Time {
         }
     }
 
-    /// The interval between this time and zero o'clock.
-    public var intervalSinceZeroClock: Interval {
+    /// The interval between this time and start of today
+    public var intervalSinceStartOfToday: Interval {
         return hour.hours + minute.minutes + second.seconds + nanosecond.nanoseconds
     }
 
@@ -105,6 +107,8 @@ public struct Time {
 extension Time: CustomStringConvertible {
 
     /// A textual representation of this time.
+    ///
+    /// "Time: 11:11:11.111"
     public var description: String {
         let h = "\(hour)".padding(toLength: 2, withPad: "0", startingAt: 0)
         let m = "\(minute)".padding(toLength: 2, withPad: "0", startingAt: 0)
@@ -117,6 +121,8 @@ extension Time: CustomStringConvertible {
 extension Time: CustomDebugStringConvertible {
 
     /// A textual representation of this time for debugging.
+    ///
+    /// "Time: 11:11:11.111"
     public var debugDescription: String {
         return description
     }

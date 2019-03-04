@@ -1,27 +1,34 @@
 import Foundation
 
-/// `Weekday` represents a day of a week without time.
+/// `Weekday` represents a day of a week.
 public enum Weekday: Int {
 
     case sunday = 1, monday, tuesday, wednesday, thursday, friday, saturday
 
-    /// A Boolean value indicating whether today is the weekday.
-    public var isToday: Bool {
-        return Calendar.gregorian.dateComponents(in: .current, from: Date()).weekday == rawValue
-    }
-
-    /// Returns a dateComponenets of the weekday, using gregorian calender and
+    /// Returns dateComponenets of the weekday, using gregorian calender and
     /// current time zone.
     public func toDateComponents() -> DateComponents {
-        return DateComponents(calendar: Calendar.gregorian,
-                              timeZone: TimeZone.current,
-                              weekday: rawValue)
+        return DateComponents(
+            calendar: Calendar.gregorian,
+            timeZone: TimeZone.current,
+            weekday: rawValue
+        )
+    }
+}
+
+extension Date {
+
+    /// Returns a boolean value indicating whether this day is the weekday.
+    public func `is`(_ weekday: Weekday) -> Bool {
+        return Calendar.gregorian.component(.weekday, from: self) == weekday.rawValue
     }
 }
 
 extension Weekday: CustomStringConvertible {
 
     /// A textual representation of this weekday.
+    ///
+    ///     Weekday: Friday
     public var description: String {
         return "Weekday: \(Calendar.gregorian.weekdaySymbols[rawValue - 1])"
     }
@@ -30,6 +37,8 @@ extension Weekday: CustomStringConvertible {
 extension Weekday: CustomDebugStringConvertible {
 
     /// A textual representation of this weekday for debugging.
+    ///
+    ///     Weekday: Friday
     public var debugDescription: String {
         return description
     }

@@ -347,7 +347,7 @@ extension Plan {
         public func at(_ time: Time) -> Plan {
             guard !self.plan.isNever() else { return .never }
             
-            var interval = time.intervalSinceZeroClock
+            var interval = time.intervalSinceStartOfToday
             return Plan.make { () -> AnyIterator<Interval> in
                 let it = self.plan.makeIterator()
                 return AnyIterator {
@@ -415,7 +415,7 @@ extension Plan {
             let calendar = Calendar.gregorian
             var date: Date!
             return AnyIterator<Date> {
-                if weekday.isToday {
+                if Date().is(weekday) {
                     date = Date().startOfToday
                 } else if date == nil {
                     let components = weekday.toDateComponents()
@@ -455,7 +455,7 @@ extension Plan {
             let calendar = Calendar.gregorian
             var date: Date!
             return AnyIterator<Date> {
-                if monthday.isToday {
+                if Date().is(monthday) {
                     date = Date().startOfToday
                 } else if date == nil {
                     let components = monthday.toDateComponents()

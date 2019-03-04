@@ -102,9 +102,11 @@ public struct Period {
 
     /// Returns a new period by adding an interval to this period.
     public func adding(_ interval: Interval) -> Period {
-        return Period(years: years, months: months, days: days,
-                      hours: hours, minutes: minutes, seconds: seconds,
-                      nanoseconds: nanoseconds.clampedAdding(interval.nanoseconds.clampedToInt())).tidied(to: .day)
+        return Period(
+            years: years, months: months, days: days,
+            hours: hours, minutes: minutes, seconds: seconds,
+            nanoseconds: nanoseconds.clampedAdding(interval.nanoseconds.clampedToInt())
+        ).tidied(to: .day)
     }
 
     /// Adds two periods and produces their sum.
@@ -197,6 +199,8 @@ extension Int {
 extension Period: CustomStringConvertible {
 
     /// A textual representation of this period.
+    ///
+    /// Period: 1 year(s) 2 month(s) 3 day(s)
     public var description: String {
         let period = tidied(to: .day)
         var desc = "Period:"
@@ -214,6 +218,8 @@ extension Period: CustomStringConvertible {
 extension Period: CustomDebugStringConvertible {
 
     /// A textual representation of this period for debugging.
+    ///
+    /// Period: 1 year(s) 2 month(s) 3 day(s)
     public var debugDescription: String {
         return description
     }

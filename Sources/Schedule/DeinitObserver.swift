@@ -6,34 +6,36 @@ private var deinitObserverKey: Void = ()
 
 class DeinitObserver {
 
-    private(set) weak var observed: AnyObject?
+    private(set) weak var object: AnyObject?
 
-    private var block: (() -> Void)?
+    private var action: (() -> Void)?
 
-    private init(_ block: @escaping () -> Void) {
-        self.block = block
+    private init(_ action: @escaping () -> Void) {
+        self.action = action
     }
 
     @discardableResult
-    static func observe(_ observed: AnyObject, onDeinit block: @escaping () -> Void) -> DeinitObserver {
-        let observer = DeinitObserver(block)
-        observer.observed = observed
+    static func observe(
+        _ object: AnyObject,
+        onDeinit action: @escaping () -> Void
+    ) -> DeinitObserver {
+        let observer = DeinitObserver(action)
+        observer.object = object
 
-        objc_setAssociatedObject(observed, &deinitObserverKey, observer, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        objc_setAssociatedObject(object, &deinitObserverKey, observer, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 
         return observer
     }
 
-    func cancel() {
-        block = nil
-
-        if let o = observed {
+    func invalidate() {
+        action = nil
+        if let o = object {
             objc_setAssociatedObject(o, &deinitObserverKey, nil, .OBJC_ASSOCIATION_ASSIGN)
         }
     }
 
     deinit {
-        block?()
+        action?()
     }
 }
 
