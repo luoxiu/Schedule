@@ -115,7 +115,7 @@ extension Interval: Comparable {
     public static func longest(_ intervals: Interval...) -> Interval {
         return longest(intervals)!
     }
-        
+
     /// Returns the longest interval of the given values.
     /// - Note: Returns initialized with `init(nanoseconds: 0)` if given an empty array.
     public static func longest(_ intervals: [Interval]) -> Interval? {
@@ -128,7 +128,7 @@ extension Interval: Comparable {
     public static func shortest(_ intervals: Interval...) -> Interval {
         return shortest(intervals)!
     }
-    
+
     /// Returns the shortest interval of the given values.
     /// - Note: Returns initialized with `init(nanoseconds: 0)` if given an empty array.
     public static func shortest(_ intervals: [Interval]) -> Interval? {

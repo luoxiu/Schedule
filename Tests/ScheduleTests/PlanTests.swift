@@ -18,9 +18,7 @@ final class PlanTests: XCTestCase {
         let d3 = d2 + intervals[3]
 
         let s2 = Plan.of(d0, d1, d2, d3)
-        let s3 = Plan.from([d0, d1, d2, d3])
         XCTAssertTrue(s2.makeIterator().isAlmostEqual(to: intervals, leeway: leeway))
-        XCTAssertTrue(s3.makeIterator().isAlmostEqual(to: intervals, leeway: leeway))
 
         let longTime = (100 * 365).days
         XCTAssertTrue(Plan.distantPast.makeIterator().next()!.isLonger(than: longTime))

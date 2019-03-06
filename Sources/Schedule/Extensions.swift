@@ -36,7 +36,7 @@ extension Date {
     }
 }
 
-extension NSLock {
+extension NSLocking {
 
     @inline(__always)
     func withLock<T>(_ body: () throws -> T) rethrows -> T {

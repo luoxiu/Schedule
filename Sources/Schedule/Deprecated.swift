@@ -34,8 +34,19 @@ extension Weekday {
 extension Time {
 
     /// The interval between this time and zero o'clock.
-    @available(*, deprecated, renamed: "intervalSinceStartOfToday")
+    @available(*, deprecated, renamed: "intervalSinceStartOfDay")
     public var intervalSinceZeroClock: Interval {
         return hour.hours + minute.minutes + second.seconds + nanosecond.nanoseconds
+    }
+}
+
+extension Plan {
+
+    /// Creates a plan from a date sequence.
+    /// The task will be executed at each date in the sequence.
+    /// - Note: Returns `Plan.never` if given no parameters.
+    @available(*, deprecated, message: "Use Plan.of")
+    public static func from<S>(_ sequence: S) -> Plan where S: Sequence, S.Element == Date {
+        return Plan.make(sequence.makeIterator)
     }
 }

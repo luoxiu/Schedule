@@ -3,7 +3,7 @@ import Foundation
 struct CabinetKey: Equatable {
 
     private let i: UInt64
-    
+
     init(underlying: UInt64) {
         self.i = underlying
     }

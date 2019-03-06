@@ -88,7 +88,7 @@ public struct Time {
     }
 
     /// The interval between this time and start of today
-    public var intervalSinceStartOfToday: Interval {
+    public var intervalSinceStartOfDay: Interval {
         return hour.hours + minute.minutes + second.seconds + nanosecond.nanoseconds
     }
 

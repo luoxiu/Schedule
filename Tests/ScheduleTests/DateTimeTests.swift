@@ -132,7 +132,7 @@ final class DateTimeTests: XCTestCase {
         let t4 = Time("schedule")
         XCTAssertNil(t4)
 
-        XCTAssertEqual(Time(hour: 1)!.intervalSinceStartOfToday, 1.hour)
+        XCTAssertEqual(Time(hour: 1)!.intervalSinceStartOfDay, 1.hour)
     }
 
     func testWeekday() {
