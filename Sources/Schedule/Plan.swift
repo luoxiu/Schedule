@@ -6,13 +6,14 @@ import Foundation
 /// `Plan` is `Interval` based.
 public struct Plan {
 
-    private var sequence: AnySequence<Interval>
+    private var iSeq: AnySequence<Interval>
+
     private init<S>(_ sequence: S) where S: Sequence, S.Element == Interval {
-        self.sequence = AnySequence(sequence)
+        iSeq = AnySequence(sequence)
     }
 
     func makeIterator() -> AnyIterator<Interval> {
-        return sequence.makeIterator()
+        return iSeq.makeIterator()
     }
 
     /// Schedules a task with this plan.
@@ -67,24 +68,17 @@ extension Plan {
         return Plan(AnySequence(makeUnderlyingIterator))
     }
 
-    /// Creates a plan from an interval sequence.
-    /// The task will be executed after each interval in the sequence.
-    public static func from<S>(_ sequence: S) -> Plan where S: Sequence, S.Element == Interval {
-        return Plan(sequence)
-    }
-
     /// Creates a plan from a list of intervals.
     /// The task will be executed after each interval in the array.
     /// - Note: Returns `Plan.never` if given no parameters.
     public static func of(_ intervals: Interval...) -> Plan {
         return Plan.of(intervals)
     }
-    
+
     /// Creates a plan from a list of intervals.
     /// The task will be executed after each interval in the array.
     /// - Note: Returns `Plan.never` if given an empty array.
-    public static func of(_ intervals: [Interval]) -> Plan {
-        guard !intervals.isEmpty else { return .never }
+    public static func of<S>(_ intervals: S) -> Plan where S: Sequence, S.Element == Interval {
         return Plan(intervals)
     }
 }
@@ -128,25 +122,17 @@ extension Plan {
         }
     }
 
-    /// Creates a plan from a date sequence.
-    /// The task will be executed at each date in the sequence.
-    public static func from<S>(_ sequence: S) -> Plan where S: Sequence, S.Element == Date {
-        return Plan.make(sequence.makeIterator)
+    /// Creates a plan from a list of dates.
+    /// The task will be executed at each date in the array.
+    public static func of(_ dates: Date...) -> Plan {
+        return Plan.of(dates)
     }
 
     /// Creates a plan from a list of dates.
     /// The task will be executed at each date in the array.
     /// - Note: Returns `Plan.never` if given no parameters.
-    public static func of(_ dates: Date...) -> Plan {
-        return Plan.of(dates)
-    }
-    
-    /// Creates a plan from a list of dates.
-    /// The task will be executed at each date in the array.
-    /// - Note: Returns `Plan.never` if given no parameters.
-    public static func of(_ dates: [Date]) -> Plan {
-        guard !dates.isEmpty else { return .never }
-        return Plan.from(dates)
+    public static func of<S>(_ sequence: S) -> Plan where S: Sequence, S.Element == Date {
+        return Plan.make(sequence.makeIterator)
     }
 
     /// A dates sequence corresponding to this plan.
@@ -308,7 +294,7 @@ extension Plan {
     /// Creates a plan that executes the task every period.
     public static func every(_ period: Period) -> Plan {
         return Plan.make { () -> AnyIterator<Interval> in
-            let calendar = Calendar.standard
+            let calendar = Calendar.gregorian
             var last: Date!
             return AnyIterator {
                 last = last ?? Date()
@@ -346,8 +332,8 @@ extension Plan {
         /// Returns a plan at the specific time.
         public func at(_ time: Time) -> Plan {
             guard !self.plan.isNever() else { return .never }
-            
-            var interval = time.intervalSinceZeroClock
+
+            var interval = time.intervalSinceStartOfDay
             return Plan.make { () -> AnyIterator<Interval> in
                 let it = self.plan.makeIterator()
                 return AnyIterator {
@@ -370,7 +356,7 @@ extension Plan {
             else {
                 return .never
             }
-            
+
             return at(time)
         }
 
@@ -396,7 +382,7 @@ extension Plan {
         /// - Note: Returns `Plan.never` if given an empty array.
         public func at(_ time: [Int]) -> Plan {
             guard !time.isEmpty, !self.plan.isNever() else { return .never }
-            
+
             let hour = time[0]
             let minute = time.count > 1 ? time[1] : 0
             let second = time.count > 2 ? time[2] : 0
@@ -412,16 +398,16 @@ extension Plan {
     /// Creates a plan that executes the task every specific weekday.
     public static func every(_ weekday: Weekday) -> DateMiddleware {
         let plan = Plan.make { () -> AnyIterator<Date> in
-            let calendar = Calendar.standard
-            var date: Date!
+            let calendar = Calendar.gregorian
+            var date: Date?
             return AnyIterator<Date> {
-                if weekday.isToday {
-                    date = Date().start
-                } else if date == nil {
-                    let components = weekday.toDateComponents()
-                    date = calendar.nextDate(after: date, matching: components, matchingPolicy: .strict)
+                if let d = date {
+                    date = calendar.date(byAdding: .day, value: 7, to: d)
+                } else if Date().is(weekday) {
+                    date = Date().startOfToday
                 } else {
-                    date = calendar.date(byAdding: .day, value: 7, to: date)
+                    let components = weekday.toDateComponents()
+                    date = calendar.nextDate(after: Date(), matching: components, matchingPolicy: .strict)
                 }
                 return date
             }
@@ -434,12 +420,12 @@ extension Plan {
     public static func every(_ weekdays: Weekday...) -> DateMiddleware {
         return Plan.every(weekdays)
     }
-    
+
     /// Creates a plan that executes the task every specific weekdays.
     /// - Note: Returns initialized with `Plan.never` if given an empty array.
     public static func every(_ weekdays: [Weekday]) -> DateMiddleware {
         guard !weekdays.isEmpty else { return .init(plan: .never) }
-        
+
         var plan = every(weekdays[0]).plan
         if weekdays.count > 1 {
             for i in 1..<weekdays.count {
@@ -452,16 +438,16 @@ extension Plan {
     /// Creates a plan that executes the task every specific day in the month.
     public static func every(_ monthday: Monthday) -> DateMiddleware {
         let plan = Plan.make { () -> AnyIterator<Date> in
-            let calendar = Calendar.standard
-            var date: Date!
+            let calendar = Calendar.gregorian
+            var date: Date?
             return AnyIterator<Date> {
-                if monthday.isToday {
-                    date = Date().start
-                } else if date == nil {
+                if let d = date {
+                    date = calendar.date(byAdding: .year, value: 1, to: d)
+                } else if Date().is(monthday) {
+                    date = Date().startOfToday
+                } else  {
                     let components = monthday.toDateComponents()
-                    date = calendar.nextDate(after: date, matching: components, matchingPolicy: .strict)
-                } else {
-                    date = calendar.date(byAdding: .year, value: 1, to: date)
+                    date = calendar.nextDate(after: Date(), matching: components, matchingPolicy: .strict)
                 }
                 return date
             }
@@ -474,12 +460,12 @@ extension Plan {
     public static func every(_ mondays: Monthday...) -> DateMiddleware {
         return Plan.every(mondays)
     }
-        
+
     /// Creates a plan that executes the task every specific days in the months.
     /// - Note: Returns initialized with `Plan.never` if given an empty array.
     public static func every(_ mondays: [Monthday]) -> DateMiddleware {
         guard !mondays.isEmpty else { return .init(plan: .never) }
-        
+
         var plan = every(mondays[0]).plan
         if mondays.count > 1 {
             for i in 1..<mondays.count {
@@ -492,7 +478,7 @@ extension Plan {
 
 extension Plan {
     public func isNever() -> Bool {
-        return self.sequence.makeIterator().next() == nil
+        return self.iSeq.makeIterator().next() == nil
     }
 }
 
@@ -516,7 +502,7 @@ extension Plan {
             }
         }
     }
-    
+
     /// Creates a new plan that is offset by the specified interval.
     ///
     /// If the specified interval offset is `nil`, then no offset is

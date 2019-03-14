@@ -1,6 +1,6 @@
 import Foundation
 
-/// `Monthday` represents a day of a month without years.
+/// `Monthday` represents a day of a month.
 public enum Monthday {
 
     case january(Int)
@@ -27,13 +27,6 @@ public enum Monthday {
 
     case december(Int)
 
-    /// A Boolean value indicating whether today is the weekday.
-    public var isToday: Bool {
-        let lhs = Calendar.standard.dateComponents(in: TimeZone.current, from: Date())
-        let rhs = toDateComponents()
-        return lhs.month == rhs.month && lhs.day == rhs.day
-    }
-
     /// Returns a dateComponenets of the monthday, using gregorian calender and
     /// current time zone.
     public func toDateComponents() -> DateComponents {
@@ -52,28 +45,53 @@ public enum Monthday {
         case .november(let n):      month = 11; day = n
         case .december(let n):      month = 12; day = n
         }
-        return DateComponents(calendar: Calendar.standard,
-                              timeZone: TimeZone.current,
-                              month: month,
-                              day: day)
+        return DateComponents(
+            calendar: Calendar.gregorian,
+            timeZone: TimeZone.current,
+            month: month,
+            day: day
+        )
+    }
+}
+
+extension Date {
+
+    /// Returns a boolean value indicating whether today is the monthday.
+    public func `is`(_ monthday: Monthday) -> Bool {
+        let components = monthday.toDateComponents()
+
+        let m = Calendar.gregorian.component(.month, from: self)
+        let d = Calendar.gregorian.component(.day, from: self)
+        return m == components.month && d == components.day
     }
 }
 
 extension Monthday: CustomStringConvertible {
 
     /// A textual representation of this monthday.
+    ///
+    ///     "Monthday: May 1st"
     public var description: String {
-        let month = toDateComponents().month!
-        let day = toDateComponents().day!
+        let components = toDateComponents()
 
-        let monthDesc = Calendar.standard.monthSymbols[month - 1]
-        return "Monthday: \(monthDesc) \(day)"
+        let m = components.month!
+        let d = components.day!
+
+        let ms = Calendar.gregorian.monthSymbols[m - 1]
+
+        let fmt = NumberFormatter()
+        fmt.numberStyle = .ordinal
+        let ds = fmt.string(from: NSNumber(value: d))!
+
+        return "Monthday: \(ms) \(ds)"
     }
 }
 
 extension Monthday: CustomDebugStringConvertible {
 
     /// A textual representation of this monthday for debugging.
+    ///
+    ///     "Monthday: May 1st"
     public var debugDescription: String {
         return description
     }

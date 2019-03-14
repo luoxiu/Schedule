@@ -8,61 +8,83 @@ final class TaskCenterTests: XCTestCase {
         return Plan.never.do { }
     }
 
-    var defaultCenter: TaskCenter {
+    var center: TaskCenter {
         return TaskCenter.default
     }
 
     func testDefault() {
         let task = makeTask()
-        XCTAssertTrue(defaultCenter.allTasks.contains(task))
-        defaultCenter.clear()
+        XCTAssertTrue(center.allTasks.contains(task))
+        center.clear()
     }
 
     func testAdd() {
-        let centerA = TaskCenter()
+        let c = TaskCenter()
 
         let task = makeTask()
-        centerA.add(task)
+        XCTAssertEqual(center.allTasks.count, 1)
 
-        XCTAssertEqual(defaultCenter.allTasks.count, 0)
-        XCTAssertEqual(centerA.allTasks.count, 1)
+        c.add(task)
+        XCTAssertEqual(center.allTasks.count, 0)
+        XCTAssertEqual(c.allTasks.count, 1)
 
-        centerA.add(task)
-        XCTAssertEqual(centerA.allTasks.count, 1)
+        c.add(task)
+        XCTAssertEqual(c.allTasks.count, 1)
+
+        center.clear()
     }
 
     func testRemove() {
         let task = makeTask()
-        defaultCenter.remove(task)
-        XCTAssertFalse(defaultCenter.allTasks.contains(task))
+        center.remove(task)
+        XCTAssertFalse(center.allTasks.contains(task))
     }
 
     func testTag() {
         let task = makeTask()
 
-        let tag0 = UUID().uuidString
-        task.addTag(tag0)
-        XCTAssertTrue(defaultCenter.tasksWithTag(tag0).contains(task))
+        let tag = UUID().uuidString
 
-        let tag1 = UUID().uuidString
-        task.addTag(tag1)
-        XCTAssertTrue(defaultCenter.tasksWithTag(tag1).contains(task))
+        center.addTag(tag, to: task)
+        XCTAssertTrue(center.tasksForTag(tag).contains(task))
+        XCTAssertTrue(center.tagsForTask(task).contains(tag))
 
-        task.removeTag(tag0)
-        XCTAssertFalse(defaultCenter.tasksWithTag(tag0).contains(task))
+        center.removeTag(tag, from: task)
+        XCTAssertFalse(center.tasksForTag(tag).contains(task))
+        XCTAssertFalse(center.tagsForTask(task).contains(tag))
 
-        defaultCenter.clear()
+        center.clear()
     }
 
-    func testCount() {
-        XCTAssertEqual(defaultCenter.allTasks.count, 0)
-
+    func testAll() {
         let task = makeTask()
-        XCTAssertEqual(defaultCenter.allTasks.count, 1)
 
-        _ = task
+        let tag = UUID().uuidString
 
-        defaultCenter.clear()
+        center.addTag(tag, to: task)
+        XCTAssertEqual(center.allTags, [tag])
+        XCTAssertEqual(center.allTasks, [task])
+
+        center.clear()
+    }
+
+    func testOperation() {
+        let task = makeTask()
+
+        let tag = UUID().uuidString
+
+        center.addTag(tag, to: task)
+
+        center.suspendByTag(tag)
+        XCTAssertEqual(task.suspensions, 1)
+
+        center.resumeByTag(tag)
+        XCTAssertEqual(task.suspensions, 0)
+
+        center.cancelByTag(tag)
+        XCTAssertTrue(task.isCancelled)
+
+        center.clear()
     }
 
     func testWeak() {
@@ -71,7 +93,7 @@ final class TaskCenterTests: XCTestCase {
         }
         block()
 
-        XCTAssertEqual(defaultCenter.allTasks.count, 0)
+        XCTAssertEqual(center.allTasks.count, 0)
     }
 
     static var allTests = [
@@ -79,7 +101,8 @@ final class TaskCenterTests: XCTestCase {
         ("testAdd", testAdd),
         ("testRemove", testRemove),
         ("testTag", testTag),
-        ("testCount", testCount),
+        ("testAll", testAll),
+        ("testOperation", testOperation),
         ("testWeak", testWeak)
     ]
 }

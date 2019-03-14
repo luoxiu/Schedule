@@ -4,15 +4,21 @@ import Foundation
 extension Date {
 
     var dateComponents: DateComponents {
-        return Calendar.standard.dateComponents(in: TimeZone.current, from: self)
+        return Calendar.gregorian.dateComponents(in: TimeZone.current, from: self)
     }
 
-    init(year: Int, month: Int, day: Int, hour: Int = 0, minute: Int = 0, second: Int = 0, nanosecond: Int = 0) {
-        let components = DateComponents(calendar: Calendar.standard,
-                                        timeZone: TimeZone.current,
-                                        year: year, month: month, day: day,
-                                        hour: hour, minute: minute, second: second,
-                                        nanosecond: nanosecond)
+    init(
+        year: Int, month: Int, day: Int,
+        hour: Int = 0, minute: Int = 0, second: Int = 0,
+        nanosecond: Int = 0
+    ) {
+        let components = DateComponents(
+            calendar: Calendar.gregorian,
+            timeZone: TimeZone.current,
+            year: year, month: month, day: day,
+            hour: hour, minute: minute, second: second,
+            nanosecond: nanosecond
+        )
         self = components.date ?? Date.distantPast
     }
 }
@@ -34,14 +40,17 @@ extension Double {
 extension Sequence where Element == Interval {
 
     func isAlmostEqual<S>(to sequence: S, leeway: Interval) -> Bool where S: Sequence, S.Element == Element {
-        var i0 = self.makeIterator()
-        var i1 = sequence.makeIterator()
-        while let l = i0.next(), let r = i1.next() {
-            if (l - r).magnitude > leeway.magnitude {
+        var it0 = self.makeIterator()
+        var it1 = sequence.makeIterator()
+
+        while let l = it0.next(), let r = it1.next() {
+            if l.isAlmostEqual(to: r, leeway: leeway) {
+                continue
+            } else {
                 return false
             }
         }
-        return i0.next() == i1.next()
+        return it0.next() == it1.next()
     }
 }
 
@@ -54,14 +63,16 @@ extension Plan {
 
 extension DispatchQueue {
 
-    func async(after delay: Interval, execute body: @escaping () -> Void) {
-        asyncAfter(wallDeadline: .now() + delay.asSeconds(), execute: body)
+    func async(after interval: Interval, execute body: @escaping () -> Void) {
+        asyncAfter(wallDeadline: .now() + interval.asSeconds(), execute: body)
     }
 
     static func `is`(_ queue: DispatchQueue) -> Bool {
         let key = DispatchSpecificKey<()>()
+
         queue.setSpecific(key: key, value: ())
         defer { queue.setSpecific(key: key, value: nil) }
+
         return DispatchQueue.getSpecific(key: key) != nil
     }
 }

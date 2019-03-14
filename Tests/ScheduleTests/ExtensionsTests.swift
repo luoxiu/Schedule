@@ -4,26 +4,30 @@ import XCTest
 final class ExtensionsTests: XCTestCase {
 
     func testClampedToInt() {
-        let a: Double = 0.1
-        XCTAssertEqual(a.clampedToInt(), 0)
+        let a = Double(Int.max) + 1
+        XCTAssertEqual(a.clampedToInt(), Int.max)
+
+        let b = Double(Int.min) - 1
+        XCTAssertEqual(b.clampedToInt(), Int.min)
     }
 
     func testClampedAdding() {
-        let a: Int = 1
-        let b: Int = .max
-        XCTAssertEqual(a.clampedAdding(b), Int.max)
+        let i = Int.max
+        XCTAssertEqual(i.clampedAdding(1), Int.max)
     }
 
     func testClampedSubtracting() {
-        let a: Int = .min
-        let b: Int = 1
-        XCTAssertEqual(a.clampedSubtracting(b), Int.min)
+        let i = Int.min
+        XCTAssertEqual(i.clampedSubtracting(1), Int.min)
     }
 
-    func testStart() {
-        let start = Date().start
-        let components = start.dateComponents
-        guard let h = components.hour, let m = components.minute, let s = components.second else {
+    func testStartOfToday() {
+        let components = Date().startOfToday.dateComponents
+        guard
+            let h = components.hour,
+            let m = components.minute,
+            let s = components.second
+        else {
             XCTFail()
             return
         }
@@ -36,6 +40,6 @@ final class ExtensionsTests: XCTestCase {
         ("testClampedToInt", testClampedToInt),
         ("testClampedAdding", testClampedAdding),
         ("testClampedSubtracting", testClampedSubtracting),
-        ("testStart", testStart)
+        ("testStartOfToday", testStartOfToday)
     ]
 }

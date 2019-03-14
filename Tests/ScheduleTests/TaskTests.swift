@@ -61,16 +61,6 @@ final class TaskTests: XCTestCase {
         XCTAssertEqual(task1.suspensions, 3)
         task1.resume()
         XCTAssertEqual(task1.suspensions, 2)
-
-        let tag = UUID().uuidString
-        let task2 = Plan.distantFuture.do { }
-        task2.addTag(tag)
-        Task.suspend(byTag: tag)
-        XCTAssertEqual(task2.suspensions, 1)
-        Task.resume(byTag: tag)
-        XCTAssertEqual(task2.suspensions, 0)
-        Task.cancel(byTag: tag)
-        XCTAssertTrue(task2.isCancelled)
     }
 
     func testAddAndRemoveActions() {
@@ -91,23 +81,6 @@ final class TaskTests: XCTestCase {
 
         task.removeAllActions()
         XCTAssertEqual(task.countOfActions, 0)
-    }
-
-    func testAddAndRemoveTags() {
-        let task = Plan.never.do { }
-        let tagA = UUID().uuidString
-        let tagB = UUID().uuidString
-        let tagC = UUID().uuidString
-        task.addTag(tagA)
-        task.addTags(tagB, tagC)
-        XCTAssertTrue(task.tags.contains(tagA))
-        XCTAssertTrue(task.tags.contains(tagC))
-        task.removeTag(tagA)
-        XCTAssertFalse(task.tags.contains(tagA))
-        task.removeTags(tagB, tagC)
-        XCTAssertFalse(task.tags.contains(tagB))
-        XCTAssertFalse(task.tags.contains(tagC))
-        task.cancel()
     }
 
     func testReschedule() {
@@ -171,7 +144,6 @@ final class TaskTests: XCTestCase {
         ("testDispatchQueue", testDispatchQueue),
         ("testThread", testThread),
         ("testAddAndRemoveActions", testAddAndRemoveActions),
-        ("testAddAndRemoveTags", testAddAndRemoveTags),
         ("testReschedule", testReschedule),
         ("testHost", testHost),
         ("testLifetime", testLifetime)

@@ -7,23 +7,23 @@ final class DeinitObserverTests: XCTestCase {
 
     func testObserver() {
         var i = 0
-        let b0 = {
+        var fn = {
             let obj = NSObject()
-            DeinitObserver.observe(obj, onDeinit: {
+            DeinitObserver.observe(obj) {
                 i += 1
-            })
+            }
         }
-        b0()
+        fn()
         XCTAssertEqual(i, 1)
 
-        let b1 = {
+        fn = {
             let obj = NSObject()
-            let observer = DeinitObserver.observe(obj, onDeinit: {
+            let observer = DeinitObserver.observe(obj) {
                 i += 1
-            })
-            observer.cancel()
+            }
+            observer.invalidate()
         }
-        b1()
+        fn()
         XCTAssertEqual(i, 1)
     }
 

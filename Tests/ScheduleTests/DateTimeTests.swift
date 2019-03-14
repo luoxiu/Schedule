@@ -22,9 +22,9 @@ final class DateTimeTests: XCTestCase {
         XCTAssertTrue(1.1.second.isLonger(than: 1.0.second))
         XCTAssertTrue(3.days.isShorter(than: 1.week))
         XCTAssertEqual(Interval.longest(1.hour, 1.day, 1.week), 1.week)
-        XCTAssertEqual(Interval.longest([]), .init(nanoseconds: 0))
+        XCTAssertEqual(Interval.longest([]), nil)
         XCTAssertEqual(Interval.shortest(1.hour, 59.minutes, 2999.seconds), 2999.seconds)
-        XCTAssertEqual(Interval.shortest([]), .init(nanoseconds: 0))
+        XCTAssertEqual(Interval.shortest([]), nil)
 
         XCTAssertEqual(1.second * 60, 1.minute)
         XCTAssertEqual(59.minutes + 60.seconds, 1.hour)
@@ -35,7 +35,7 @@ final class DateTimeTests: XCTestCase {
         XCTAssertEqual(-(1.second), (-1).second)
 
         let i1 = Interval(seconds: 24 * 60 * 60)
-        XCTAssertEqual(1.nanosecond * i1.nanoseconds, 1.day)
+        XCTAssertEqual(1.nanosecond * i1.asNanoseconds(), 1.day)
         XCTAssertEqual(2.microsecond * i1.asMicroseconds(), 2.days)
         XCTAssertEqual(3.millisecond * i1.asMilliseconds(), 3.days)
         XCTAssertEqual(4.second * i1.asSeconds(), 4.days)
@@ -52,6 +52,9 @@ final class DateTimeTests: XCTestCase {
     }
 
     func testMonthday() {
+        let d = Date(year: 2019, month: 1, day: 1)
+        XCTAssertTrue(d.is(.january(1)))
+
         XCTAssertEqual(Monthday.january(1).toDateComponents().month, 1)
         XCTAssertEqual(Monthday.february(1).toDateComponents().month, 2)
         XCTAssertEqual(Monthday.march(1).toDateComponents().month, 3)
@@ -110,6 +113,14 @@ final class DateTimeTests: XCTestCase {
             XCTAssertTrue(i.isAlmostEqual(to: (0.456.second.nanoseconds).nanoseconds, leeway: 0.001.seconds))
         }
 
+        let components = t1?.toDateComponents()
+        XCTAssertEqual(components?.hour, 11)
+        XCTAssertEqual(components?.minute, 12)
+        XCTAssertEqual(components?.second, 13)
+        if let i = components?.nanosecond?.nanoseconds {
+            XCTAssertTrue(i.isAlmostEqual(to: (0.456.second.nanoseconds).nanoseconds, leeway: 0.001.seconds))
+        }
+
         let t2 = Time("11 pm")
         XCTAssertNotNil(t2)
         XCTAssertEqual(t2?.hour, 23)
@@ -121,10 +132,14 @@ final class DateTimeTests: XCTestCase {
         let t4 = Time("schedule")
         XCTAssertNil(t4)
 
-        XCTAssertEqual(Time(hour: 1)!.intervalSinceZeroClock, 1.hour)
+        XCTAssertEqual(Time(hour: 1)!.intervalSinceStartOfDay, 1.hour)
     }
 
     func testWeekday() {
+        // Be careful the time zone problem.
+        let d = Date(year: 2019, month: 1, day: 1)
+        XCTAssertTrue(d.is(.tuesday))
+
         XCTAssertEqual(Weekday.monday.toDateComponents().weekday!, 2)
     }
 

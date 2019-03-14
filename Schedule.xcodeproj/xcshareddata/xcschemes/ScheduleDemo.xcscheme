@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1000"
+   LastUpgradeVersion = "9999"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "52D6DA0E1BF000BD002C0205"
-               BuildableName = "Schedule.framework"
-               BlueprintName = "Schedule-macOS"
+               BlueprintIdentifier = "Schedule::ScheduleDemo"
+               BuildableName = "ScheduleDemo"
+               BlueprintName = "ScheduleDemo"
                ReferencedContainer = "container:Schedule.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -26,30 +26,19 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      codeCoverageEnabled = "YES"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
+            skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DD7502791C68FCFC006590AF"
-               BuildableName = "Schedule-macOS Tests.xctest"
-               BlueprintName = "Schedule-macOS Tests"
+               BlueprintIdentifier = "Schedule::ScheduleTests"
+               BuildableName = "ScheduleTests.xctest"
+               BlueprintName = "ScheduleTests"
                ReferencedContainer = "container:Schedule.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "52D6DA0E1BF000BD002C0205"
-            BuildableName = "Schedule.framework"
-            BlueprintName = "Schedule-macOS"
-            ReferencedContainer = "container:Schedule.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -63,15 +52,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "52D6DA0E1BF000BD002C0205"
-            BuildableName = "Schedule.framework"
-            BlueprintName = "Schedule-macOS"
+            BlueprintIdentifier = "Schedule::ScheduleDemo"
+            BuildableName = "ScheduleDemo"
+            BlueprintName = "ScheduleDemo"
             ReferencedContainer = "container:Schedule.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -81,15 +71,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "52D6DA0E1BF000BD002C0205"
-            BuildableName = "Schedule.framework"
-            BlueprintName = "Schedule-macOS"
-            ReferencedContainer = "container:Schedule.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

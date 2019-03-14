@@ -3,13 +3,13 @@ import Foundation
 /// `ActionKey` represents a token that can be used to remove the action.
 public struct ActionKey {
 
-    fileprivate let bucketKey: BucketKey
+    fileprivate let cabinetKey: CabinetKey
 }
 
-extension BucketKey {
+extension CabinetKey {
 
     func asActionKey() -> ActionKey {
-        return ActionKey(bucketKey: self)
+        return ActionKey(cabinetKey: self)
     }
 }
 
@@ -18,19 +18,17 @@ open class Task {
 
     public typealias Action = (Task) -> Void
 
-    private let _lock = NSLock()
-
-    private weak var _taskCenter: TaskCenter?
+    private let _mutex = NSRecursiveLock()
 
     private var _iterator: AnyIterator<Interval>
     private var _timer: DispatchSourceTimer
 
-    private lazy var _onElapseActions = Bucket<Action>()
-    private var _onDeinitActions = Bucket<Action>()
+    private lazy var _onElapseActions = Cabinet<Action>()
+    private lazy var _onDeinitActions = Cabinet<Action>()
 
     private lazy var _suspensions: UInt64 = 0
     private lazy var _timeline = Timeline()
-    private lazy var _tags: Set<String> = []
+
     private lazy var _countOfExecutions: Int = 0
 
     private lazy var _lifetime: Interval = Int.max.seconds
@@ -44,6 +42,9 @@ open class Task {
         return timer
     }()
 
+    open internal(set) weak var taskCenter: TaskCenter?
+    let taskCenterMutex = NSRecursiveLock()
+
     init(plan: Plan,
          queue: DispatchQueue?,
          onElapse: @escaping (Task) -> Void) {
@@ -51,7 +52,7 @@ open class Task {
         _iterator = plan.makeIterator()
         _timer = DispatchSource.makeTimerSource(queue: queue)
 
-        _onElapseActions.add(onElapse)
+        _onElapseActions.append(onElapse)
 
         _timer.setEventHandler { [weak self] in
             guard let self = self else { return }
@@ -63,8 +64,8 @@ open class Task {
             _timeline.estimatedNextExecution = Date().adding(interval)
         }
 
-        TaskCenter.default.add(self)
         _timer.resume()
+        TaskCenter.default.add(self)
     }
 
     deinit {
@@ -81,7 +82,7 @@ open class Task {
     }
 
     private func scheduleNext() {
-        _lock.withLock {
+        _mutex.withLock {
             let now = Date()
             var estimated = _timeline.estimatedNextExecution ?? now
             repeat {
@@ -99,7 +100,7 @@ open class Task {
 
     /// Execute this task now, without disrupting its plan.
     public func execute() {
-        let actions = _lock.withLock { () -> Bucket<Task.Action> in
+        let actions = _mutex.withLock { () -> Cabinet<Task.Action> in
             let now = Date()
             if _timeline.firstExecution == nil {
                 _timeline.firstExecution = now
@@ -124,29 +125,16 @@ open class Task {
     }
     #endif
 
-    open internal(set) var taskCenter: TaskCenter? {
-        get {
-            return _lock.withLock {
-                _taskCenter
-            }
-        }
-        set {
-            _lock.withLock {
-                _taskCenter = newValue
-            }
-        }
-    }
-
     /// The number of times the task has been executed.
     public var countOfExecutions: Int {
-        return _lock.withLock {
+        return _mutex.withLock {
             _countOfExecutions
         }
     }
 
     /// A Boolean indicating whether the task was canceled.
     public var isCancelled: Bool {
-        return _lock.withLock {
+        return _mutex.withLock {
             _timer.isCancelled
         }
     }
@@ -155,7 +143,7 @@ open class Task {
 
     /// Reschedules this task with the new plan.
     public func reschedule(_ new: Plan) {
-        _lock.withLock {
+        _mutex.withLock {
             _iterator = new.makeIterator()
         }
         scheduleNext()
@@ -163,14 +151,14 @@ open class Task {
 
     /// Suspensions of this task.
     public var suspensions: UInt64 {
-        return _lock.withLock {
+        return _mutex.withLock {
             _suspensions
         }
     }
 
     /// Suspends this task.
     public func suspend() {
-        _lock.withLock {
+        _mutex.withLock {
             if _suspensions < UInt64.max {
                 _timer.suspend()
                 _suspensions += 1
@@ -180,7 +168,7 @@ open class Task {
 
     /// Resumes this task.
     public func resume() {
-        _lock.withLock {
+        _mutex.withLock {
             if _suspensions > 0 {
                 _timer.resume()
                 _suspensions -= 1
@@ -190,7 +178,7 @@ open class Task {
 
     /// Cancels this task.
     public func cancel() {
-        _lock.withLock {
+        _mutex.withLock {
             _timer.cancel()
         }
         TaskCenter.default.remove(self)
@@ -198,8 +186,8 @@ open class Task {
 
     @discardableResult
     open func onDeinit(_ body: @escaping Action) -> ActionKey {
-        return _lock.withLock {
-            return _onDeinitActions.add(body).asActionKey()
+        return _mutex.withLock {
+            return _onDeinitActions.append(body).asActionKey()
         }
     }
 
@@ -207,21 +195,21 @@ open class Task {
 
     /// The snapshot timeline of this task.
     public var timeline: Timeline {
-        return _lock.withLock {
+        return _mutex.withLock {
             _timeline
         }
     }
 
     /// The lifetime of this task.
     public var lifetime: Interval {
-        return _lock.withLock {
+        return _mutex.withLock {
             _lifetime
         }
     }
 
     /// The rest of lifetime.
     public var restOfLifetime: Interval {
-        return _lock.withLock {
+        return _mutex.withLock {
             _lifetime - Date().interval(since: _timeline.initialization)
         }
     }
@@ -236,16 +224,16 @@ open class Task {
     public func setLifetime(_ interval: Interval) -> Bool {
         guard restOfLifetime.isPositive else { return false }
 
-        _lock.lock()
+        _mutex.lock()
         let age = Date().interval(since: _timeline.initialization)
         guard age.isShorter(than: interval) else {
-            _lock.unlock()
+            _mutex.unlock()
             return false
         }
 
         _lifetime = interval
         _lifetimeTimer.schedule(after: interval - age)
-        _lock.unlock()
+        _mutex.unlock()
         return true
     }
 
@@ -261,7 +249,7 @@ open class Task {
         guard rest.isPositive else { return false }
         rest += interval
         guard rest.isPositive else { return false }
-        _lock.withLock {
+        _mutex.withLock {
             _lifetime += interval
             _lifetimeTimer.schedule(after: rest)
         }
@@ -283,7 +271,7 @@ open class Task {
 
     /// The number of actions in this task.
     public var countOfActions: Int {
-        return _lock.withLock {
+        return _mutex.withLock {
             _onElapseActions.count
         }
     }
@@ -291,94 +279,28 @@ open class Task {
     /// Adds action to this task.
     @discardableResult
     public func addAction(_ action: @escaping (Task) -> Void) -> ActionKey {
-        return _lock.withLock {
-            return _onElapseActions.add(action).asActionKey()
+        return _mutex.withLock {
+            return _onElapseActions.append(action).asActionKey()
         }
     }
 
     /// Removes action by key from this task.
     public func removeAction(byKey key: ActionKey) {
-        _lock.withLock {
-            _ = _onElapseActions.removeElement(for: key.bucketKey)
+        _mutex.withLock {
+            _ = _onElapseActions.delete(key.cabinetKey)
         }
     }
 
     /// Removes all actions from this task.
     public func removeAllActions() {
-        _lock.withLock {
-            _onElapseActions.removeAll()
+        _mutex.withLock {
+            _onElapseActions.clear()
         }
     }
 
     // MARK: - Tag
-
-    /// All tags associated with this task.
-    public var tags: Set<String> {
-        return _lock.withLock {
-            _tags
-        }
-    }
-
-    /// Adds tags to this task.
-    public func addTags(_ tags: [String]) {
-        var set = Set(tags)
-
-        _lock.lock()
-        set.subtract(_tags)
-        guard set.count > 0 else {
-            _lock.unlock()
-            return
-        }
-        _tags.formUnion(set)
-        _lock.unlock()
-    }
-
-    /// Adds tags to this task.
-    public func addTags(_ tags: String...) {
-        addTags(tags)
-    }
-
-    /// Adds the tag to this task.
-    public func addTag(_ tag: String) {
-        addTags(tag)
-    }
-
-    /// Removes tags from this task.
-    public func removeTags(_ tags: [String]) {
-        var set = Set(tags)
-        _lock.lock()
-        set.formIntersection(_tags)
-        guard set.count > 0 else {
-            _lock.unlock()
-            return
-        }
-        _tags.subtract(set)
-        _lock.unlock()
-    }
-
-    /// Removes tags from this task.
-    public func removeTags(_ tags: String...) {
-        removeTags(tags)
-    }
-
-    /// Removes the tag from this task.
-    public func removeTag(_ tag: String) {
-        removeTags(tag)
-    }
-
-    /// Suspends all tasks that have the tag.
-    public static func suspend(byTag tag: String) {
-        TaskCenter.default.tasksWithTag(tag).forEach { $0.suspend() }
-    }
-
-    /// Resumes all tasks that have the tag.
-    public static func resume(byTag tag: String) {
-        TaskCenter.default.tasksWithTag(tag).forEach { $0.resume() }
-    }
-
-    /// Cancels all tasks that have the tag.
-    public static func cancel(byTag tag: String) {
-        TaskCenter.default.tasksWithTag(tag).forEach { $0.cancel() }
+    open func add(to: TaskCenter) {
+        _mutex.lock()
     }
 }
 
@@ -400,8 +322,7 @@ extension Task: CustomStringConvertible {
     /// A textual representation of this task.
     public var description: String {
         return "Task: { " +
-        "\"isCancelled\": \(_timer.isCancelled)" +
-        "\"tags\": \(_tags), " +
+        "\"isCancelled\": \(_timer.isCancelled), " +
         "\"countOfActions\": \(_onElapseActions.count), " +
         "\"countOfExecutions\": \(_countOfExecutions), " +
         "\"timeline\": \(_timeline)" +

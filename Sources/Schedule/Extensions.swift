@@ -22,21 +22,21 @@ extension Int {
 
 extension Calendar {
 
-    static var standard: Calendar {
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.locale = Locale(identifier: "en_US_POSIX")
-        return calendar
-    }
+    static let gregorian: Calendar = {
+        var cal = Calendar(identifier: .gregorian)
+        cal.locale = Locale(identifier: "en_US_POSIX")
+        return cal
+    }()
 }
 
 extension Date {
 
-    var start: Date {
-        return Calendar.standard.startOfDay(for: self)
+    var startOfToday: Date {
+        return Calendar.gregorian.startOfDay(for: self)
     }
 }
 
-extension NSLock {
+extension NSLocking {
 
     @inline(__always)
     func withLock<T>(_ body: () throws -> T) rethrows -> T {
