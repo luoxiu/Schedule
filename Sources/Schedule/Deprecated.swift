@@ -42,6 +42,13 @@ extension Time {
 
 extension Plan {
 
+    /// Creates a plan from an interval sequence.
+    /// The task will be executed after each interval in the sequence.
+    @available(*, deprecated, message: "Use Plan.of")
+    public static func from<S>(_ sequence: S) -> Plan where S: Sequence, S.Element == Interval {
+        return Plan.of(sequence)
+    }
+
     /// Creates a plan from a date sequence.
     /// The task will be executed at each date in the sequence.
     /// - Note: Returns `Plan.never` if given no parameters.

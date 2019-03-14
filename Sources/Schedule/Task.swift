@@ -24,7 +24,7 @@ open class Task {
     private var _timer: DispatchSourceTimer
 
     private lazy var _onElapseActions = Cabinet<Action>()
-    private var _onDeinitActions = Cabinet<Action>()
+    private lazy var _onDeinitActions = Cabinet<Action>()
 
     private lazy var _suspensions: UInt64 = 0
     private lazy var _timeline = Timeline()
@@ -64,8 +64,8 @@ open class Task {
             _timeline.estimatedNextExecution = Date().adding(interval)
         }
 
-        TaskCenter.default.add(self)
         _timer.resume()
+        TaskCenter.default.add(self)
     }
 
     deinit {

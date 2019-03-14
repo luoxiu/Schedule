@@ -6,13 +6,14 @@ import Foundation
 /// `Plan` is `Interval` based.
 public struct Plan {
 
-    private var sequence: AnySequence<Interval>
+    private var iSeq: AnySequence<Interval>
+
     private init<S>(_ sequence: S) where S: Sequence, S.Element == Interval {
-        self.sequence = AnySequence(sequence)
+        iSeq = AnySequence(sequence)
     }
 
     func makeIterator() -> AnyIterator<Interval> {
-        return sequence.makeIterator()
+        return iSeq.makeIterator()
     }
 
     /// Schedules a task with this plan.
@@ -67,12 +68,6 @@ extension Plan {
         return Plan(AnySequence(makeUnderlyingIterator))
     }
 
-    /// Creates a plan from an interval sequence.
-    /// The task will be executed after each interval in the sequence.
-    public static func from<S>(_ sequence: S) -> Plan where S: Sequence, S.Element == Interval {
-        return Plan(sequence)
-    }
-
     /// Creates a plan from a list of intervals.
     /// The task will be executed after each interval in the array.
     /// - Note: Returns `Plan.never` if given no parameters.
@@ -83,8 +78,7 @@ extension Plan {
     /// Creates a plan from a list of intervals.
     /// The task will be executed after each interval in the array.
     /// - Note: Returns `Plan.never` if given an empty array.
-    public static func of(_ intervals: [Interval]) -> Plan {
-        guard !intervals.isEmpty else { return .never }
+    public static func of<S>(_ intervals: S) -> Plan where S: Sequence, S.Element == Interval {
         return Plan(intervals)
     }
 }
@@ -405,15 +399,15 @@ extension Plan {
     public static func every(_ weekday: Weekday) -> DateMiddleware {
         let plan = Plan.make { () -> AnyIterator<Date> in
             let calendar = Calendar.gregorian
-            var date: Date!
+            var date: Date?
             return AnyIterator<Date> {
-                if Date().is(weekday) {
+                if let d = date {
+                    date = calendar.date(byAdding: .day, value: 7, to: d)
+                } else if Date().is(weekday) {
                     date = Date().startOfToday
-                } else if date == nil {
+                } else {
                     let components = weekday.toDateComponents()
                     date = calendar.nextDate(after: Date(), matching: components, matchingPolicy: .strict)
-                } else {
-                    date = calendar.date(byAdding: .day, value: 7, to: date)
                 }
                 return date
             }
@@ -445,15 +439,15 @@ extension Plan {
     public static func every(_ monthday: Monthday) -> DateMiddleware {
         let plan = Plan.make { () -> AnyIterator<Date> in
             let calendar = Calendar.gregorian
-            var date: Date!
+            var date: Date?
             return AnyIterator<Date> {
-                if Date().is(monthday) {
+                if let d = date {
+                    date = calendar.date(byAdding: .year, value: 1, to: d)
+                } else if Date().is(monthday) {
                     date = Date().startOfToday
-                } else if date == nil {
+                } else  {
                     let components = monthday.toDateComponents()
                     date = calendar.nextDate(after: Date(), matching: components, matchingPolicy: .strict)
-                } else {
-                    date = calendar.date(byAdding: .year, value: 1, to: date)
                 }
                 return date
             }
@@ -484,7 +478,7 @@ extension Plan {
 
 extension Plan {
     public func isNever() -> Bool {
-        return self.sequence.makeIterator().next() == nil
+        return self.iSeq.makeIterator().next() == nil
     }
 }
 
