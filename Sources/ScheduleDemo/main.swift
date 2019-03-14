@@ -27,7 +27,7 @@ let t4 = Plan.every(.monday, .tuesday, .wednesday, .thursday, .friday).at(6, 50)
     Log("Get up!")
 }
 
-let t5 = Plan.every(.march(14)).at("08:59:59 am").do {
+let t5 = Plan.every(.june(14)).at("08:59:59 am").do {
     Log("Happy birthday!")
 }
 

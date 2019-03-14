@@ -139,6 +139,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		66C87992223A90D300A95D60 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_13 /* Extensions.swift */,
+				OBJ_11 /* DeinitObserver.swift */,
+				OBJ_9 /* Atomic.swift */,
+				OBJ_10 /* Cabinet.swift */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+		66C87993223A90EE00A95D60 /* DateTime */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_14 /* Interval.swift */,
+				OBJ_15 /* Monthday.swift */,
+				OBJ_16 /* Period.swift */,
+				OBJ_21 /* Time.swift */,
+				OBJ_23 /* Weekday.swift */,
+			);
+			name = DateTime;
+			sourceTree = "<group>";
+		};
 		OBJ_24 /* ScheduleDemo */ = {
 			isa = PBXGroup;
 			children = (
@@ -185,7 +208,7 @@
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -194,7 +217,6 @@
 				OBJ_40 /* assets */,
 				OBJ_41 /* Products */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_7 /* Sources */ = {
@@ -209,21 +231,14 @@
 		OBJ_8 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_9 /* Atomic.swift */,
-				OBJ_10 /* Cabinet.swift */,
-				OBJ_11 /* DeinitObserver.swift */,
+				66C87993223A90EE00A95D60 /* DateTime */,
+				66C87992223A90D300A95D60 /* Utils */,
 				OBJ_12 /* Deprecated.swift */,
-				OBJ_13 /* Extensions.swift */,
-				OBJ_14 /* Interval.swift */,
-				OBJ_15 /* Monthday.swift */,
-				OBJ_16 /* Period.swift */,
 				OBJ_17 /* Plan.swift */,
 				OBJ_18 /* RunLoopTask.swift */,
 				OBJ_19 /* Task.swift */,
 				OBJ_20 /* TaskCenter.swift */,
-				OBJ_21 /* Time.swift */,
 				OBJ_22 /* Timeline.swift */,
-				OBJ_23 /* Weekday.swift */,
 			);
 			name = Schedule;
 			path = Sources/Schedule;
@@ -311,7 +326,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_41 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -459,6 +474,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Schedule.xcodeproj/Schedule_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				OTHER_CFLAGS = "$(inherited)";
@@ -471,6 +487,8 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 4.2;
 				TARGET_NAME = Schedule;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
@@ -484,6 +502,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Schedule.xcodeproj/Schedule_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				OTHER_CFLAGS = "$(inherited)";
@@ -496,6 +515,8 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 4.2;
 				TARGET_NAME = Schedule;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};

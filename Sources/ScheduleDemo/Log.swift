@@ -11,6 +11,9 @@ import Foundation
 let fmt = ISO8601DateFormatter()
 
 func Log(_ t: Any) {
+
     let now = fmt.string(from: Date())
-    print("[\(now)]: \(t)")
+    let thread = Thread.isMainThread ? "main" : "background"
+    
+    print("\(now) [\(thread)] -> \(t)")
 }
