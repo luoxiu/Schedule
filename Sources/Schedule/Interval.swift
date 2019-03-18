@@ -48,11 +48,6 @@ extension Interval {
 
 extension Interval: Hashable {
 
-    /// The hashValue of this interval.
-    public var hashValue: Int {
-        return nanoseconds.hashValue
-    }
-
     /// Returns a boolean value indicating whether two intervals are equal.
     public static func == (lhs: Interval, rhs: Interval) -> Bool {
         return lhs.nanoseconds == rhs.nanoseconds

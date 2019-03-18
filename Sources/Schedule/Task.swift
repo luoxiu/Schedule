@@ -306,9 +306,9 @@ open class Task {
 
 extension Task: Hashable {
 
-    /// The task's hash value.
-    public var hashValue: Int {
-        return ObjectIdentifier(self).hashValue
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self))
     }
 
     /// Returns a boolean value indicating whether two tasks are equal.

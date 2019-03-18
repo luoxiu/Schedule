@@ -9,11 +9,15 @@ extension TaskCenter {
         weak var task: Task?
 
         // To find slot
-        let hashValue: Int
+        let hash: Int
 
         init(_ task: Task) {
             self.task = task
-            self.hashValue = task.hashValue
+            self.hash = task.hashValue
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(hash)
         }
 
         // To find task
