@@ -1,26 +1,29 @@
 import XCTest
 @testable import Schedule
 
-final class CabinetTests: XCTestCase {
+final class BagTests: XCTestCase {
 
     typealias Fn = () -> Int
 
-    func testCabinetKey() {
-        let key = CabinetKey(underlying: 0)
-        XCTAssertEqual(key.increased(), CabinetKey(underlying: 1))
+    func testBagKey() {
+        var g = BagKeyGenerator()
+        let k1 = g.next()
+        let k2 = g.next()
+        XCTAssertNotNil(k1)
+        XCTAssertNotNil(k2)
+        XCTAssertNotEqual(k1, k2)
     }
 
     func testAppend() {
-        var cabinet = Cabinet<Fn>()
-        let k1 = cabinet.append { 1 }
-        let k2 = cabinet.append { 2 }
+        var cabinet = Bag<Fn>()
+        cabinet.append { 1 }
+        cabinet.append { 2 }
 
-        XCTAssertEqual(k1.increased(), k2)
         XCTAssertEqual(cabinet.count, 2)
     }
 
     func testGet() {
-        var cabinet = Cabinet<Fn>()
+        var cabinet = Bag<Fn>()
         let k1 = cabinet.append { 1 }
         let k2 = cabinet.append { 2 }
 
@@ -33,12 +36,10 @@ final class CabinetTests: XCTestCase {
         }
         XCTAssertEqual(fn1(), 1)
         XCTAssertEqual(fn2(), 2)
-
-        XCTAssertNil(cabinet.get(k2.increased()))
     }
 
     func testDelete() {
-        var cabinet = Cabinet<Fn>()
+        var cabinet = Bag<Fn>()
 
         let k1 = cabinet.append { 1 }
         let k2 = cabinet.append { 2 }
@@ -52,12 +53,10 @@ final class CabinetTests: XCTestCase {
         XCTAssertNotNil(fn2)
 
         XCTAssertEqual(cabinet.count, 0)
-
-        XCTAssertNil(cabinet.delete(k2.increased()))
     }
 
     func testClear() {
-        var cabinet = Cabinet<Fn>()
+        var cabinet = Bag<Fn>()
 
         cabinet.append { 1 }
         cabinet.append { 2 }
@@ -69,7 +68,7 @@ final class CabinetTests: XCTestCase {
     }
 
     func testSequence() {
-        var cabinet = Cabinet<Fn>()
+        var cabinet = Bag<Fn>()
         cabinet.append { 0 }
         cabinet.append { 1 }
         cabinet.append { 2 }
@@ -82,7 +81,7 @@ final class CabinetTests: XCTestCase {
     }
 
     static var allTests = [
-        ("testCabinetKey", testCabinetKey),
+        ("testBagKey", testBagKey),
         ("testAppend", testAppend),
         ("testGet", testGet),
         ("testDelete", testDelete),

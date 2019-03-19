@@ -1,12 +1,19 @@
 import Foundation
 
-#if canImport(ObjectiveC)
+#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
 
-private var deinitObserverKey: Void = ()
+private var DEINIT_OBSERVER_KEY: Void = ()
 
+/// Used to observe object deinit.
+///
+///     let observer = DeinitObserver.observe(target) {
+///         print("\(target) deinit")
+///     }
+///
+///     observer.cancel()
 class DeinitObserver {
 
-    private(set) weak var object: AnyObject?
+    private(set) weak var observed: AnyObject?
 
     private var action: (() -> Void)?
 
@@ -14,23 +21,25 @@ class DeinitObserver {
         self.action = action
     }
 
+    /// Installs observation.
     @discardableResult
     static func observe(
         _ object: AnyObject,
         onDeinit action: @escaping () -> Void
     ) -> DeinitObserver {
         let observer = DeinitObserver(action)
-        observer.object = object
+        observer.observed = object
 
-        objc_setAssociatedObject(object, &deinitObserverKey, observer, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        objc_setAssociatedObject(object, &DEINIT_OBSERVER_KEY, observer, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 
         return observer
     }
 
-    func invalidate() {
+    /// Uninstalls observation.
+    func cancel() {
         action = nil
-        if let o = object {
-            objc_setAssociatedObject(o, &deinitObserverKey, nil, .OBJC_ASSOCIATION_ASSIGN)
+        if let o = observed {
+            objc_setAssociatedObject(o, &DEINIT_OBSERVER_KEY, nil, .OBJC_ASSOCIATION_ASSIGN)
         }
     }
 

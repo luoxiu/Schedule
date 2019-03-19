@@ -25,7 +25,7 @@
 		OBJ_101 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_38 /* XCTestManifests.swift */; };
 		OBJ_103 /* Schedule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Schedule::Schedule::Product" /* Schedule.framework */; };
 		OBJ_50 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Atomic.swift */; };
-		OBJ_51 /* Cabinet.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Cabinet.swift */; };
+		OBJ_51 /* Bag.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Bag.swift */; };
 		OBJ_52 /* DeinitObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* DeinitObserver.swift */; };
 		OBJ_53 /* Deprecated.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Deprecated.swift */; };
 		OBJ_54 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* Extensions.swift */; };
@@ -44,7 +44,7 @@
 		OBJ_74 /* Schedule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Schedule::Schedule::Product" /* Schedule.framework */; };
 		OBJ_81 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_92 /* AtomicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* AtomicTests.swift */; };
-		OBJ_93 /* CabinetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* CabinetTests.swift */; };
+		OBJ_93 /* BagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* BagTests.swift */; };
 		OBJ_94 /* DateTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* DateTimeTests.swift */; };
 		OBJ_95 /* DeinitObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* DeinitObserverTests.swift */; };
 		OBJ_96 /* ExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* ExtensionsTests.swift */; };
@@ -78,7 +78,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		OBJ_10 /* Cabinet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cabinet.swift; sourceTree = "<group>"; };
+		OBJ_10 /* Bag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bag.swift; sourceTree = "<group>"; };
 		OBJ_11 /* DeinitObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeinitObserver.swift; sourceTree = "<group>"; };
 		OBJ_12 /* Deprecated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deprecated.swift; sourceTree = "<group>"; };
 		OBJ_13 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -95,7 +95,7 @@
 		OBJ_25 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		OBJ_26 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		OBJ_29 /* AtomicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicTests.swift; sourceTree = "<group>"; };
-		OBJ_30 /* CabinetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CabinetTests.swift; sourceTree = "<group>"; };
+		OBJ_30 /* BagTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BagTests.swift; sourceTree = "<group>"; };
 		OBJ_31 /* DateTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeTests.swift; sourceTree = "<group>"; };
 		OBJ_32 /* DeinitObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeinitObserverTests.swift; sourceTree = "<group>"; };
 		OBJ_33 /* ExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsTests.swift; sourceTree = "<group>"; };
@@ -139,13 +139,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6639192D223FD4B5000F412E /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_29 /* AtomicTests.swift */,
+				OBJ_30 /* BagTests.swift */,
+				OBJ_32 /* DeinitObserverTests.swift */,
+				OBJ_33 /* ExtensionsTests.swift */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
 		66C87992223A90D300A95D60 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_13 /* Extensions.swift */,
 				OBJ_11 /* DeinitObserver.swift */,
 				OBJ_9 /* Atomic.swift */,
-				OBJ_10 /* Cabinet.swift */,
+				OBJ_10 /* Bag.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -183,11 +194,8 @@
 		OBJ_28 /* ScheduleTests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_29 /* AtomicTests.swift */,
-				OBJ_30 /* CabinetTests.swift */,
+				6639192D223FD4B5000F412E /* Utils */,
 				OBJ_31 /* DateTimeTests.swift */,
-				OBJ_32 /* DeinitObserverTests.swift */,
-				OBJ_33 /* ExtensionsTests.swift */,
 				OBJ_34 /* Helpers.swift */,
 				OBJ_35 /* PlanTests.swift */,
 				OBJ_36 /* TaskCenterTests.swift */,
@@ -358,7 +366,7 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_50 /* Atomic.swift in Sources */,
-				OBJ_51 /* Cabinet.swift in Sources */,
+				OBJ_51 /* Bag.swift in Sources */,
 				OBJ_52 /* DeinitObserver.swift in Sources */,
 				OBJ_53 /* Deprecated.swift in Sources */,
 				OBJ_54 /* Extensions.swift in Sources */,
@@ -397,7 +405,7 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_92 /* AtomicTests.swift in Sources */,
-				OBJ_93 /* CabinetTests.swift in Sources */,
+				OBJ_93 /* BagTests.swift in Sources */,
 				OBJ_94 /* DateTimeTests.swift in Sources */,
 				OBJ_95 /* DeinitObserverTests.swift in Sources */,
 				OBJ_96 /* ExtensionsTests.swift in Sources */,

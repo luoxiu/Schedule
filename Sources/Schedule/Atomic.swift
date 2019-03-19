@@ -1,11 +1,12 @@
 import Foundation
 
-/// A value box that can read and write the underlying value atomically.
+/// Represents a box that can read and write the underlying value atomically.
 final class Atomic<T> {
 
     private var v: T
     private let lock = NSLock()
 
+    /// Init with the underlying value.
     init(_ value: T) {
         self.v = value
     }

@@ -22,13 +22,13 @@ extension Timeline: CustomStringConvertible {
 
     /// A textual representation of this timeline.
     public var description: String {
-        enum Cache {
+        enum Lazy {
             static let fmt = ISO8601DateFormatter()
         }
 
         let desc = { (d: Date?) -> String in
             guard let d = d else { return "nil" }
-            return Cache.fmt.string(from: d)
+            return Lazy.fmt.string(from: d)
         }
 
         return "Timeline: { " +

@@ -3,18 +3,20 @@ import Foundation
 /// `ActionKey` represents a token that can be used to remove the action.
 public struct ActionKey {
 
-    fileprivate let cabinetKey: CabinetKey
+    fileprivate let bagKey: BagKey
 }
 
-extension CabinetKey {
+extension BagKey {
 
-    func asActionKey() -> ActionKey {
-        return ActionKey(cabinetKey: self)
+    fileprivate func asActionKey() -> ActionKey {
+        return ActionKey(bagKey: self)
     }
 }
 
 /// `Task` represents a timed task.
 open class Task {
+
+    public let id = UUID()
 
     public typealias Action = (Task) -> Void
 
@@ -23,8 +25,8 @@ open class Task {
     private var _iterator: AnyIterator<Interval>
     private var _timer: DispatchSourceTimer
 
-    private lazy var _onElapseActions = Cabinet<Action>()
-    private lazy var _onDeinitActions = Cabinet<Action>()
+    private lazy var _onElapseActions = Bag<Action>()
+    private lazy var _onDeinitActions = Bag<Action>()
 
     private lazy var _suspensions: UInt64 = 0
     private lazy var _timeline = Timeline()
@@ -34,8 +36,8 @@ open class Task {
     private lazy var _lifetime: Interval = Int.max.seconds
     private lazy var _lifetimeTimer: DispatchSourceTimer = {
         let timer = DispatchSource.makeTimerSource()
-        timer.setEventHandler {
-            self.cancel()
+        timer.setEventHandler { [weak self] in
+            self?.cancel()
         }
         timer.schedule(after: _lifetime)
         timer.resume()
@@ -100,7 +102,7 @@ open class Task {
 
     /// Execute this task now, without disrupting its plan.
     public func execute() {
-        let actions = _mutex.withLock { () -> Cabinet<Task.Action> in
+        let actions = _mutex.withLock { () -> Bag<Task.Action> in
             let now = Date()
             if _timeline.firstExecution == nil {
                 _timeline.firstExecution = now
@@ -117,7 +119,7 @@ open class Task {
         execute()
     }
 
-    #if canImport(ObjectiveC)
+    #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
     open func host(on target: AnyObject) {
         DeinitObserver.observe(target) { [weak self] in
             self?.cancel()
@@ -287,7 +289,7 @@ open class Task {
     /// Removes action by key from this task.
     public func removeAction(byKey key: ActionKey) {
         _mutex.withLock {
-            _ = _onElapseActions.delete(key.cabinetKey)
+            _ = _onElapseActions.delete(key.bagKey)
         }
     }
 
@@ -306,9 +308,8 @@ open class Task {
 
 extension Task: Hashable {
 
-
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(ObjectIdentifier(self))
+        hasher.combine(id)
     }
 
     /// Returns a boolean value indicating whether two tasks are equal.

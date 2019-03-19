@@ -1,7 +1,7 @@
 import XCTest
 @testable import Schedule
 
-#if canImport(ObjectiveC)
+#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
 
 final class DeinitObserverTests: XCTestCase {
 
@@ -21,7 +21,7 @@ final class DeinitObserverTests: XCTestCase {
             let observer = DeinitObserver.observe(obj) {
                 i += 1
             }
-            observer.invalidate()
+            observer.cancel()
         }
         fn()
         XCTAssertEqual(i, 1)
