@@ -28,6 +28,7 @@ public struct Period {
 
     public private(set) var nanoseconds: Int
 
+    /// Initializes a period value, optional sepcifying values for its fields.
     public init(years: Int = 0, months: Int = 0, days: Int = 0,
                 hours: Int = 0, minutes: Int = 0, seconds: Int = 0,
                 nanoseconds: Int = 0) {
@@ -200,7 +201,7 @@ extension Period: CustomStringConvertible {
 
     /// A textual representation of this period.
     ///
-    /// Period: 1 year(s) 2 month(s) 3 day(s)
+    /// "Period: 1 year(s) 2 month(s) 3 day(s)"
     public var description: String {
         let period = tidied(to: .day)
         var desc = "Period:"
@@ -219,7 +220,7 @@ extension Period: CustomDebugStringConvertible {
 
     /// A textual representation of this period for debugging.
     ///
-    /// Period: 1 year(s) 2 month(s) 3 day(s)
+    /// "Period: 1 year(s) 2 month(s) 3 day(s)"
     public var debugDescription: String {
         return description
     }

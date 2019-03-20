@@ -16,6 +16,7 @@ extension BagKey {
 /// `Task` represents a timed task.
 open class Task {
 
+    /// The unique id of this task.
     public let id = UUID()
 
     public typealias Action = (Task) -> Void
@@ -44,9 +45,19 @@ open class Task {
         return timer
     }()
 
+    /// The task center which this task currently in.
     open internal(set) weak var taskCenter: TaskCenter?
-    let taskCenterMutex = NSRecursiveLock()
 
+    /// The mutex used to guard task center operations.
+    let taskCenterMutex = NSLock()
+
+
+    /// Initializes a normal task with specified plan and dispatch queue.
+    ///
+    /// - Parameters:
+    ///   - plan: The plan.
+    ///   - queue: The dispatch queue to which all actions should be added.
+    ///   - onElapse: The action to do when time is out.
     init(plan: Plan,
          queue: DispatchQueue?,
          onElapse: @escaping (Task) -> Void) {
@@ -324,8 +335,10 @@ extension Task: CustomStringConvertible {
     public var description: String {
         return "Task: { " +
         "\"isCancelled\": \(_timer.isCancelled), " +
-        "\"countOfActions\": \(_onElapseActions.count), " +
+        "\"countOfElapseActions\": \(_onElapseActions.count), " +
+        "\"countOfDeinitActions\": \(_onDeinitActions.count), " +
         "\"countOfExecutions\": \(_countOfExecutions), " +
+        "\"lifeTime\": \(_lifetime), " +
         "\"timeline\": \(_timeline)" +
         " }"
     }

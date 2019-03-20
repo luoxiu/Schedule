@@ -477,8 +477,10 @@ extension Plan {
 }
 
 extension Plan {
+
+    /// Returns a Boolean value indicating whether this plan is empty.
     public func isNever() -> Bool {
-        return self.iSeq.makeIterator().next() == nil
+        return iSeq.makeIterator().next() == nil
     }
 }
 

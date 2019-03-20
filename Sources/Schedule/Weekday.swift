@@ -28,7 +28,7 @@ extension Weekday: CustomStringConvertible {
 
     /// A textual representation of this weekday.
     ///
-    ///     Weekday: Friday
+    ///     "Weekday: Friday"
     public var description: String {
         return "Weekday: \(Calendar.gregorian.weekdaySymbols[rawValue - 1])"
     }
@@ -38,7 +38,7 @@ extension Weekday: CustomDebugStringConvertible {
 
     /// A textual representation of this weekday for debugging.
     ///
-    ///     Weekday: Friday
+    ///     "Weekday: Friday"
     public var debugDescription: String {
         return description
     }

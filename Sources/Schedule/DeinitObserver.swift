@@ -21,7 +21,7 @@ class DeinitObserver {
         self.action = action
     }
 
-    /// Installs observation.
+    /// Add observer.
     @discardableResult
     static func observe(
         _ object: AnyObject,
@@ -35,7 +35,7 @@ class DeinitObserver {
         return observer
     }
 
-    /// Uninstalls observation.
+    /// Remove observer.
     func cancel() {
         action = nil
         if let o = observed {

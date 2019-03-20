@@ -58,7 +58,7 @@ extension Interval: CustomStringConvertible {
 
     /// A textual representation of this interval.
     ///
-    ///     Interval: 1000 nanoseconds
+    ///     "Interval: 1000 nanoseconds"
     public var description: String {
         return "Interval: \(nanoseconds.clampedToInt()) nanoseconds"
     }
@@ -68,7 +68,7 @@ extension Interval: CustomDebugStringConvertible {
 
     /// A textual representation of this interval for debugging.
     ///
-    ///     Interval: 1000 nanoseconds
+    ///     "Interval: 1000 nanoseconds"
     public var debugDescription: String {
         return description
     }
@@ -79,7 +79,8 @@ extension Interval: Comparable {
 
     /// Compares two intervals.
     ///
-    /// A positive interval is always ordered ascending to a negative interval.
+    /// The comparison is magnitude independent, a positive interval is
+    /// always ordered ascending to a negative interval.
     public func compare(_ other: Interval) -> ComparisonResult {
         let now = Date()
         return now.adding(self).compare(now.adding(other))
@@ -106,26 +107,22 @@ extension Interval: Comparable {
     }
 
     /// Returns the longest interval of the given values.
-    /// - Note: Returns initialized with `init(nanoseconds: 0)` if given no parameters.
     public static func longest(_ intervals: Interval...) -> Interval {
         return longest(intervals)!
     }
 
     /// Returns the longest interval of the given values.
-    /// - Note: Returns initialized with `init(nanoseconds: 0)` if given an empty array.
     public static func longest(_ intervals: [Interval]) -> Interval? {
         guard !intervals.isEmpty else { return nil }
         return intervals.sorted(by: { $0.magnitude > $1.magnitude })[0]
     }
 
     /// Returns the shortest interval of the given values.
-    /// - Note: Returns initialized with `init(nanoseconds: 0)` if given no parameters.
     public static func shortest(_ intervals: Interval...) -> Interval {
         return shortest(intervals)!
     }
 
     /// Returns the shortest interval of the given values.
-    /// - Note: Returns initialized with `init(nanoseconds: 0)` if given an empty array.
     public static func shortest(_ intervals: [Interval]) -> Interval? {
         guard !intervals.isEmpty else { return nil }
         return intervals.sorted(by: { $0.magnitude < $1.magnitude })[0]
@@ -354,6 +351,7 @@ extension Date {
 // MARK: - DispatchSourceTimer
 extension DispatchSourceTimer {
 
+    /// Schedule this timer later.
     func schedule(after timeout: Interval) {
         guard !timeout.isNegative else { return }
         let ns = timeout.nanoseconds.clampedToInt()

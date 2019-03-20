@@ -1,6 +1,6 @@
 import Foundation
 
-/// A unique key used to remove the corresponding element from a bag.
+/// A unique key used to operate the corresponding element from a bag.
 struct BagKey: Equatable {
 
     fileprivate let i: UInt64
@@ -15,7 +15,7 @@ struct BagKey: Equatable {
     }
 }
 
-/// A generator can generate a sequence of unique `BagKey`.
+/// A generator used to generate a sequence of unique `BagKey`.
 ///
 ///     let k1 = gen.next()
 ///     let k2 = gen.next()
@@ -26,7 +26,7 @@ struct BagKeyGenerator: Sequence, IteratorProtocol {
 
     private var k = BagKey(underlying: 0)
 
-    /// Gets next BagKey.
+    /// Advances to the next element and returns it, or nil if no next element exists.
     mutating func next() -> Element? {
         if k.i == UInt64.max {
             return nil
@@ -95,6 +95,7 @@ struct Bag<Element> {
 
 extension Bag: Sequence {
 
+    /// Returns an iterator over the elements of this containers.
     func makeIterator() -> AnyIterator<Element> {
         var iterator = entries.makeIterator()
         return AnyIterator<Element> {
