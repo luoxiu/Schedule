@@ -49,7 +49,7 @@ open class Task {
     open internal(set) weak var taskCenter: TaskCenter?
 
     /// The mutex used to guard task center operations.
-    let taskCenterMutex = NSLock()
+    let taskCenterMutex = NSRecursiveLock()
 
 
     /// Initializes a normal task with specified plan and dispatch queue.

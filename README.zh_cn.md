@@ -14,7 +14,7 @@
 Schedule 是一个轻量级的调度框架，它能让你用难以置信的友好语法执行定时任务。
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/assets/demo.png" width="700">
+<img src="assets/demo.png" width="700">
 </p>
 
 ## 功能
@@ -59,7 +59,7 @@ Schedule 是一个轻量级的调度框架，它能让你用难以置信的友�
 let plan = Plan.after(3.seconds)
 
 // 2. 执行你的任务：
-plan.do {
+let task = plan.do {
     print("3 seconds passed!")
 }
 ```
@@ -71,11 +71,11 @@ plan.do {
 Schedule 使用自定义的 `Interval` 类型来配置定时任务，你不必担心对内置类型的扩展会污染你的命名空间。流畅的构造方法让配置像一场舒服的对话：
 
 ```swift
-Plan.every(1.second).do { }
+let t1 = Plan.every(1.second).do { }
 
-Plan.after(1.hour, repeating: 1.minute).do { }
+let t2 = Plan.after(1.hour, repeating: 1.minute).do { }
 
-Plan.of(1.second, 2.minutes, 3.hours).do { }
+let t3 = Plan.of(1.second, 2.minutes, 3.hours).do { }
 ```
 
 #### 基于日期调度
@@ -83,15 +83,15 @@ Plan.of(1.second, 2.minutes, 3.hours).do { }
 配置基于日期的调度同样如此，Schedule 定义了所有常用的日期类型，尽力让你的书写直观、流畅：
 
 ```swift
-Plan.at(when).do { }
+let t1 = Plan.at(when).do { }
 
-Plan.every(.monday, .tuesday).at("9:00:00").do { }
+let t2 = Plan.every(.monday, .tuesday).at("9:00:00").do { }
 
-Plan.every(.september(30)).at(10, 30).do { }
+let t3 = Plan.every(.september(30)).at(10, 30).do { }
 
-Plan.every("one month and ten days").do { }
+let t4 = Plan.every("one month and ten days").do { }
 
-Plan.of(date0, date1, date2).do { }
+let t5 = Plan.of(date0, date1, date2).do { }
 ```
 
 #### 自然语言解析
@@ -99,14 +99,14 @@ Plan.of(date0, date1, date2).do { }
 除此之外，Schedule 还支持基础的自然语言解析，这大大增强了你的代码的可读性：
 
 ```swift
-Plan.every("one hour and ten minutes").do { }
+let t1 = Plan.every("one hour and ten minutes").do { }
 
-Plan.every("1 hour, 5 minutes and 10 seconds").do { }
+let t2 = Plan.every("1 hour, 5 minutes and 10 seconds").do { }
 
-Plan.every(.firday).at("9:00 pm").do { }
+let t3 = Plan.every(.firday).at("9:00 pm").do { }
 
 Period.registerQuantifier("many", for: 100 * 1000)
-Plan.every("many days").do { }
+let t4 = Plan.every("many days").do { }
 ```
 
 #### 自定义规则调度
@@ -118,7 +118,7 @@ Schedule 还提供了几个简单的集合操作符，这意味着你可以使�
 let p0 = Plan.at(birthdate)
 let p1 = Plan.every(1.year)
 let birthday = p0.concat.p1
-birthday.do { 
+let t1 = birthday.do { 
     print("Happy birthday")
 }
 
@@ -126,7 +126,7 @@ birthday.do {
 let p3 = Plan.every(.january(1)).at("8:00")
 let p4 = Plan.every(.october(1)).at("9:00 AM")
 let holiday = p3.merge(p4)
-holiday.do {
+let t2 = holiday.do {
     print("Happy holiday")
 }
 
@@ -157,7 +157,7 @@ Plan.every(1.second).do(host: self) {
 Task 默认会在当前线程上执行，它的实现依赖于 RunLoop，所以你需要保证当前线程有一个可用的 RunLoop。如果 task 的创建在子线程上，你可能需要执行 `RunLoop.current.run()`。默认情况下， task 会被添加到 `.common` mode 上，你可以在创建 task 时指定其它 mode：
 
 ```swift
-Plan.every(1.second).do(mode: .default) {
+let task = Plan.every(1.second).do(mode: .default) {
     print("on default mode...")
 }
 ```
@@ -167,14 +167,14 @@ Plan.every(1.second).do(mode: .default) {
 你也可以使用 queue 来指定 task 会被派发到哪个 DispatchQueue 上，这时，task 的执行不再依赖于 RunLoop，意味着你可以放心地子线程上使用：
 
 ```swift
-Plan.every(1.second).do(queue: .global()) {
+let task = Plan.every(1.second).do(queue: .global()) {
     print("On a globle queue")
 }
 ```
 
 ### 管理
 
-在 Schedule 里，每一个新创建的 task 都会被一个内部的全局变量自动持有，除非你显式地 cancel 它们，否则它们不会被提前释放。也就是说你不用再在控制器里写那些诸如 `weak var timer: Timer`, `self.timer = timer` 之类的啰唆代码了：
+你可以 suspend，resume，cancel 一个 task。
 
 ```swift
 let task = Plan.every(1.minute).do { }
@@ -210,25 +210,29 @@ let key = dailyTask.addAction {
 dailyTask.removeAction(byKey: key)
 ```
 
-#### 标签
+#### TaskCenter 和 Tag
 
-你可以用 tag 来组织 tasks，用 queue 指定这个 task 派发到哪里：
+Task 默认会被添加到 TaskCenter.default 上，你可以使用 tag 配合 taskCenter 来组织 tasks：
 
 ```swift
-let s = Plan.every(1.day)
-let task0 = s.do(queue: myTaskQueue) { }
-let task1 = s.do(queue: myTaskQueue) { }
+let plan = Plan.every(1.day)
+let task0 = plan.do(queue: myTaskQueue) { }
+let task1 = plan.do(queue: myTaskQueue) { }
 
-task0.addTag("database")
-task1.addTags("database", "log")
-task1.removeTag("log")
+TaskCenter.default.addTags(["database", "log"], to: task1)
+TaskCenter.default.removeTag("log", from: task1)
 
-Task.suspend(byTag: "log")
-Task.resume(byTag: "log")
-Task.cancel(byTag: "log")
+TaskCenter.default.suspend(byTag: "log")
+TaskCenter.default.resume(byTag: "log")
+TaskCenter.default.cancel(byTag: "log")
+
+TaskCenter.default.clear()
+
+let myCenter = TaskCenter()
+myCenter.add(task0)	// will remove task0 from default center.
 ```
 
-#### 时间线
+#### Timeline
 
 你可以实时地观察 task 的当前时间线：
 
@@ -240,7 +244,7 @@ print(timeline.lastExecution)
 print(timeline.estimatedNextExecution)
 ```
 
-#### 寿命
+#### Lifetime
 
 也可以精确地设置 task 的寿命：
 
@@ -256,7 +260,7 @@ task.restOfLifetime == 11.hours
 
 ## 支持
 
-- iOS 8.0+ / macOS 10.10+ / tvOS 9.0+ / watchOS 2.0+
+- iOS 10.0+ / macOS 10.12+ / tvOS 10.0+ / watchOS 3.0+
 - Linux(Tested on Ubuntu 16.04)
 
 ## 安装
@@ -288,7 +292,7 @@ dependencies: [
 
 ## 致谢
 
-项目灵感来自于 Dan Bader 的 [schedule](https://github.com/dbader/schedule)！语法设计深受 Ruby 影响!
+项目灵感来自于 Dan Bader 的 [schedule](https://github.com/dbader/schedule)！
 
 ## 贡献
 

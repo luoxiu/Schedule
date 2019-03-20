@@ -14,7 +14,7 @@
 Schedule is a lightweight timed tasks scheduler for Swift. It allows you run timed tasks using an incredibly human-friendly syntax.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/jianstm/Schedule/master/assets/demo.png" width="700">
+<img src="assets/demo.png" width="700">
 </p>
 
 ## Features
@@ -59,7 +59,7 @@ Scheduling a task has never been so simple and intuitive, all you have to do is:
 let plan = Plan.after(3.seconds)
 
 // 2. do your task：
-plan.do {
+let task = plan.do {
     print("3 seconds passed!")
 }
 ```
@@ -71,11 +71,11 @@ plan.do {
 Schedule uses a self-defined type `Interval` to configure timed tasks, so you don't have to worry about extensions of built-in type polluting your namespace. The smooth constructors make the configuration like a comfortable conversation:
 
 ```swift
-Plan.every(1.second).do { }
+let t1 = Plan.every(1.second).do { }
 
-Plan.after(1.hour, repeating: 1.minute).do { }
+let t2 = Plan.after(1.hour, repeating: 1.minute).do { }
 
-Plan.of(1.second, 2.minutes, 3.hours).do { }
+let t3 = Plan.of(1.second, 2.minutes, 3.hours).do { }
 ```
 
 #### Date-based Schedule
@@ -83,15 +83,15 @@ Plan.of(1.second, 2.minutes, 3.hours).do { }
 Configuring date-based timing tasks is the same, Schedule defines all the commonly used date time types, trying to make your writing experience intuitive and smooth::
 
 ```swift
-Plan.at(when).do { }
+let t1 = Plan.at(when).do { }
 
-Plan.every(.monday, .tuesday).at("9:00:00").do { }
+let t2 = Plan.every(.monday, .tuesday).at("9:00:00").do { }
 
-Plan.every(.september(30)).at(10, 30).do { }
+let t3 = Plan.every(.september(30)).at(10, 30).do { }
 
-Plan.every("one month and ten days").do { }
+let t4 = Plan.every("one month and ten days").do { }
 
-Plan.of(date0, date1, date2).do { }
+let t5 = Plan.of(date0, date1, date2).do { }
 ```
 
 #### Natural Language Parse
@@ -99,15 +99,14 @@ Plan.of(date0, date1, date2).do { }
 In addition, Schedule also supports basic natural language parsing, which greatly improves the readability of your code: 
 
 ```swift
-Plan.every("one hour and ten minutes").do { }
+let t1 = Plan.every("one hour and ten minutes").do { }
 
-Plan.every("1 hour, 5 minutes and 10 seconds").do { }
+let t2 = Plan.every("1 hour, 5 minutes and 10 seconds").do { }
 
-Plan.every(.friday).at("9:00 pm").do { }
+let t3 = Plan.every(.firday).at("9:00 pm").do { }
 
-// Extensions
 Period.registerQuantifier("many", for: 100 * 1000)
-Plan.every("many days").do { }
+let t4 = Plan.every("many days").do { }
 ```
 
 #### Mixing Rules Schedule
@@ -119,7 +118,7 @@ Schedule provides several collection operators, this means you can use them to c
 let p0 = Plan.at(birthdate)
 let p1 = Plan.every(1.year)
 let birthday = p0.concat.p1
-birthday.do { 
+let t1 = birthday.do { 
     print("Happy birthday")
 }
 
@@ -127,7 +126,7 @@ birthday.do {
 let p3 = Plan.every(.january(1)).at("8:00")
 let p4 = Plan.every(.october(1)).at("9:00 AM")
 let holiday = p3.merge(p4)
-holiday.do {
+let t2 = holiday.do {
     print("Happy holiday")
 }
 
@@ -160,7 +159,7 @@ The task will be executed on the current thread by default, and its implementati
 By default, Task will be added to `.common` mode, you can specify another mode when creating a task:
 
 ```swift
-Plan.every(1.second).do(mode: .default) {
+let task = Plan.every(1.second).do(mode: .default) {
     print("on default mode...")
 }
 ```
@@ -177,7 +176,7 @@ Plan.every(1.second).do(queue: .global()) {
 
 ### Management
 
-In schedule, every newly created task is automatically held by an internal global variable and will not be released until you cancel it actively. So you don't have to add variables to your controller and write nonsense like `weak var timer: Timer`, `self.timer = timer`:
+You can `suspend`, `resume`, `cancel` a task.
 
 ```swift
 let task = Plan.every(1.minute).do { }
@@ -213,22 +212,26 @@ let key = dailyTask.addAction {
 dailyTask.removeAction(byKey: key)
 ```
 
-#### Tag
+#### TaskCenter & Tag
 
-You can organize tasks with tags, and use queue to specify to where the task should be dispatched:
+Tasks are automatically added to `TaskCenter.default` when they are created. You can organize tasks using tags and task center.
 
 ```swift
-let s = Plan.every(1.day)
-let task0 = s.do(queue: myTaskQueue) { }
-let task1 = s.do(queue: myTaskQueue) { }
+let plan = Plan.every(1.day)
+let task0 = plan.do(queue: myTaskQueue) { }
+let task1 = plan.do(queue: myTaskQueue) { }
 
-task0.addTag("database")
-task1.addTags("database", "log")
-task1.removeTag("log")
+TaskCenter.default.addTags(["database", "log"], to: task1)
+TaskCenter.default.removeTag("log", from: task1)
 
-Task.suspend(byTag: "log")
-Task.resume(byTag: "log")
-Task.cancel(byTag: "log")
+TaskCenter.default.suspend(byTag: "log")
+TaskCenter.default.resume(byTag: "log")
+TaskCenter.default.cancel(byTag: "log")
+
+TaskCenter.default.clear()
+
+let myCenter = TaskCenter()
+myCenter.add(task0)	// will remove task0 from default center.
 ```
 
 #### Timeline
@@ -259,7 +262,7 @@ task.restOfLifetime == 11.hours
 
 ## Support
 
-- iOS 8.0+ / macOS 10.10+ / tvOS 9.0+ / watchOS 2.0+
+- iOS 10.0+ / macOS 10.14+ / tvOS 10.0+ / watchOS 3.0+
 - Linux(Tested on Ubuntu 16.04)
 
 ## Installation
@@ -291,7 +294,7 @@ dependencies: [
 
 ## Acknowledgement
 
-Inspired by Dan Bader's [schedule](https://github.com/dbader/schedule)! Syntax design is heavily influenced by Ruby!
+Inspired by Dan Bader's [schedule](https://github.com/dbader/schedule)!
 
 ## Contributing
 
