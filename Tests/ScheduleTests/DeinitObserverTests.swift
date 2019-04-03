@@ -1,7 +1,7 @@
 import XCTest
 @testable import Schedule
 
-#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
+#if canImport(ObjectiveC)
 
 final class DeinitObserverTests: XCTestCase {
 

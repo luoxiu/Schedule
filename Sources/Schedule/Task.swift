@@ -130,7 +130,7 @@ open class Task {
         execute()
     }
 
-    #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
+    #if canImport(ObjectiveC)
     open func host(on target: AnyObject) {
         DeinitObserver.observe(target) { [weak self] in
             self?.cancel()
