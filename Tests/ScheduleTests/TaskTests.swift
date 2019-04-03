@@ -76,7 +76,7 @@ final class TaskTests: XCTestCase {
 
         task.removeAction(byKey: key)
         XCTAssertEqual(task.countOfActions, 1)
-        
+
         task.cancel()
 
         task.removeAllActions()
@@ -107,7 +107,7 @@ final class TaskTests: XCTestCase {
         let fn = {
             let obj = NSObject()
             let task = Plan.after(0.1.second).do(queue: .main, onElapse: {
-                XCTFail()
+                XCTFail("should never come here")
             })
             task.host(on: obj)
         }

@@ -121,89 +121,89 @@ final class PlanTests: XCTestCase {
             XCTAssertEqual(i.dateComponents.hour, 11)
         }
     }
-    
+
     func testPassingEmptyArrays() {
         XCTAssertTrue(Plan.of([Interval]()).isNever())
         XCTAssertTrue(Plan.of([Date]()).isNever())
-        
+
         XCTAssertTrue(Plan.every([Weekday]()).at(11, 11).isNever())
         XCTAssertTrue(Plan.every([Monthday]()).at(11, 11).isNever())
-        
+
         XCTAssertTrue(Plan.every(.monday).at([]).isNever())
-        
+
         XCTAssertTrue(Plan.every([Weekday]()).at("11:11:00").isNever())
     }
-    
+
     func testIntervalOffset() {
         // Non-offset plan
         let e1 = expectation(description: "testIntervalOffset_1")
         let plan1 = Plan.after(1.second)
         var date1: Date?
-        
+
         // Offset plan
         let e2 = expectation(description: "testIntervalOffset_2")
         let plan2 = plan1.offset(by: 1.second)
         var date2: Date?
-        
+
         let task1 = plan1.do { date1 = Date(); e1.fulfill() }
         let task2 = plan2.do { date2 = Date(); e2.fulfill() }
         _ = task1
         _ = task2
-        
+
         waitForExpectations(timeout: 3.5)
-        
+
         XCTAssertNotNil(date1)
         XCTAssertNotNil(date2)
         XCTAssertTrue(date2!.interval(since: date1!).isAlmostEqual(to: 1.second, leeway: 0.1.seconds))
     }
-    
+
     func testNegativeIntervalOffset() {
         // Non-offset plan
         let e1 = expectation(description: "testIntervalOffset_1")
         let plan1 = Plan.after(2.seconds)
         var date1: Date?
-        
+
         // Offset plan
         let e2 = expectation(description: "testIntervalOffset_2")
         let plan2 = plan1.offset(by: -1.second)
         var date2: Date?
-        
+
         let task1 = plan1.do { date1 = Date(); e1.fulfill() }
         let task2 = plan2.do { date2 = Date(); e2.fulfill() }
         _ = task1
         _ = task2
-        
+
         waitForExpectations(timeout: 2.5)
-        
+
         XCTAssertNotNil(date1)
         XCTAssertNotNil(date2)
         XCTAssertTrue(date2!.interval(since: date1!).isAlmostEqual(to: -1.second, leeway: 0.1.seconds))
     }
-    
+
     func testNilIntervalOffset() {
         // Non-offset plan
         let e1 = expectation(description: "testIntervalOffset_1")
         let plan1 = Plan.after(1.second)
         var date1: Date?
-        
+
         // Offset plan
         let e2 = expectation(description: "testIntervalOffset_2")
         let plan2 = plan1.offset(by: nil)
         var date2: Date?
-        
+
         let task1 = plan1.do { date1 = Date(); e1.fulfill() }
         let task2 = plan2.do { date2 = Date(); e2.fulfill() }
 
         _ = task1
         _ = task2
-        
+
         waitForExpectations(timeout: 1.5)
-        
+
         XCTAssertNotNil(date1)
         XCTAssertNotNil(date2)
         XCTAssertTrue(date2!.interval(since: date1!).isAlmostEqual(to: 0.seconds, leeway: 0.1.seconds))
     }
-    
+
     static var allTests = [
         ("testMake", testMake),
         ("testDates", testDates),
@@ -221,6 +221,6 @@ final class PlanTests: XCTestCase {
         ("testPassingEmptyArrays", testPassingEmptyArrays),
         ("testIntervalOffset", testIntervalOffset),
         ("testNegativeIntervalOffset", testNegativeIntervalOffset),
-        ("testNilIntervalOffset", testNilIntervalOffset),
+        ("testNilIntervalOffset", testNilIntervalOffset)
     ]
 }

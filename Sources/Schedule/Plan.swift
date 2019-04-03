@@ -64,7 +64,9 @@ extension Plan {
     ///     > "2001-01-01 00:00:03"
     ///     > "2001-01-01 00:00:06"
     ///     ...
-    public static func make<I>(_ makeUnderlyingIterator: @escaping () -> I) -> Plan where I: IteratorProtocol, I.Element == Interval {
+    public static func make<I>(
+        _ makeUnderlyingIterator: @escaping () -> I
+    ) -> Plan where I: IteratorProtocol, I.Element == Interval {
         return Plan(AnySequence(makeUnderlyingIterator))
     }
 
@@ -109,7 +111,9 @@ extension Plan {
     /// You are not supposed to return `Date()` in making interator.
     /// If you want to execute a task immediately,
     /// use `Plan.now` then `concat` another plan instead.
-    public static func make<I>(_ makeUnderlyingIterator: @escaping () -> I) -> Plan where I: IteratorProtocol, I.Element == Date {
+    public static func make<I>(
+        _ makeUnderlyingIterator: @escaping () -> I
+    ) -> Plan where I: IteratorProtocol, I.Element == Date {
         return Plan.make { () -> AnyIterator<Interval> in
             var iterator = makeUnderlyingIterator()
             var last: Date!
@@ -445,7 +449,7 @@ extension Plan {
                     date = calendar.date(byAdding: .year, value: 1, to: d)
                 } else if Date().is(monthday) {
                     date = Date().startOfToday
-                } else  {
+                } else {
                     let components = monthday.toDateComponents()
                     date = calendar.nextDate(after: Date(), matching: components, matchingPolicy: .strict)
                 }

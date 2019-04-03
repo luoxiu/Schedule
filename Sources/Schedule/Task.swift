@@ -51,7 +51,6 @@ open class Task {
     /// The mutex used to guard task center operations.
     let taskCenterMutex = NSRecursiveLock()
 
-
     /// Initializes a normal task with specified plan and dispatch queue.
     ///
     /// - Parameters:
