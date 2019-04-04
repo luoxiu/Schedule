@@ -15,66 +15,80 @@ final class BagTests: XCTestCase {
     }
 
     func testAppend() {
-        var cabinet = Bag<Fn>()
-        cabinet.append { 1 }
-        cabinet.append { 2 }
+        var bag = Bag<Fn>()
+        bag.append { 1 }
+        bag.append { 2 }
 
-        XCTAssertEqual(cabinet.count, 2)
+        XCTAssertEqual(bag.count, 2)
     }
 
-    func testGet() {
-        var cabinet = Bag<Fn>()
-        let k1 = cabinet.append { 1 }
-        let k2 = cabinet.append { 2 }
-
-        guard
-            let fn1 = cabinet.get(k1),
-            let fn2 = cabinet.get(k2)
-        else {
-            XCTFail()
-            return
-        }
-        XCTAssertEqual(fn1(), 1)
-        XCTAssertEqual(fn2(), 2)
+    func testValueForKey() {
+        var bag = Bag<Fn>()
+        let k1 = bag.append { 1 }
+        let k2 = bag.append { 2 }
+        
+        let fn1 = bag.value(for: k1)
+        XCTAssertNotNil(fn1)
+        
+        let fn2 = bag.value(for: k2)
+        XCTAssertNotNil(fn2)
+        
+        guard let _fn1 = fn1, let _fn2 = fn2 else { return }
+        
+        XCTAssertEqual(_fn1(), 1)
+        XCTAssertEqual(_fn2(), 2)
     }
 
-    func testDelete() {
-        var cabinet = Bag<Fn>()
+    func testRemoveValueForKey() {
+        var bag = Bag<Fn>()
 
-        let k1 = cabinet.append { 1 }
-        let k2 = cabinet.append { 2 }
+        let k1 = bag.append { 1 }
+        let k2 = bag.append { 2 }
 
-        XCTAssertEqual(cabinet.count, 2)
-
-        let fn1 = cabinet.delete(k1)
+        let fn1 = bag.removeValue(for: k1)
         XCTAssertNotNil(fn1)
 
-        let fn2 = cabinet.delete(k2)
+        let fn2 = bag.removeValue(for: k2)
         XCTAssertNotNil(fn2)
-
-        XCTAssertEqual(cabinet.count, 0)
+        
+        guard let _fn1 = fn1, let _fn2 = fn2 else { return }
+        
+        XCTAssertEqual(_fn1(), 1)
+        XCTAssertEqual(_fn2(), 2)
+    }
+    
+    func testCount() {
+        var bag = Bag<Fn>()
+        
+        let k1 = bag.append { 1 }
+        let k2 = bag.append { 2 }
+        
+        XCTAssertEqual(bag.count, 2)
+        
+        bag.removeValue(for: k1)
+        bag.removeValue(for: k2)
+        
+        XCTAssertEqual(bag.count, 0)
     }
 
-    func testClear() {
-        var cabinet = Bag<Fn>()
+    func testRemoveAll() {
+        var bag = Bag<Fn>()
 
-        cabinet.append { 1 }
-        cabinet.append { 2 }
+        bag.append { 1 }
+        bag.append { 2 }
 
-        XCTAssertEqual(cabinet.count, 2)
-
-        cabinet.clear()
-        XCTAssertEqual(cabinet.count, 0)
+        bag.removeAll()
+        XCTAssertEqual(bag.count, 0)
     }
 
     func testSequence() {
-        var cabinet = Bag<Fn>()
-        cabinet.append { 0 }
-        cabinet.append { 1 }
-        cabinet.append { 2 }
+        var bag = Bag<Fn>()
+        bag.append { 0 }
+        bag.append { 1 }
+        bag.append { 2 }
 
         var i = 0
-        for fn in cabinet {
+        for fn in bag {
             XCTAssertEqual(fn(), i)
             i += 1
         }
@@ -83,9 +97,10 @@ final class BagTests: XCTestCase {
     static var allTests = [
         ("testBagKey", testBagKey),
         ("testAppend", testAppend),
-        ("testGet", testGet),
-        ("testDelete", testDelete),
-        ("testClear", testClear),
+        ("testValueForKey", testValueForKey),
+        ("testRemoveValueForKey", testRemoveValueForKey),
+        ("testCount", testCount),
+        ("testRemoveAll", testRemoveAll),
         ("testSequence", testSequence)
     ]
 }

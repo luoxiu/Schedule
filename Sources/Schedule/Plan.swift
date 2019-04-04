@@ -302,7 +302,7 @@ extension Plan {
             var last: Date!
             return AnyIterator {
                 last = last ?? Date()
-                guard let next = calendar.date(byAdding: period.toDateComponents(),
+                guard let next = calendar.date(byAdding: period.asDateComponents(),
                                                to: last) else {
                     return nil
                 }
@@ -410,7 +410,7 @@ extension Plan {
                 } else if Date().is(weekday) {
                     date = Date().startOfToday
                 } else {
-                    let components = weekday.toDateComponents()
+                    let components = weekday.asDateComponents()
                     date = calendar.nextDate(after: Date(), matching: components, matchingPolicy: .strict)
                 }
                 return date
@@ -450,7 +450,7 @@ extension Plan {
                 } else if Date().is(monthday) {
                     date = Date().startOfToday
                 } else {
-                    let components = monthday.toDateComponents()
+                    let components = monthday.asDateComponents()
                     date = calendar.nextDate(after: Date(), matching: components, matchingPolicy: .strict)
                 }
                 return date

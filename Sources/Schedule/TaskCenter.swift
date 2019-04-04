@@ -53,7 +53,7 @@ open class TaskCenter {
 
         task.taskCenterMutex.unlock()
 
-        mutex.withLock {
+        mutex.withLockVoid {
             let box = TaskBox(task)
             tagMap[box] = []
         }
@@ -75,7 +75,7 @@ open class TaskCenter {
 
         task.taskCenterMutex.unlock()
 
-        mutex.withLock {
+        mutex.withLockVoid {
             let box = TaskBox(task)
             if let tags = self.tagMap[box] {
                 for tag in tags {
@@ -99,7 +99,7 @@ open class TaskCenter {
     open func addTags(_ tags: [String], to task: Task) {
         guard task.taskCenter === self else { return }
 
-        mutex.withLock {
+        mutex.withLockVoid {
             let box = TaskBox(task)
             if tagMap[box] == nil {
                 tagMap[box] = []
@@ -127,7 +127,7 @@ open class TaskCenter {
     open func removeTags(_ tags: [String], from task: Task) {
         guard task.taskCenter === self else { return }
 
-        mutex.withLock {
+        mutex.withLockVoid {
             let box = TaskBox(task)
             for tag in tags {
                 tagMap[box]?.remove(tag)
@@ -170,7 +170,7 @@ open class TaskCenter {
 
     /// Removes all tasks in this center.
     open func clear() {
-        mutex.withLock {
+        mutex.withLockVoid {
             tagMap = [:]
             taskMap = [:]
         }

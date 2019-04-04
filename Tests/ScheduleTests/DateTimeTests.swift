@@ -6,9 +6,8 @@ final class DateTimeTests: XCTestCase {
     func testInterval() {
 
         XCTAssertTrue((-1).second.isNegative)
-        XCTAssertTrue(1.second.isPositive)
-        XCTAssertEqual(1.1.second.magnitude, 1.1.second.nanoseconds)
-        XCTAssertEqual(1.second.opposite, (-1).second)
+        XCTAssertEqual(1.1.second.abs, 1.1.second)
+        XCTAssertEqual(1.second.negated, (-1).second)
 
         XCTAssertEqual(7.day.hashValue, 1.week.hashValue)
         XCTAssertEqual(7.day, 1.week)
@@ -21,10 +20,6 @@ final class DateTimeTests: XCTestCase {
 
         XCTAssertTrue(1.1.second.isLonger(than: 1.0.second))
         XCTAssertTrue(3.days.isShorter(than: 1.week))
-        XCTAssertEqual(Interval.longest(1.hour, 1.day, 1.week), 1.week)
-        XCTAssertEqual(Interval.longest([]), nil)
-        XCTAssertEqual(Interval.shortest(1.hour, 59.minutes, 2999.seconds), 2999.seconds)
-        XCTAssertEqual(Interval.shortest([]), nil)
 
         XCTAssertEqual(1.second * 60, 1.minute)
         XCTAssertEqual(59.minutes + 60.seconds, 1.hour)
@@ -55,18 +50,18 @@ final class DateTimeTests: XCTestCase {
         let d = Date(year: 2019, month: 1, day: 1)
         XCTAssertTrue(d.is(.january(1)))
 
-        XCTAssertEqual(Monthday.january(1).toDateComponents().month, 1)
-        XCTAssertEqual(Monthday.february(1).toDateComponents().month, 2)
-        XCTAssertEqual(Monthday.march(1).toDateComponents().month, 3)
-        XCTAssertEqual(Monthday.april(1).toDateComponents().month, 4)
-        XCTAssertEqual(Monthday.may(1).toDateComponents().month, 5)
-        XCTAssertEqual(Monthday.june(1).toDateComponents().month, 6)
-        XCTAssertEqual(Monthday.july(1).toDateComponents().month, 7)
-        XCTAssertEqual(Monthday.august(1).toDateComponents().month, 8)
-        XCTAssertEqual(Monthday.september(1).toDateComponents().month, 9)
-        XCTAssertEqual(Monthday.october(1).toDateComponents().month, 10)
-        XCTAssertEqual(Monthday.november(1).toDateComponents().month, 11)
-        XCTAssertEqual(Monthday.december(1).toDateComponents().month, 12)
+        XCTAssertEqual(Monthday.january(1).asDateComponents().month, 1)
+        XCTAssertEqual(Monthday.february(1).asDateComponents().month, 2)
+        XCTAssertEqual(Monthday.march(1).asDateComponents().month, 3)
+        XCTAssertEqual(Monthday.april(1).asDateComponents().month, 4)
+        XCTAssertEqual(Monthday.may(1).asDateComponents().month, 5)
+        XCTAssertEqual(Monthday.june(1).asDateComponents().month, 6)
+        XCTAssertEqual(Monthday.july(1).asDateComponents().month, 7)
+        XCTAssertEqual(Monthday.august(1).asDateComponents().month, 8)
+        XCTAssertEqual(Monthday.september(1).asDateComponents().month, 9)
+        XCTAssertEqual(Monthday.october(1).asDateComponents().month, 10)
+        XCTAssertEqual(Monthday.november(1).asDateComponents().month, 11)
+        XCTAssertEqual(Monthday.december(1).asDateComponents().month, 12)
     }
 
     func testPeriod() {
@@ -113,7 +108,7 @@ final class DateTimeTests: XCTestCase {
             XCTAssertTrue(i.isAlmostEqual(to: (0.456.second.nanoseconds).nanoseconds, leeway: 0.001.seconds))
         }
 
-        let components = t1?.toDateComponents()
+        let components = t1?.asDateComponents()
         XCTAssertEqual(components?.hour, 11)
         XCTAssertEqual(components?.minute, 12)
         XCTAssertEqual(components?.second, 13)
@@ -140,7 +135,7 @@ final class DateTimeTests: XCTestCase {
         let d = Date(year: 2019, month: 1, day: 1)
         XCTAssertTrue(d.is(.tuesday))
 
-        XCTAssertEqual(Weekday.monday.toDateComponents().weekday!, 2)
+        XCTAssertEqual(Weekday.monday.asDateComponents().weekday!, 2)
     }
 
     static var allTests = [

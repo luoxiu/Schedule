@@ -1,6 +1,6 @@
 import Foundation
 
-/// `Monthday` represents a day of a month.
+/// `Monthday` represents the combination of a month and day-of-month.
 public enum Monthday {
 
     case january(Int)
@@ -27,9 +27,9 @@ public enum Monthday {
 
     case december(Int)
 
-    /// Returns a dateComponenets of the monthday, using gregorian calender and
+    /// Returns a dateComponenets of this monthday, using gregorian calender and
     /// current time zone.
-    public func toDateComponents() -> DateComponents {
+    public func asDateComponents() -> DateComponents {
         var month, day: Int
         switch self {
         case .january(let n):       month = 1; day = n
@@ -49,16 +49,15 @@ public enum Monthday {
             calendar: Calendar.gregorian,
             timeZone: TimeZone.current,
             month: month,
-            day: day
-        )
+            day: day)
     }
 }
 
 extension Date {
 
-    /// Returns a boolean value indicating whether today is the monthday.
+    /// Returns a Boolean value indicating whether this date is the monthday.
     public func `is`(_ monthday: Monthday) -> Bool {
-        let components = monthday.toDateComponents()
+        let components = monthday.asDateComponents()
 
         let m = Calendar.gregorian.component(.month, from: self)
         let d = Calendar.gregorian.component(.day, from: self)
@@ -72,7 +71,7 @@ extension Monthday: CustomStringConvertible {
     ///
     ///     "Monthday: May 1st"
     public var description: String {
-        let components = toDateComponents()
+        let components = asDateComponents()
 
         let m = components.month!
         let d = components.day!

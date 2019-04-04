@@ -26,7 +26,7 @@ extension Date {
 extension Interval {
 
     func isAlmostEqual(to interval: Interval, leeway: Interval) -> Bool {
-        return (interval - self).magnitude <= leeway.magnitude
+        return (interval - self).abs <= leeway.abs
     }
 }
 

@@ -1,6 +1,6 @@
 import Foundation
 
-/// `Interval` represents a length of time.
+/// Type used to represent a time-based amount of time, such as '34.5 seconds'.
 public struct Interval {
 
     ///  The length of this interval in nanoseconds.
@@ -13,36 +13,26 @@ public struct Interval {
 }
 
 // MARK: - Describing
+
 extension Interval {
 
-    /// A boolean value indicating whether this interval is less than zero.
+    /// A Boolean value indicating whether this interval is less than zero.
     ///
-    /// An interval can be negative:
     ///
-    /// - The interval from 6:00 to 7:00 is `1.hour`,
-    ///   but the interval from 7:00 to 6:00 is `-1.hour`.
-    ///   In this case, `-1.hour` means **one hour ago**.
-    ///
-    /// - The interval comparing `3.hour` to `1.hour` is `2.hour`,
-    ///   but the interval comparing `1.hour` to `3.hour` is `-2.hour`.
-    ///   In this case, `-2.hour` means **two hours shorter**
+    /// An Interval represents a directed distance between two points
+    /// on the time-line and can therefore be positive, zero or negative.
     public var isNegative: Bool {
         return nanoseconds < 0
     }
 
-    /// See `isNegative`.
-    public var isPositive: Bool {
-        return nanoseconds > 0
+    /// A copy of this duration with a positive length.
+    public var abs: Interval {
+        return Interval(nanoseconds: Swift.abs(nanoseconds))
     }
 
-    /// The absolute value of the length of this interval in nanoseconds.
-    public var magnitude: Double {
-        return nanoseconds.magnitude
-    }
-
-    /// The additive inverse of this interval.
-    public var opposite: Interval {
-        return (-nanoseconds).nanoseconds
+    /// A copy of this interval with the length negated.
+    public var negated: Interval {
+        return Interval(nanoseconds: -nanoseconds)
     }
 }
 
@@ -75,18 +65,22 @@ extension Interval: CustomDebugStringConvertible {
 }
 
 // MARK: - Comparing
+
 extension Interval: Comparable {
 
-    /// Compares two intervals.
+    /// Compares two intervals and returns a comparison result value
+    /// that indicates the sort order of two intervals.
     ///
-    /// The comparison is magnitude independent, a positive interval is
-    /// always ordered ascending to a negative interval.
+    /// A positive interval is always ordered ascending to a negative interval.
     public func compare(_ other: Interval) -> ComparisonResult {
-        let now = Date()
-        return now.adding(self).compare(now.adding(other))
+        let d = nanoseconds - other.nanoseconds
+        
+        if d < 0 { return .orderedAscending }
+        if d > 0 { return .orderedDescending }
+        return .orderedSame
     }
 
-    /// Returns a boolean value indicating whether the first interval is
+    /// Returns a Boolean value indicating whether the first interval is
     /// less than the second interval.
     ///
     /// A negative interval is always less than a positive interval.
@@ -94,43 +88,23 @@ extension Interval: Comparable {
         return lhs.compare(rhs) == .orderedAscending
     }
 
-    /// Returns a boolean value indicating whether this interval is longer
-    /// than the given value.
+    /// Returns a Boolean value indicating whether this interval is longer
+    /// than the given interval.
     public func isLonger(than other: Interval) -> Bool {
-        return magnitude > other.magnitude
+        return abs > other.abs
     }
 
-    /// Returns a boolean value indicating whether this interval is shorter
-    /// than the given value.
+    /// Returns a Boolean value indicating whether this interval is shorter
+    /// than the given interval.
     public func isShorter(than other: Interval) -> Bool {
-        return magnitude < other.magnitude
-    }
-
-    /// Returns the longest interval of the given values.
-    public static func longest(_ intervals: Interval...) -> Interval {
-        return longest(intervals)!
-    }
-
-    /// Returns the longest interval of the given values.
-    public static func longest(_ intervals: [Interval]) -> Interval? {
-        guard !intervals.isEmpty else { return nil }
-        return intervals.sorted(by: { $0.magnitude > $1.magnitude })[0]
-    }
-
-    /// Returns the shortest interval of the given values.
-    public static func shortest(_ intervals: Interval...) -> Interval {
-        return shortest(intervals)!
-    }
-
-    /// Returns the shortest interval of the given values.
-    public static func shortest(_ intervals: [Interval]) -> Interval? {
-        guard !intervals.isEmpty else { return nil }
-        return intervals.sorted(by: { $0.magnitude < $1.magnitude })[0]
+        return abs < other.abs
     }
 }
 
 // MARK: - Adding & Subtracting
+
 extension Interval {
+    
     /// Returns a new interval by multipling this interval by the given number.
     ///
     ///     1.hour * 2 == 2.hours
@@ -143,13 +117,6 @@ extension Interval {
     ///     1.hour + 1.hour == 2.hours
     public func adding(_ other: Interval) -> Interval {
         return Interval(nanoseconds: nanoseconds + other.nanoseconds)
-    }
-
-    /// Returns a new interval by subtracting the given interval from this interval.
-    ///
-    ///     2.hours - 1.hour == 1.hour
-    public func subtracting(_ other: Interval) -> Interval {
-        return Interval(nanoseconds: nanoseconds - other.nanoseconds)
     }
 }
 
@@ -174,21 +141,22 @@ extension Interval {
     ///
     ///     2.hours - 1.hour == 1.hour
     public static func - (lhs: Interval, rhs: Interval) -> Interval {
-        return lhs.subtracting(rhs)
+        return lhs.adding(rhs.negated)
     }
 
-    /// Adds two intervals and stores the result in the first interval.
+    /// Adds two intervals and stores the result in the left interval.
     public static func += (lhs: inout Interval, rhs: Interval) {
         lhs = lhs.adding(rhs)
     }
 
     /// Returns the additive inverse of the specified interval.
     public prefix static func - (interval: Interval) -> Interval {
-        return interval.opposite
+        return interval.negated
     }
 }
 
 // MARK: - Sugars
+
 extension Interval {
 
     /// Creates an interval from the given number of seconds.
@@ -245,6 +213,7 @@ public protocol IntervalConvertible {
 
 extension Int: IntervalConvertible {
 
+    /// Creates an interval from this amount of nanoseconds.
     public var nanoseconds: Interval {
         return Interval(nanoseconds: Double(self))
     }
@@ -252,6 +221,7 @@ extension Int: IntervalConvertible {
 
 extension Double: IntervalConvertible {
 
+    /// Creates an interval from this amount of nanoseconds.
     public var nanoseconds: Interval {
         return Interval(nanoseconds: self)
     }
@@ -259,80 +229,96 @@ extension Double: IntervalConvertible {
 
 extension IntervalConvertible {
 
+    // Alias for `nanoseconds`.
     public var nanosecond: Interval {
         return nanoseconds
     }
 
+    // Alias for `microseconds`.
     public var microsecond: Interval {
         return microseconds
     }
 
+    /// Creates an interval from this amount of microseconds.
     public var microseconds: Interval {
         return nanoseconds * pow(10, 3)
     }
 
+    /// Alias for `milliseconds`.
     public var millisecond: Interval {
         return milliseconds
     }
 
+    /// Creates an interval from this amount of milliseconds.
     public var milliseconds: Interval {
         return nanoseconds * pow(10, 6)
     }
 
+    /// Alias for `second`.
     public var second: Interval {
         return seconds
     }
 
+    /// Creates an interval from this amount of seconds.
     public var seconds: Interval {
         return nanoseconds * pow(10, 9)
     }
 
+    /// Alias for `minute`.
     public var minute: Interval {
         return minutes
     }
 
+    /// Creates an interval from this amount of minutes.
     public var minutes: Interval {
         return seconds * 60
     }
 
+    /// Alias for `hours`.
     public var hour: Interval {
         return hours
     }
 
+    /// Creates an interval from this amount of hours.
     public var hours: Interval {
         return minutes * 60
     }
 
+    /// Alias for `days`.
     public var day: Interval {
         return days
     }
 
+    /// Creates an interval from this amount of days.
     public var days: Interval {
         return hours * 24
     }
 
+    /// Alias for `weeks`.
     public var week: Interval {
         return weeks
     }
 
+    /// Creates an interval from this amount of weeks.
     public var weeks: Interval {
         return days * 7
     }
 }
 
 // MARK: - Date
+
 extension Date {
 
     /// The interval between this date and the current date and time.
     ///
-    /// If this date is earlier than now, this interval will be negative.
+    /// If this date is earlier than now, the interval will be negative.
     public var intervalSinceNow: Interval {
         return timeIntervalSinceNow.seconds
     }
 
     /// Returns the interval between this date and the given date.
     ///
-    /// If this date is earlier than the given date, this interval will be negative.
+    /// If this date is earlier than the given date, the interval will be negative.
     public func interval(since date: Date) -> Interval {
         return timeIntervalSince(date).seconds
     }
@@ -342,18 +328,19 @@ extension Date {
         return addingTimeInterval(interval.asSeconds())
     }
 
-    /// Returns a date with an interval added to it.
+    /// Returns a new date by adding an interval to the date.
     public static func + (lhs: Date, rhs: Interval) -> Date {
         return lhs.adding(rhs)
     }
 }
 
 // MARK: - DispatchSourceTimer
+
 extension DispatchSourceTimer {
 
     /// Schedule this timer later.
     func schedule(after timeout: Interval) {
-        guard !timeout.isNegative else { return }
+        if timeout.isNegative { return }
         let ns = timeout.nanoseconds.clampedToInt()
         schedule(wallDeadline: .now() + DispatchTimeInterval.nanoseconds(ns))
     }

@@ -1,6 +1,6 @@
 import Foundation
 
-/// A unique key used to operate the corresponding element from a bag.
+/// A unique key for removing an element from a bag.
 struct BagKey: Equatable {
 
     fileprivate let i: UInt64
@@ -15,7 +15,7 @@ struct BagKey: Equatable {
     }
 }
 
-/// A generator used to generate a sequence of unique `BagKey`.
+/// A generator that can generate a sequence of unique `BagKey`.
 ///
 ///     let k1 = gen.next()
 ///     let k2 = gen.next()
@@ -26,8 +26,8 @@ struct BagKeyGenerator: Sequence, IteratorProtocol {
 
     private var k = BagKey(underlying: 0)
 
-    /// Advances to the next element and returns it, or nil if no next element exists.
-    mutating func next() -> Element? {
+    /// Advances to the next key and returns it, or nil if no next key exists.
+    mutating func next() -> BagKey? {
         if k.i == UInt64.max {
             return nil
         }
@@ -36,7 +36,7 @@ struct BagKeyGenerator: Sequence, IteratorProtocol {
     }
 }
 
-/// A data structure used to store a sequence of elements.
+/// An ordered sequence.
 ///
 ///     let k1 = bag.append(e1)
 ///     let k2 = bag.append(e2)
@@ -46,48 +46,48 @@ struct BagKeyGenerator: Sequence, IteratorProtocol {
 ///         // -> e2
 ///     }
 ///
-///     bag.delete(k1)
+///     bag.removeValue(for: k1)
 struct Bag<Element> {
 
-    private typealias Entry = (key: BagKey, element: Element)
+    private typealias Entry = (key: BagKey, val: Element)
 
-    private var keys = BagKeyGenerator()
+    private var keyGen = BagKeyGenerator()
     private var entries: [Entry] = []
 
-    /// Pushes the given element on to the end of this container.
+    /// Appends a new element at the end of this bag.
     @discardableResult
     mutating func append(_ new: Element) -> BagKey {
-        let key = keys.next()!
+        let key = keyGen.next()!
 
-        let entry = (key: key, element: new)
+        let entry = (key: key, val: new)
         entries.append(entry)
 
         return key
     }
 
-    /// Returns the element for key if key is in this container.
-    func get(_ key: BagKey) -> Element? {
+    /// Returns the element associated with a given key.
+    func value(for key: BagKey) -> Element? {
         if let entry = entries.first(where: { $0.key == key }) {
-            return entry.element
+            return entry.val
         }
         return nil
     }
 
-    /// Deletes the element with the given key and returns this element.
+    /// Removes the given key and its associated element from this bag.
     @discardableResult
-    mutating func delete(_ key: BagKey) -> Element? {
+    mutating func removeValue(for key: BagKey) -> Element? {
         if let i = entries.firstIndex(where: { $0.key == key }) {
-            return entries.remove(at: i).element
+            return entries.remove(at: i).val
         }
         return nil
     }
 
-    /// Removes all elements from this containers.
-    mutating func clear() {
+    /// Removes all elements from this bag.
+    mutating func removeAll() {
         entries.removeAll()
     }
 
-    /// The number of elements in this containers.
+    /// The number of elements in this bag.
     var count: Int {
         return entries.count
     }
@@ -95,11 +95,12 @@ struct Bag<Element> {
 
 extension Bag: Sequence {
 
-    /// Returns an iterator over the elements of this containers.
+    /// Returns an iterator over the elements of this bag.
+    @inline(__always)
     func makeIterator() -> AnyIterator<Element> {
         var iterator = entries.makeIterator()
         return AnyIterator<Element> {
-            return iterator.next()?.element
+            return iterator.next()?.val
         }
     }
 }

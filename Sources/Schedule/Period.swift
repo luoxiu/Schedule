@@ -1,6 +1,7 @@
 import Foundation
 
-/// `Period` represents a period of time defined in terms of fields.
+/// Type used to represents a date-based amount of time in the ISO-8601 calendar system,
+/// such as '2 years, 3 months and 4 days'.
 ///
 /// It's a little different from `Interval`:
 ///
@@ -51,104 +52,113 @@ public struct Period {
     ///     Period.registerQuantifier("fifty", for: 15)
     ///     let period = Period("fifty minutes")
     public static func registerQuantifier(_ word: String, for number: Int) {
-        quantifiers.write { $0[word] = number }
+        quantifiers.writeVoid { $0[word] = number }
     }
 
-    /// Creates a period from a natural expression.
+    /// Initializes a period from a natural expression.
     ///
-    ///     Period("one second") => Period(seconds: 1)
-    ///     Period("two hours and ten minutes") => Period(hours: 2, minutes: 10)
-    ///     Period("1 year, 2 months and 3 days") => Period(years: 1, months: 2, days: 3)
+    ///     Period("one second") -> Period(seconds: 1)
+    ///     Period("two hours and ten minutes") -> Period(hours: 2, minutes: 10)
+    ///     Period("1 year, 2 months and 3 days") -> Period(years: 1, months: 2, days: 3)
     public init?(_ string: String) {
-        var period = string
+        var str = string
         for (word, number) in Period.quantifiers.read({ $0 }) {
-            period = period.replacingOccurrences(of: word, with: "\(number)")
+            str = str.replacingOccurrences(of: word, with: "\(number)")
         }
-        guard let regex = try? NSRegularExpression(pattern: "( and |, )") else {
+        guard let regexp = try? NSRegularExpression(pattern: "( and |, )") else {
             return nil
         }
-        period = regex.stringByReplacingMatches(in: period, range: NSRange(location: 0, length: period.count), withTemplate: "$")
+        str = regexp.stringByReplacingMatches(in: str, range: NSRange(location: 0, length: str.count), withTemplate: "$")
 
-        var result = 0.year
-        for pair in period.split(separator: "$").map({ $0.split(separator: " ") }) {
-            guard pair.count == 2 else { return nil }
-            guard let number = Int(pair[0]) else { return nil }
+        var period = 0.year
+        for pair in str.split(separator: "$").map({ $0.split(separator: " ") }) {
+            guard
+                pair.count == 2,
+                let number = Int(pair[0])
+            else {
+                return nil
+            }
+            
             var unit = String(pair[1])
             if unit.last == "s" { unit.removeLast() }
             switch unit {
-            case "year":            result = result + number.years
-            case "month":           result = result + number.months
-            case "day":             result = result + number.days
-            case "week":            result = result + (number * 7).days
-            case "hour":            result = result + number.hours
-            case "minute":          result = result + number.minutes
-            case "second":          result = result + number.second
-            case "nanosecond":      result = result + number.nanosecond
+            case "year":            period = period + number.years
+            case "month":           period = period + number.months
+            case "day":             period = period + number.days
+            case "week":            period = period + (number * 7).days
+            case "hour":            period = period + number.hours
+            case "minute":          period = period + number.minutes
+            case "second":          period = period + number.second
+            case "nanosecond":      period = period + number.nanosecond
             default:                break
             }
         }
-        self = result.tidied(to: .day)
+        self = period
     }
 
-    /// Returns a new period by adding a period to this period.
+    /// Returns a new period by adding the given period to this period.
     public func adding(_ other: Period) -> Period {
-        return Period(years: years.clampedAdding(other.years),
-                      months: months.clampedAdding(other.months),
-                      days: days.clampedAdding(other.days),
-                      hours: hours.clampedAdding(other.hours),
-                      minutes: minutes.clampedAdding(other.minutes),
-                      seconds: seconds.clampedAdding(other.seconds),
-                      nanoseconds: nanoseconds.clampedAdding(other.nanoseconds))
+        return Period(
+            years: years.clampedAdding(other.years),
+            months: months.clampedAdding(other.months),
+            days: days.clampedAdding(other.days),
+            hours: hours.clampedAdding(other.hours),
+            minutes: minutes.clampedAdding(other.minutes),
+            seconds: seconds.clampedAdding(other.seconds),
+            nanoseconds: nanoseconds.clampedAdding(other.nanoseconds))
     }
 
-    /// Returns a new period by adding an interval to this period.
+    /// Returns a new period by adding an interval to the period.
     public func adding(_ interval: Interval) -> Period {
         return Period(
             years: years, months: months, days: days,
             hours: hours, minutes: minutes, seconds: seconds,
-            nanoseconds: nanoseconds.clampedAdding(interval.nanoseconds.clampedToInt())
-        ).tidied(to: .day)
+            nanoseconds: nanoseconds.clampedAdding(interval.nanoseconds.clampedToInt()))
     }
 
-    /// Adds two periods and produces their sum.
+    /// Returns a new period by adding the right period to the left period.
+    ///
+    ///     Period(days: 1) + Period(days: 1) -> Period(days: 2)
     public static func + (lhs: Period, rhs: Period) -> Period {
         return lhs.adding(rhs)
     }
 
-    /// Returns a period with an interval added to it.
+    /// Returns a new period by adding an interval to the period.
     public static func + (lhs: Period, rhs: Interval) -> Period {
         return lhs.adding(rhs)
     }
 
-    /// Type to be used as tidying parameter.
-    public enum Unit {
+    /// Represents the tidy level.
+    public enum TideLevel {
         case day, hour, minute, second, nanosecond
     }
 
-    /// Returns a tidied period.
+    /// Returns the tidied period.
     ///
     ///     Period(hours: 25).tidied(to .day) => Period(days: 1, hours: 1)
-    public func tidied(to unit: Unit) -> Period {
+    public func tidied(to level: TideLevel) -> Period {
         var period = self
-        if case .nanosecond = unit { return period }
+        
+        if case .nanosecond = level { return period }
+        
         if period.nanoseconds.magnitude >= UInt(1.second.nanoseconds) {
             period.seconds += period.nanoseconds / Int(1.second.nanoseconds)
             period.nanoseconds %= Int(1.second.nanoseconds)
         }
-
-        if case .second = unit { return period }
+        if case .second = level { return period }
+        
         if period.seconds.magnitude >= 60 {
             period.minutes += period.seconds / 60
             period.seconds %= 60
         }
-
-        if case .minute = unit { return period }
+        if case .minute = level { return period }
+        
         if period.minutes.magnitude >= 60 {
             period.hours += period.minutes / 60
             period.minutes %= 60
         }
-
-        if case .hour = unit { return period }
+        if case .hour = level { return period }
+        
         if period.hours.magnitude >= 24 {
             period.days += period.hours / 24
             period.hours %= 24
@@ -156,9 +166,9 @@ public struct Period {
         return period
     }
 
-    /// Returns a dateComponenets of the period, using gregorian calender and
+    /// Returns a dateComponenets of this period, using gregorian calender and
     /// current time zone.
-    public func toDateComponents() -> DateComponents {
+    public func asDateComponents() -> DateComponents {
         return DateComponents(year: years, month: months, day: days,
                               hour: hours, minute: minutes, second: seconds,
                               nanosecond: nanoseconds)
@@ -169,10 +179,10 @@ extension Date {
 
     /// Returns a new date by adding a period to this date.
     public func adding(_ period: Period) -> Date {
-        return Calendar.gregorian.date(byAdding: period.toDateComponents(), to: self) ?? .distantFuture
+        return Calendar.gregorian.date(byAdding: period.asDateComponents(), to: self) ?? .distantFuture
     }
 
-    /// Returns a date with a period added to it.
+    /// Returns a new date by adding a period to this date.
     public static func + (lhs: Date, rhs: Period) -> Date {
         return lhs.adding(rhs)
     }
@@ -180,18 +190,22 @@ extension Date {
 
 extension Int {
 
+    /// Creates a period from this amount of years.
     public var years: Period {
         return Period(years: self)
     }
 
+    /// Alias for `years`.
     public var year: Period {
         return years
     }
 
+    /// Creates a period from this amount of month.
     public var months: Period {
         return Period(months: self)
     }
 
+    /// Alias for `month`.
     public var month: Period {
         return months
     }

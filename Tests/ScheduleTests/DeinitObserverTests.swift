@@ -5,9 +5,9 @@ import XCTest
 
 final class DeinitObserverTests: XCTestCase {
 
-    func testObserver() {
+    func testObserve() {
         var i = 0
-        var fn = {
+        let fn = {
             let obj = NSObject()
             DeinitObserver.observe(obj) {
                 i += 1
@@ -15,8 +15,11 @@ final class DeinitObserverTests: XCTestCase {
         }
         fn()
         XCTAssertEqual(i, 1)
-
-        fn = {
+    }
+    
+    func testCancel() {
+        var i = 0
+        let fn = {
             let obj = NSObject()
             let observer = DeinitObserver.observe(obj) {
                 i += 1
@@ -24,11 +27,12 @@ final class DeinitObserverTests: XCTestCase {
             observer.cancel()
         }
         fn()
-        XCTAssertEqual(i, 1)
+        XCTAssertEqual(i, 0)
     }
 
     static var allTests = [
-        ("testObserver", testObserver)
+        ("testObserve", testObserve),
+        ("testCancel", testCancel)
     ]
 }
 

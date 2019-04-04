@@ -9,8 +9,6 @@ final class PlanTests: XCTestCase {
         let intervals = [1.second, 2.hours, 3.days, 4.weeks]
         let s0 = Plan.of(intervals[0], intervals[1], intervals[2], intervals[3])
         XCTAssertTrue(s0.makeIterator().isAlmostEqual(to: intervals, leeway: leeway))
-        let s1 = Plan.from(intervals)
-        XCTAssertTrue(s1.makeIterator().isAlmostEqual(to: intervals, leeway: leeway))
 
         let d0 = Date() + intervals[0]
         let d1 = d0 + intervals[1]
@@ -42,15 +40,15 @@ final class PlanTests: XCTestCase {
     func testConcat() {
         let s0: [Interval] = [1.second, 2.minutes, 3.hours]
         let s1: [Interval] = [4.days, 5.weeks]
-        let s3 = Plan.from(s0).concat(Plan.from(s1))
-        let s4 = Plan.from(s0 + s1)
+        let s3 = Plan.of(s0).concat(Plan.of(s1))
+        let s4 = Plan.of(s0 + s1)
         XCTAssertTrue(s3.isAlmostEqual(to: s4, leeway: leeway))
     }
 
     func testMerge() {
         let intervals0: [Interval] = [1.second, 2.minutes, 1.hour]
         let intervals1: [Interval] = [2.seconds, 1.minutes, 1.seconds]
-        let scheudle0 = Plan.from(intervals0).merge(Plan.from(intervals1))
+        let scheudle0 = Plan.of(intervals0).merge(Plan.of(intervals1))
         let scheudle1 = Plan.of(1.second, 1.second, 1.minutes, 1.seconds, 58.seconds, 1.hour)
         XCTAssertTrue(scheudle0.isAlmostEqual(to: scheudle1, leeway: leeway))
     }

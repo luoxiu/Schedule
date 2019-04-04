@@ -2,6 +2,7 @@ import Foundation
 
 extension Double {
 
+    /// Returns a value of this number clamped to `Int.min...Int.max`.
     func clampedToInt() -> Int {
         if self >= Double(Int.max) { return Int.max }
         if self <= Double(Int.min) { return Int.min }
@@ -11,12 +12,10 @@ extension Double {
 
 extension Int {
 
+    /// Returns the sum of the two given values, in case of any overflow,
+    /// the result will be clamped to int.
     func clampedAdding(_ other: Int) -> Int {
         return (Double(self) + Double(other)).clampedToInt()
-    }
-
-    func clampedSubtracting(_ other: Int) -> Int {
-        return clampedAdding(-other)
     }
 }
 
@@ -47,9 +46,9 @@ extension NSLocking {
         return try body()
     }
 
-    /// Executes a closure returning a value while acquiring the lock.
+    /// Executes a closure while acquiring the lock.
     @inline(__always)
-    func withLock(_ body: () throws -> Void) rethrows {
+    func withLockVoid(_ body: () throws -> Void) rethrows {
         lock(); defer { unlock() }
         try body()
     }

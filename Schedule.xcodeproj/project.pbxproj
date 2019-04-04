@@ -24,7 +24,6 @@
 		OBJ_49 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Atomic.swift */; };
 		OBJ_50 /* Bag.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Bag.swift */; };
 		OBJ_51 /* DeinitObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* DeinitObserver.swift */; };
-		OBJ_52 /* Deprecated.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Deprecated.swift */; };
 		OBJ_53 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* Extensions.swift */; };
 		OBJ_54 /* Interval.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* Interval.swift */; };
 		OBJ_55 /* Monthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* Monthday.swift */; };
@@ -70,7 +69,6 @@
 /* Begin PBXFileReference section */
 		OBJ_10 /* Bag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bag.swift; sourceTree = "<group>"; };
 		OBJ_11 /* DeinitObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeinitObserver.swift; sourceTree = "<group>"; };
-		OBJ_12 /* Deprecated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deprecated.swift; sourceTree = "<group>"; };
 		OBJ_13 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		OBJ_14 /* Interval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interval.swift; sourceTree = "<group>"; };
 		OBJ_15 /* Monthday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Monthday.swift; sourceTree = "<group>"; };
@@ -157,7 +155,7 @@
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -170,7 +168,6 @@
 				OBJ_42 /* README.md */,
 				OBJ_43 /* README.zh_cn.md */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_7 /* Sources */ = {
@@ -187,7 +184,6 @@
 				OBJ_9 /* Atomic.swift */,
 				OBJ_10 /* Bag.swift */,
 				OBJ_11 /* DeinitObserver.swift */,
-				OBJ_12 /* Deprecated.swift */,
 				OBJ_13 /* Extensions.swift */,
 				OBJ_14 /* Interval.swift */,
 				OBJ_15 /* Monthday.swift */,
@@ -271,7 +267,7 @@
 				English,
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_36 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -292,7 +288,6 @@
 				OBJ_49 /* Atomic.swift in Sources */,
 				OBJ_50 /* Bag.swift in Sources */,
 				OBJ_51 /* DeinitObserver.swift in Sources */,
-				OBJ_52 /* Deprecated.swift in Sources */,
 				OBJ_53 /* Extensions.swift in Sources */,
 				OBJ_54 /* Interval.swift in Sources */,
 				OBJ_55 /* Monthday.swift in Sources */,

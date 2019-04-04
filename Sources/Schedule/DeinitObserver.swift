@@ -2,9 +2,7 @@ import Foundation
 
 #if canImport(ObjectiveC)
 
-private var DEINIT_OBSERVER_KEY: Void = ()
-
-/// Used to observe object deinit.
+/// An observer that receives deinit event of the object.
 ///
 ///     let observer = DeinitObserver.observe(target) {
 ///         print("\(target) deinit")
@@ -12,39 +10,41 @@ private var DEINIT_OBSERVER_KEY: Void = ()
 ///
 ///     observer.cancel()
 class DeinitObserver {
-
+    
+    private var associateKey: Void = ()
+    
     private(set) weak var observed: AnyObject?
 
-    private var action: (() -> Void)?
+    private var block: (() -> Void)?
 
-    private init(_ action: @escaping () -> Void) {
-        self.action = action
+    private init(_ block: @escaping () -> Void) {
+        self.block = block
     }
 
-    /// Add observer.
+    /// Observe deinit event of the object.
     @discardableResult
     static func observe(
         _ object: AnyObject,
-        onDeinit action: @escaping () -> Void
+        using block: @escaping () -> Void
     ) -> DeinitObserver {
-        let observer = DeinitObserver(action)
+        let observer = DeinitObserver(block)
         observer.observed = object
 
-        objc_setAssociatedObject(object, &DEINIT_OBSERVER_KEY, observer, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        objc_setAssociatedObject(object, &observer.associateKey, observer, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 
         return observer
     }
 
-    /// Remove observer.
+    /// Cancel observing.
     func cancel() {
-        action = nil
+        block = nil
         if let o = observed {
-            objc_setAssociatedObject(o, &DEINIT_OBSERVER_KEY, nil, .OBJC_ASSOCIATION_ASSIGN)
+            objc_setAssociatedObject(o, &associateKey, nil, .OBJC_ASSOCIATION_ASSIGN)
         }
     }
 
     deinit {
-        action?()
+        block?()
     }
 }
 

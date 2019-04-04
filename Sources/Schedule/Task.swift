@@ -94,7 +94,7 @@ open class Task {
     }
 
     private func scheduleNext() {
-        _mutex.withLock {
+        _mutex.withLockVoid {
             let now = Date()
             var estimated = _timeline.estimatedNextExecution ?? now
             repeat {
@@ -155,7 +155,7 @@ open class Task {
 
     /// Reschedules this task with the new plan.
     public func reschedule(_ new: Plan) {
-        _mutex.withLock {
+        _mutex.withLockVoid {
             _iterator = new.makeIterator()
         }
         scheduleNext()
@@ -170,7 +170,7 @@ open class Task {
 
     /// Suspends this task.
     public func suspend() {
-        _mutex.withLock {
+        _mutex.withLockVoid {
             if _suspensions < UInt64.max {
                 _timer.suspend()
                 _suspensions += 1
@@ -180,7 +180,7 @@ open class Task {
 
     /// Resumes this task.
     public func resume() {
-        _mutex.withLock {
+        _mutex.withLockVoid {
             if _suspensions > 0 {
                 _timer.resume()
                 _suspensions -= 1
@@ -190,7 +190,7 @@ open class Task {
 
     /// Cancels this task.
     public func cancel() {
-        _mutex.withLock {
+        _mutex.withLockVoid {
             _timer.cancel()
         }
         TaskCenter.default.remove(self)
@@ -234,7 +234,9 @@ open class Task {
     /// - Returns: `true` if set successfully, `false` if not.
     @discardableResult
     public func setLifetime(_ interval: Interval) -> Bool {
-        guard restOfLifetime.isPositive else { return false }
+        if restOfLifetime.isNegative {
+            return false
+        }
 
         _mutex.lock()
         let age = Date().interval(since: _timeline.initialization)
@@ -258,10 +260,10 @@ open class Task {
     @discardableResult
     public func addLifetime(_ interval: Interval) -> Bool {
         var rest = restOfLifetime
-        guard rest.isPositive else { return false }
+        if rest.isNegative { return false }
         rest += interval
-        guard rest.isPositive else { return false }
-        _mutex.withLock {
+        if rest.isNegative { return false }
+        _mutex.withLockVoid {
             _lifetime += interval
             _lifetimeTimer.schedule(after: rest)
         }
@@ -276,7 +278,7 @@ open class Task {
     /// - Returns: `true` if set successfully, `false` if not.
     @discardableResult
     public func subtractLifetime(_ interval: Interval) -> Bool {
-        return addLifetime(interval.opposite)
+        return addLifetime(interval.negated)
     }
 
     // MARK: - Action
@@ -298,15 +300,15 @@ open class Task {
 
     /// Removes action by key from this task.
     public func removeAction(byKey key: ActionKey) {
-        _mutex.withLock {
-            _ = _onElapseActions.delete(key.bagKey)
+        _mutex.withLockVoid {
+            _ = _onElapseActions.removeValue(for: key.bagKey)
         }
     }
 
     /// Removes all actions from this task.
     public func removeAllActions() {
-        _mutex.withLock {
-            _onElapseActions.clear()
+        _mutex.withLockVoid {
+            _onElapseActions.removeAll()
         }
     }
 
