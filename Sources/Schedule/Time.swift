@@ -48,7 +48,7 @@ public struct Time {
     public init?(_ string: String) {
         let pattern = "^(\\d{1,2})(:(\\d{1,2})(:(\\d{1,2})(.(\\d{1,3}))?)?)?( (am|AM|pm|PM))?$"
 
-        guard let regexp = try? NSRegularExpression(pattern: pattern, options: []) else { return nil }
+        let regexp = try! NSRegularExpression(pattern: pattern, options: [])
         guard let matches = regexp.matches(in: string, options: [], range: NSRange(location: 0, length: string.count)).first else { return nil }
 
         var hasAM = false

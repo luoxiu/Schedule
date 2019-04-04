@@ -19,12 +19,17 @@ extension Int {
     }
 }
 
+extension Locale {
+    
+    static let posix = Locale(identifier: "en_US_POSIX")
+}
+
 extension Calendar {
 
     /// The gregorian calendar with `en_US_POSIX` locale.
     static let gregorian: Calendar = {
         var cal = Calendar(identifier: .gregorian)
-        cal.locale = Locale(identifier: "en_US_POSIX")
+        cal.locale = Locale.posix
         return cal
     }()
 }

@@ -65,9 +65,7 @@ public struct Period {
         for (word, number) in Period.quantifiers.read({ $0 }) {
             str = str.replacingOccurrences(of: word, with: "\(number)")
         }
-        guard let regexp = try? NSRegularExpression(pattern: "( and |, )") else {
-            return nil
-        }
+        let regexp = try! NSRegularExpression(pattern: "( and |, )")
         str = regexp.stringByReplacingMatches(in: str, range: NSRange(location: 0, length: str.count), withTemplate: "$")
 
         var period = 0.year
@@ -109,11 +107,14 @@ public struct Period {
     }
 
     /// Returns a new period by adding an interval to the period.
+    ///
+    /// The return value will be tidied to `day` aotumatically.
     public func adding(_ interval: Interval) -> Period {
         return Period(
             years: years, months: months, days: days,
             hours: hours, minutes: minutes, seconds: seconds,
             nanoseconds: nanoseconds.clampedAdding(interval.nanoseconds.clampedToInt()))
+            .tidied(to: .day)
     }
 
     /// Returns a new period by adding the right period to the left period.
@@ -124,6 +125,8 @@ public struct Period {
     }
 
     /// Returns a new period by adding an interval to the period.
+    ///
+    /// The return value will be tidied to `day` aotumatically.
     public static func + (lhs: Period, rhs: Interval) -> Period {
         return lhs.adding(rhs)
     }

@@ -12,7 +12,13 @@ public struct Interval {
     }
 }
 
-// MARK: - Describing
+extension Interval: Hashable {
+    
+    /// Returns a boolean value indicating whether two intervals are equal.
+    public static func == (lhs: Interval, rhs: Interval) -> Bool {
+        return lhs.nanoseconds == rhs.nanoseconds
+    }
+}
 
 extension Interval {
 
@@ -36,21 +42,13 @@ extension Interval {
     }
 }
 
-extension Interval: Hashable {
-
-    /// Returns a boolean value indicating whether two intervals are equal.
-    public static func == (lhs: Interval, rhs: Interval) -> Bool {
-        return lhs.nanoseconds == rhs.nanoseconds
-    }
-}
-
 extension Interval: CustomStringConvertible {
 
     /// A textual representation of this interval.
     ///
     ///     "Interval: 1000 nanoseconds"
     public var description: String {
-        return "Interval: \(nanoseconds.clampedToInt()) nanoseconds"
+        return "Interval: \(nanoseconds.clampedToInt()) nanosecond(s)"
     }
 }
 
@@ -159,11 +157,6 @@ extension Interval {
 
 extension Interval {
 
-    /// Creates an interval from the given number of seconds.
-    public init(seconds: Double) {
-        self.init(nanoseconds: seconds * pow(10, 9))
-    }
-
     /// The length of this interval in nanoseconds.
     public func asNanoseconds() -> Double {
         return nanoseconds
@@ -251,7 +244,7 @@ extension IntervalConvertible {
 
     /// Creates an interval from this amount of milliseconds.
     public var milliseconds: Interval {
-        return nanoseconds * pow(10, 6)
+        return microseconds * pow(10, 3)
     }
 
     /// Alias for `second`.
@@ -261,7 +254,7 @@ extension IntervalConvertible {
 
     /// Creates an interval from this amount of seconds.
     public var seconds: Interval {
-        return nanoseconds * pow(10, 9)
+        return milliseconds * pow(10, 3)
     }
 
     /// Alias for `minute`.

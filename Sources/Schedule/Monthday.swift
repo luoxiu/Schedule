@@ -55,7 +55,7 @@ public enum Monthday {
 
 extension Date {
 
-    /// Returns a Boolean value indicating whether this date is the monthday.
+    /// Returns a Boolean value indicating whether this date is the monthday in current time zone..
     public func `is`(_ monthday: Monthday) -> Bool {
         let components = monthday.asDateComponents()
 
@@ -79,6 +79,7 @@ extension Monthday: CustomStringConvertible {
         let ms = Calendar.gregorian.monthSymbols[m - 1]
 
         let fmt = NumberFormatter()
+        fmt.locale = Locale.posix
         fmt.numberStyle = .ordinal
         let ds = fmt.string(from: NSNumber(value: d))!
 

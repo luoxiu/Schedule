@@ -17,7 +17,7 @@ public enum Weekday: Int {
 
 extension Date {
 
-    /// Returns a Boolean value indicating whether this date is the weekday.
+    /// Returns a Boolean value indicating whether this date is the weekday in current time zone.
     public func `is`(_ weekday: Weekday) -> Bool {
         return Calendar.gregorian.component(.weekday, from: self) == weekday.rawValue
     }

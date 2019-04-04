@@ -12,7 +12,7 @@ final class AtomicTests: XCTestCase {
     func testReadVoid() {
         let i = Atomic<Int>(1)
         var val = 0
-        i.read { val = $0 }
+        i.readVoid { val = $0 }
         XCTAssertEqual(val, 1)
     }
 
@@ -28,7 +28,7 @@ final class AtomicTests: XCTestCase {
     func testWriteVoid() {
         let i = Atomic<Int>(1)
         var val = 0
-        i.write {
+        i.writeVoid {
             $0 += 1
             val = $0
         }

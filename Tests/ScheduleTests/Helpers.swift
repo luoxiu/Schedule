@@ -11,7 +11,7 @@ extension Date {
         year: Int, month: Int, day: Int,
         hour: Int = 0, minute: Int = 0, second: Int = 0,
         nanosecond: Int = 0
-    ) {
+        ) {
         let components = DateComponents(
             calendar: Calendar.gregorian,
             timeZone: TimeZone.current,
@@ -64,7 +64,7 @@ extension Plan {
 extension DispatchQueue {
 
     func async(after interval: Interval, execute body: @escaping () -> Void) {
-        asyncAfter(wallDeadline: .now() + interval.asSeconds(), execute: body)
+        asyncAfter(deadline: .now() + interval.asSeconds(), execute: body)
     }
 
     static func `is`(_ queue: DispatchQueue) -> Bool {

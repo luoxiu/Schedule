@@ -47,9 +47,11 @@ final class BagTests: XCTestCase {
 
         let fn1 = bag.removeValue(for: k1)
         XCTAssertNotNil(fn1)
+        XCTAssertNil(bag.value(for: k1))
 
         let fn2 = bag.removeValue(for: k2)
         XCTAssertNotNil(fn2)
+        XCTAssertNil(bag.removeValue(for: k2))
         
         guard let _fn1 = fn1, let _fn2 = fn2 else { return }
         

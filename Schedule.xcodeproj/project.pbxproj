@@ -21,6 +21,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		629FAA6F2255CC2700ED5D67 /* IntervalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629FAA6E2255CC2700ED5D67 /* IntervalTests.swift */; };
+		629FAA712255D14800ED5D67 /* WeekdayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629FAA702255D14800ED5D67 /* WeekdayTests.swift */; };
+		629FAA732255D1CA00ED5D67 /* PeriodTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629FAA722255D1CA00ED5D67 /* PeriodTests.swift */; };
+		629FAA752255D6B100ED5D67 /* MonthdayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629FAA742255D6B100ED5D67 /* MonthdayTests.swift */; };
 		OBJ_49 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Atomic.swift */; };
 		OBJ_50 /* Bag.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Bag.swift */; };
 		OBJ_51 /* DeinitObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* DeinitObserver.swift */; };
@@ -38,7 +42,7 @@
 		OBJ_70 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_81 /* AtomicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* AtomicTests.swift */; };
 		OBJ_82 /* BagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* BagTests.swift */; };
-		OBJ_83 /* DateTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* DateTimeTests.swift */; };
+		OBJ_83 /* TimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* TimeTests.swift */; };
 		OBJ_84 /* DeinitObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* DeinitObserverTests.swift */; };
 		OBJ_85 /* ExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* ExtensionsTests.swift */; };
 		OBJ_86 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* Helpers.swift */; };
@@ -67,6 +71,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		629FAA6E2255CC2700ED5D67 /* IntervalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalTests.swift; sourceTree = "<group>"; };
+		629FAA702255D14800ED5D67 /* WeekdayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayTests.swift; sourceTree = "<group>"; };
+		629FAA722255D1CA00ED5D67 /* PeriodTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodTests.swift; sourceTree = "<group>"; };
+		629FAA742255D6B100ED5D67 /* MonthdayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthdayTests.swift; sourceTree = "<group>"; };
 		OBJ_10 /* Bag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bag.swift; sourceTree = "<group>"; };
 		OBJ_11 /* DeinitObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeinitObserver.swift; sourceTree = "<group>"; };
 		OBJ_13 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -82,7 +90,7 @@
 		OBJ_23 /* Weekday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekday.swift; sourceTree = "<group>"; };
 		OBJ_26 /* AtomicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicTests.swift; sourceTree = "<group>"; };
 		OBJ_27 /* BagTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BagTests.swift; sourceTree = "<group>"; };
-		OBJ_28 /* DateTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeTests.swift; sourceTree = "<group>"; };
+		OBJ_28 /* TimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTests.swift; sourceTree = "<group>"; };
 		OBJ_29 /* DeinitObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeinitObserverTests.swift; sourceTree = "<group>"; };
 		OBJ_30 /* ExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsTests.swift; sourceTree = "<group>"; };
 		OBJ_31 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
@@ -133,13 +141,17 @@
 			children = (
 				OBJ_26 /* AtomicTests.swift */,
 				OBJ_27 /* BagTests.swift */,
-				OBJ_28 /* DateTimeTests.swift */,
 				OBJ_29 /* DeinitObserverTests.swift */,
 				OBJ_30 /* ExtensionsTests.swift */,
 				OBJ_31 /* Helpers.swift */,
+				629FAA6E2255CC2700ED5D67 /* IntervalTests.swift */,
+				629FAA742255D6B100ED5D67 /* MonthdayTests.swift */,
+				629FAA722255D1CA00ED5D67 /* PeriodTests.swift */,
 				OBJ_32 /* PlanTests.swift */,
 				OBJ_33 /* TaskCenterTests.swift */,
 				OBJ_34 /* TaskTests.swift */,
+				OBJ_28 /* TimeTests.swift */,
+				629FAA702255D14800ED5D67 /* WeekdayTests.swift */,
 				OBJ_35 /* XCTestManifests.swift */,
 			);
 			name = ScheduleTests;
@@ -316,12 +328,16 @@
 			files = (
 				OBJ_81 /* AtomicTests.swift in Sources */,
 				OBJ_82 /* BagTests.swift in Sources */,
-				OBJ_83 /* DateTimeTests.swift in Sources */,
+				OBJ_83 /* TimeTests.swift in Sources */,
 				OBJ_84 /* DeinitObserverTests.swift in Sources */,
 				OBJ_85 /* ExtensionsTests.swift in Sources */,
 				OBJ_86 /* Helpers.swift in Sources */,
+				629FAA712255D14800ED5D67 /* WeekdayTests.swift in Sources */,
+				629FAA6F2255CC2700ED5D67 /* IntervalTests.swift in Sources */,
 				OBJ_87 /* PlanTests.swift in Sources */,
+				629FAA732255D1CA00ED5D67 /* PeriodTests.swift in Sources */,
 				OBJ_88 /* TaskCenterTests.swift in Sources */,
+				629FAA752255D6B100ED5D67 /* MonthdayTests.swift in Sources */,
 				OBJ_89 /* TaskTests.swift in Sources */,
 				OBJ_90 /* XCTestManifests.swift in Sources */,
 			);
