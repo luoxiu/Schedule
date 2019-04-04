@@ -15,7 +15,7 @@ final class TaskCenterTests: XCTestCase {
     func testDefault() {
         let task = makeTask()
         XCTAssertTrue(center.allTasks.contains(task))
-        center.clear()
+        center.removeAll()
     }
 
     func testAdd() {
@@ -31,7 +31,7 @@ final class TaskCenterTests: XCTestCase {
         c.add(task)
         XCTAssertEqual(c.allTasks.count, 1)
 
-        center.clear()
+        center.removeAll()
     }
 
     func testRemove() {
@@ -53,7 +53,7 @@ final class TaskCenterTests: XCTestCase {
         XCTAssertFalse(center.tasksForTag(tag).contains(task))
         XCTAssertFalse(center.tagsForTask(task).contains(tag))
 
-        center.clear()
+        center.removeAll()
     }
 
     func testAll() {
@@ -65,7 +65,7 @@ final class TaskCenterTests: XCTestCase {
         XCTAssertEqual(center.allTags, [tag])
         XCTAssertEqual(center.allTasks, [task])
 
-        center.clear()
+        center.removeAll()
     }
 
     func testOperation() {
@@ -84,7 +84,7 @@ final class TaskCenterTests: XCTestCase {
         center.cancelByTag(tag)
         XCTAssertTrue(task.isCancelled)
 
-        center.clear()
+        center.removeAll()
     }
 
     func testWeak() {

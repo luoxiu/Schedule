@@ -27,7 +27,6 @@ open class Task {
     private var _timer: DispatchSourceTimer
 
     private lazy var _onElapseActions = Bag<Action>()
-    private lazy var _onDeinitActions = Bag<Action>()
 
     private lazy var _suspensions: UInt64 = 0
     private lazy var _timeline = Timeline()
@@ -45,11 +44,39 @@ open class Task {
         return timer
     }()
 
+    private weak var _taskCenter: TaskCenter?
+    
     /// The task center which this task currently in.
-    open internal(set) weak var taskCenter: TaskCenter?
-
+    open var taskCenter: TaskCenter? {
+        return _taskCenter
+    }
+    
     /// The mutex used to guard task center operations.
-    let taskCenterMutex = NSRecursiveLock()
+    private let _taskCenterLock = NSRecursiveLock()
+    
+    /// Adds this task to the given task center.
+    ///
+    /// If this task is already in a task center, it will be removed from that center first.
+    func addToTaskCenter(_ center: TaskCenter) {
+        _taskCenterLock.lock()
+        defer { _taskCenterLock.unlock() }
+        
+        if _taskCenter === center { return }
+        
+        _taskCenter?.remove(self)
+        _taskCenter = center
+    }
+    
+    /// Removes this task from the given task center.
+    func removeFromTaskCenter(_ center: TaskCenter) {
+        _taskCenterLock.lock()
+        defer { _taskCenterLock.unlock() }
+        
+        if _taskCenter !== center { return }
+        
+        _taskCenter?.remove(self)
+        _taskCenter = nil
+    }
 
     /// Initializes a normal task with specified plan and dispatch queue.
     ///
@@ -81,16 +108,14 @@ open class Task {
     }
 
     deinit {
-        for action in _onDeinitActions {
-            action(self)
-        }
-
         while _suspensions > 0 {
             _timer.resume()
             _suspensions -= 1
         }
 
         cancel()
+        
+        taskCenter?.remove(self)
     }
 
     private func scheduleNext() {
@@ -152,7 +177,7 @@ open class Task {
     }
 
     // MARK: - Manage
-
+    
     /// Reschedules this task with the new plan.
     public func reschedule(_ new: Plan) {
         _mutex.withLockVoid {
@@ -194,13 +219,6 @@ open class Task {
             _timer.cancel()
         }
         TaskCenter.default.remove(self)
-    }
-
-    @discardableResult
-    open func onDeinit(_ body: @escaping Action) -> ActionKey {
-        return _mutex.withLock {
-            return _onDeinitActions.append(body).asActionKey()
-        }
     }
 
     // MARK: - Lifecycle
@@ -337,7 +355,6 @@ extension Task: CustomStringConvertible {
         return "Task: { " +
         "\"isCancelled\": \(_timer.isCancelled), " +
         "\"countOfElapseActions\": \(_onElapseActions.count), " +
-        "\"countOfDeinitActions\": \(_onDeinitActions.count), " +
         "\"countOfExecutions\": \(_countOfExecutions), " +
         "\"lifeTime\": \(_lifetime), " +
         "\"timeline\": \(_timeline)" +
