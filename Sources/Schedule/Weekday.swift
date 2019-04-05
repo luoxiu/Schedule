@@ -7,10 +7,10 @@ public enum Weekday: Int {
 
     /// Returns dateComponenets of the weekday, using gregorian calender and
     /// current time zone.
-    public func asDateComponents() -> DateComponents {
+    public func asDateComponents(_ timeZone: TimeZone = .current) -> DateComponents {
         return DateComponents(
             calendar: Calendar.gregorian,
-            timeZone: TimeZone.current,
+            timeZone: timeZone,
             weekday: rawValue)
     }
 }
@@ -18,8 +18,10 @@ public enum Weekday: Int {
 extension Date {
 
     /// Returns a Boolean value indicating whether this date is the weekday in current time zone.
-    public func `is`(_ weekday: Weekday) -> Bool {
-        return Calendar.gregorian.component(.weekday, from: self) == weekday.rawValue
+    public func `is`(_ weekday: Weekday, in timeZone: TimeZone = .current) -> Bool {
+        var cal = Calendar.gregorian
+        cal.timeZone = timeZone
+        return cal.component(.weekday, from: self) == weekday.rawValue
     }
 }
 

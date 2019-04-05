@@ -16,7 +16,7 @@ final class DeinitObserverTests: XCTestCase {
         fn()
         XCTAssertEqual(i, 1)
     }
-    
+
     func testCancel() {
         var i = 0
         let fn = {

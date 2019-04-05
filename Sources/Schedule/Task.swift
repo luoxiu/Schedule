@@ -7,13 +7,13 @@ public struct ActionKey {
 }
 
 extension BagKey {
-
+    
     fileprivate func asActionKey() -> ActionKey {
         return ActionKey(bagKey: self)
     }
 }
 
-/// `Task` represents a timed task.
+/// `Task` represents a timing task.
 open class Task {
 
     /// The unique id of this task.
@@ -21,77 +21,86 @@ open class Task {
 
     public typealias Action = (Task) -> Void
 
-    private let _mutex = NSRecursiveLock()
+    private let _lock = NSRecursiveLock()
 
     private var _iterator: AnyIterator<Interval>
     private var _timer: DispatchSourceTimer
 
-    private lazy var _onElapseActions = Bag<Action>()
+    private lazy var _actions = Bag<Action>()
 
-    private lazy var _suspensions: UInt64 = 0
-    private lazy var _timeline = Timeline()
-
-    private lazy var _countOfExecutions: Int = 0
-
-    private lazy var _lifetime: Interval = Int.max.seconds
-    private lazy var _lifetimeTimer: DispatchSourceTimer = {
-        let timer = DispatchSource.makeTimerSource()
-        timer.setEventHandler { [weak self] in
-            self?.cancel()
-        }
-        timer.schedule(after: _lifetime)
-        timer.resume()
-        return timer
-    }()
-
-    private weak var _taskCenter: TaskCenter?
+    private lazy var _suspensionCount: UInt64 = 0
+    private lazy var _executionCount: Int = 0
     
-    /// The task center which this task currently in.
-    open var taskCenter: TaskCenter? {
-        return _taskCenter
+    private var _firstExecutionDate: Date?
+    private var _lastExecutionDate: Date?
+    private var _estimatedNextExecutionDate: Date?
+    
+    /// The date of creation.
+    public let creationDate = Date()
+    
+    /// The date of first execution.
+    open var firstExecutionDate: Date? {
+        return _lock.withLock { _firstExecutionDate }
     }
     
-    /// The mutex used to guard task center operations.
-    private let _taskCenterLock = NSRecursiveLock()
+    /// The date of last execution.
+    open var lastExecutionDate: Date? {
+        return _lock.withLock { _lastExecutionDate }
+    }
     
+    /// The date of estimated next execution.
+    open var estimatedNextExecutionDate: Date? {
+        return _lock.withLock { _estimatedNextExecutionDate }
+    }
+
+    private weak var _taskCenter: TaskCenter?
+
+    /// The task center to which this task currently belongs.
+    open var taskCenter: TaskCenter? {
+        return _lock.withLock { _taskCenter }
+    }
+
+    private let _taskCenterLock = NSRecursiveLock()
+
     /// Adds this task to the given task center.
-    ///
-    /// If this task is already in a task center, it will be removed from that center first.
     func addToTaskCenter(_ center: TaskCenter) {
         _taskCenterLock.lock()
         defer { _taskCenterLock.unlock() }
-        
+
         if _taskCenter === center { return }
-        
-        _taskCenter?.remove(self)
+
+        let c = _taskCenter
         _taskCenter = center
+
+        c?.remove(self)
     }
-    
+
     /// Removes this task from the given task center.
     func removeFromTaskCenter(_ center: TaskCenter) {
         _taskCenterLock.lock()
         defer { _taskCenterLock.unlock() }
-        
+
         if _taskCenter !== center { return }
-        
-        _taskCenter?.remove(self)
+
         _taskCenter = nil
+        center.remove(self)
     }
 
-    /// Initializes a normal task with specified plan and dispatch queue.
+    /// Initializes a timing task.
     ///
     /// - Parameters:
     ///   - plan: The plan.
-    ///   - queue: The dispatch queue to which all actions should be added.
-    ///   - onElapse: The action to do when time is out.
-    init(plan: Plan,
-         queue: DispatchQueue?,
-         onElapse: @escaping (Task) -> Void) {
-
+    ///   - queue: The dispatch queue to which the block should be dispatched.
+    ///   - block: A block to be executed when time is up.
+    init(
+        plan: Plan,
+        queue: DispatchQueue?,
+        block: @escaping (Task) -> Void
+    ) {
         _iterator = plan.makeIterator()
         _timer = DispatchSource.makeTimerSource(queue: queue)
 
-        _onElapseActions.append(onElapse)
+        _actions.append(block)
 
         _timer.setEventHandler { [weak self] in
             guard let self = self else { return }
@@ -100,244 +109,163 @@ open class Task {
 
         if let interval = _iterator.next(), !interval.isNegative {
             _timer.schedule(after: interval)
-            _timeline.estimatedNextExecution = Date().adding(interval)
+            _estimatedNextExecutionDate = Date().adding(interval)
         }
-
+        
         _timer.resume()
+
         TaskCenter.default.add(self)
     }
 
     deinit {
-        while _suspensions > 0 {
+        while _suspensionCount > 0 {
             _timer.resume()
-            _suspensions -= 1
+            _suspensionCount -= 1
         }
 
         cancel()
-        
+
         taskCenter?.remove(self)
     }
+    
+    private func elapse() {
+        scheduleNextExecution()
+        execute()
+    }
 
-    private func scheduleNext() {
-        _mutex.withLockVoid {
+    private func scheduleNextExecution() {
+        _lock.withLockVoid {
             let now = Date()
-            var estimated = _timeline.estimatedNextExecution ?? now
+            var estimated = _estimatedNextExecutionDate ?? now
             repeat {
                 guard let interval = _iterator.next(), !interval.isNegative else {
-                    _timeline.estimatedNextExecution = nil
+                    _estimatedNextExecutionDate = nil
                     return
                 }
                 estimated = estimated.adding(interval)
             } while (estimated < now)
 
-            _timeline.estimatedNextExecution = estimated
-            _timer.schedule(after: _timeline.estimatedNextExecution!.interval(since: now))
+            _estimatedNextExecutionDate = estimated
+            _timer.schedule(after: _estimatedNextExecutionDate!.interval(since: now))
         }
     }
 
-    /// Execute this task now, without disrupting its plan.
-    public func execute() {
-        let actions = _mutex.withLock { () -> Bag<Task.Action> in
+    /// Execute this task now, without interrupting its plan.
+    open func execute() {
+        let actions = _lock.withLock { () -> Bag<Task.Action> in
             let now = Date()
-            if _timeline.firstExecution == nil {
-                _timeline.firstExecution = now
+            if _firstExecutionDate == nil {
+                _firstExecutionDate = now
             }
-            _timeline.lastExecution = now
-            _countOfExecutions += 1
-            return _onElapseActions
+            _lastExecutionDate = now
+            _executionCount += 1
+            return _actions
         }
         actions.forEach { $0(self) }
     }
 
-    private func elapse() {
-        scheduleNext()
-        execute()
-    }
-
+    /// Host this task to an object, that is, when the object deallocates, this task will be cancelled.
     #if canImport(ObjectiveC)
-    open func host(on target: AnyObject) {
+    open func host(to target: AnyObject) {
         DeinitObserver.observe(target) { [weak self] in
             self?.cancel()
         }
     }
     #endif
 
-    /// The number of times the task has been executed.
-    public var countOfExecutions: Int {
-        return _mutex.withLock {
-            _countOfExecutions
+    /// The number of task executions.
+    public var executionCount: Int {
+        return _lock.withLock {
+            _executionCount
         }
     }
 
     /// A Boolean indicating whether the task was canceled.
     public var isCancelled: Bool {
-        return _mutex.withLock {
+        return _lock.withLock {
             _timer.isCancelled
         }
     }
 
-    // MARK: - Manage
-    
     /// Reschedules this task with the new plan.
     public func reschedule(_ new: Plan) {
-        _mutex.withLockVoid {
+        _lock.withLockVoid {
             _iterator = new.makeIterator()
         }
-        scheduleNext()
+        scheduleNextExecution()
     }
 
-    /// Suspensions of this task.
-    public var suspensions: UInt64 {
-        return _mutex.withLock {
-            _suspensions
+    /// The number of task suspensions.
+    public var suspensionCount: UInt64 {
+        return _lock.withLock {
+            _suspensionCount
         }
     }
 
     /// Suspends this task.
     public func suspend() {
-        _mutex.withLockVoid {
-            if _suspensions < UInt64.max {
+        _lock.withLockVoid {
+            if _suspensionCount < UInt64.max {
                 _timer.suspend()
-                _suspensions += 1
+                _suspensionCount += 1
             }
         }
     }
 
     /// Resumes this task.
     public func resume() {
-        _mutex.withLockVoid {
-            if _suspensions > 0 {
+        _lock.withLockVoid {
+            if _suspensionCount > 0 {
                 _timer.resume()
-                _suspensions -= 1
+                _suspensionCount -= 1
             }
         }
     }
 
     /// Cancels this task.
     public func cancel() {
-        _mutex.withLockVoid {
+        _lock.withLockVoid {
             _timer.cancel()
         }
         TaskCenter.default.remove(self)
     }
 
-    // MARK: - Lifecycle
-
-    /// The snapshot timeline of this task.
-    public var timeline: Timeline {
-        return _mutex.withLock {
-            _timeline
-        }
-    }
-
-    /// The lifetime of this task.
-    public var lifetime: Interval {
-        return _mutex.withLock {
-            _lifetime
-        }
-    }
-
-    /// The rest of lifetime.
-    public var restOfLifetime: Interval {
-        return _mutex.withLock {
-            _lifetime - Date().interval(since: _timeline.initialization)
-        }
-    }
-
-    /// Set a new lifetime for this task.
-    ///
-    /// If this task has already ended its lifetime, setting will fail,
-    /// if new lifetime is shorter than its age, setting will fail, too.
-    ///
-    /// - Returns: `true` if set successfully, `false` if not.
-    @discardableResult
-    public func setLifetime(_ interval: Interval) -> Bool {
-        if restOfLifetime.isNegative {
-            return false
-        }
-
-        _mutex.lock()
-        let age = Date().interval(since: _timeline.initialization)
-        guard age.isShorter(than: interval) else {
-            _mutex.unlock()
-            return false
-        }
-
-        _lifetime = interval
-        _lifetimeTimer.schedule(after: interval - age)
-        _mutex.unlock()
-        return true
-    }
-
-    /// Add an interval to this task's lifetime.
-    ///
-    /// If this task has already ended its lifetime, adding will fail,
-    /// if new lifetime is shorter than its age, adding will fail, too.
-    ///
-    /// - Returns: `true` if set successfully, `false` if not.
-    @discardableResult
-    public func addLifetime(_ interval: Interval) -> Bool {
-        var rest = restOfLifetime
-        if rest.isNegative { return false }
-        rest += interval
-        if rest.isNegative { return false }
-        _mutex.withLockVoid {
-            _lifetime += interval
-            _lifetimeTimer.schedule(after: rest)
-        }
-        return true
-    }
-
-    /// Subtract an interval to this task's lifetime.
-    ///
-    /// If this task has already ended its lifetime, subtracting will fail,
-    /// if new lifetime is shorter than its age, subtracting will fail, too.
-    ///
-    /// - Returns: `true` if set successfully, `false` if not.
-    @discardableResult
-    public func subtractLifetime(_ interval: Interval) -> Bool {
-        return addLifetime(interval.negated)
-    }
 
     // MARK: - Action
 
     /// The number of actions in this task.
     public var countOfActions: Int {
-        return _mutex.withLock {
-            _onElapseActions.count
+        return _lock.withLock {
+            _actions.count
         }
     }
 
     /// Adds action to this task.
     @discardableResult
     public func addAction(_ action: @escaping (Task) -> Void) -> ActionKey {
-        return _mutex.withLock {
-            return _onElapseActions.append(action).asActionKey()
+        return _lock.withLock {
+            return _actions.append(action).asActionKey()
         }
     }
 
     /// Removes action by key from this task.
     public func removeAction(byKey key: ActionKey) {
-        _mutex.withLockVoid {
-            _ = _onElapseActions.removeValue(for: key.bagKey)
+        _lock.withLockVoid {
+            _ = _actions.removeValue(for: key.bagKey)
         }
     }
 
     /// Removes all actions from this task.
     public func removeAllActions() {
-        _mutex.withLockVoid {
-            _onElapseActions.removeAll()
+        _lock.withLockVoid {
+            _actions.removeAll()
         }
-    }
-
-    // MARK: - Tag
-    open func add(to: TaskCenter) {
-        _mutex.lock()
     }
 }
 
 extension Task: Hashable {
 
+    /// Hashes the essential components of this value by feeding them into the given hasher.
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
@@ -345,27 +273,5 @@ extension Task: Hashable {
     /// Returns a boolean value indicating whether two tasks are equal.
     public static func == (lhs: Task, rhs: Task) -> Bool {
         return lhs === rhs
-    }
-}
-
-extension Task: CustomStringConvertible {
-
-    /// A textual representation of this task.
-    public var description: String {
-        return "Task: { " +
-        "\"isCancelled\": \(_timer.isCancelled), " +
-        "\"countOfElapseActions\": \(_onElapseActions.count), " +
-        "\"countOfExecutions\": \(_countOfExecutions), " +
-        "\"lifeTime\": \(_lifetime), " +
-        "\"timeline\": \(_timeline)" +
-        " }"
-    }
-}
-
-extension Task: CustomDebugStringConvertible {
-
-    /// A textual representation of this task for debugging.
-    public var debugDescription: String {
-        return description
     }
 }

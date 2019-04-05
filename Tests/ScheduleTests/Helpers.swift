@@ -64,7 +64,7 @@ extension Plan {
 extension DispatchQueue {
 
     func async(after interval: Interval, execute body: @escaping () -> Void) {
-        asyncAfter(deadline: .now() + interval.asSeconds(), execute: body)
+        asyncAfter(wallDeadline: .now() + interval.asSeconds(), execute: body)
     }
 
     static func `is`(_ queue: DispatchQueue) -> Bool {
@@ -75,4 +75,9 @@ extension DispatchQueue {
 
         return DispatchQueue.getSpecific(key: key) != nil
     }
+}
+
+extension TimeZone {
+    
+    static let shanghai = TimeZone(identifier: "Asia/Shanghai")!
 }

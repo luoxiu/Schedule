@@ -26,15 +26,15 @@ final class BagTests: XCTestCase {
         var bag = Bag<Fn>()
         let k1 = bag.append { 1 }
         let k2 = bag.append { 2 }
-        
+
         let fn1 = bag.value(for: k1)
         XCTAssertNotNil(fn1)
-        
+
         let fn2 = bag.value(for: k2)
         XCTAssertNotNil(fn2)
-        
+
         guard let _fn1 = fn1, let _fn2 = fn2 else { return }
-        
+
         XCTAssertEqual(_fn1(), 1)
         XCTAssertEqual(_fn2(), 2)
     }
@@ -52,24 +52,24 @@ final class BagTests: XCTestCase {
         let fn2 = bag.removeValue(for: k2)
         XCTAssertNotNil(fn2)
         XCTAssertNil(bag.removeValue(for: k2))
-        
+
         guard let _fn1 = fn1, let _fn2 = fn2 else { return }
-        
+
         XCTAssertEqual(_fn1(), 1)
         XCTAssertEqual(_fn2(), 2)
     }
-    
+
     func testCount() {
         var bag = Bag<Fn>()
-        
+
         let k1 = bag.append { 1 }
         let k2 = bag.append { 2 }
-        
+
         XCTAssertEqual(bag.count, 2)
-        
+
         bag.removeValue(for: k1)
         bag.removeValue(for: k2)
-        
+
         XCTAssertEqual(bag.count, 0)
     }
 

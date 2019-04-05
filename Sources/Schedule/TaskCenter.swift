@@ -30,8 +30,8 @@ open class TaskCenter {
 
     private let lock = NSLock()
 
-    private var tasksOfTag: [String: Set<TaskBox>] = [:]
-    private var tagsOfTask: [TaskBox: Set<String>] = [:]
+    private var tags: [String: Set<TaskBox>] = [:]
+    private var tasks: [TaskBox: Set<String>] = [:]
 
     /// Default task center.
     open class var `default`: TaskCenter {
@@ -39,14 +39,12 @@ open class TaskCenter {
     }
 
     /// Adds the given task to this center.
-    ///
-    /// Center won't retain the task.
     open func add(_ task: Task) {
         task.addToTaskCenter(self)
 
         lock.withLockVoid {
             let box = TaskBox(task)
-            tagsOfTask[box] = []
+            self.tasks[box] = []
         }
     }
 
@@ -56,15 +54,14 @@ open class TaskCenter {
 
         lock.withLockVoid {
             let box = TaskBox(task)
-            if let tags = self.tagsOfTask[box] {
+            if let tags = self.tasks[box] {
                 for tag in tags {
-                    self.tasksOfTag[tag]?.remove(box)
-                    
-                    if self.tasksOfTag[tag]?.count == 0 {
-                        self.tasksOfTag[tag] = nil
+                    self.tags[tag]?.remove(box)
+                    if self.tags[tag]?.count == 0 {
+                        self.tags[tag] = nil
                     }
                 }
-                self.tagsOfTask[box] = nil
+                self.tasks[box] = nil
             }
         }
     }
@@ -84,15 +81,12 @@ open class TaskCenter {
 
         lock.withLockVoid {
             let box = TaskBox(task)
-            if tagsOfTask[box] == nil {
-                tagsOfTask[box] = []
-            }
             for tag in tags {
-                tagsOfTask[box]?.insert(tag)
-                if tasksOfTag[tag] == nil {
-                    tasksOfTag[tag] = []
+                tasks[box]?.insert(tag)
+                if self.tags[tag] == nil {
+                    self.tags[tag] = []
                 }
-                tasksOfTag[tag]?.insert(box)
+                self.tags[tag]?.insert(box)
             }
         }
     }
@@ -113,64 +107,67 @@ open class TaskCenter {
         lock.withLockVoid {
             let box = TaskBox(task)
             for tag in tags {
-                tagsOfTask[box]?.remove(tag)
-                tasksOfTag[tag]?.remove(box)
+                self.tasks[box]?.remove(tag)
+                self.tags[tag]?.remove(box)
+                if self.tags[tag]?.count == 0 {
+                    self.tags[tag] = nil
+                }
             }
         }
     }
 
-    /// Returns all tags on the task.
+    /// Returns all tags for the task.
     ///
     /// If the task is not in this center, return an empty array.
-    open func tagsForTask(_ task: Task) -> [String] {
+    open func tags(forTask task: Task) -> [String] {
         guard task.taskCenter === self else { return [] }
 
         return lock.withLock {
-            Array(tagsOfTask[TaskBox(task)] ?? [])
+            Array(tasks[TaskBox(task)] ?? [])
         }
     }
 
-    /// Returns all tasks that have the tag.
-    open func tasksForTag(_ tag: String) -> [Task] {
+    /// Returns all tasks for the tag.
+    open func tasks(forTag tag: String) -> [Task] {
         return lock.withLock {
-            tasksOfTag[tag]?.compactMap { $0.task } ?? []
+            tags[tag]?.compactMap { $0.task } ?? []
         }
     }
 
     /// Returns all tasks in this center.
     open var allTasks: [Task] {
         return lock.withLock {
-            tagsOfTask.compactMap { $0.key.task }
+            tasks.compactMap { $0.key.task }
         }
     }
 
-    /// Returns all existing tags in this center.
+    /// Returns all tags in this center.
     open var allTags: [String] {
         return lock.withLock {
-            tasksOfTag.map { $0.key }
+            tags.map { $0.key }
         }
     }
 
     /// Removes all tasks from this center.
     open func removeAll() {
         lock.withLockVoid {
-            tagsOfTask = [:]
-            tasksOfTag = [:]
+            tasks = [:]
+            tags = [:]
         }
     }
 
-    /// Suspends all tasks that have the tag.
-    open func suspendByTag(_ tag: String) {
-        tasksForTag(tag).forEach { $0.suspend() }
+    /// Suspends all tasks by tag.
+    open func suspend(byTag tag: String) {
+        tasks(forTag: tag).forEach { $0.suspend() }
     }
 
-    /// Resumes all tasks that have the tag.
-    open func resumeByTag(_ tag: String) {
-        tasksForTag(tag).forEach { $0.resume() }
+    /// Resumes all tasks by tag.
+    open func resume(byTag tag: String) {
+        tasks(forTag: tag).forEach { $0.resume() }
     }
 
-    /// Cancels all tasks that have the tag.
-    open func cancelByTag(_ tag: String) {
-        tasksForTag(tag).forEach { $0.cancel() }
+    /// Cancels all tasks by tag.
+    open func cancel(byTag tag: String) {
+        tasks(forTag: tag).forEach { $0.cancel() }
     }
 }

@@ -10,9 +10,9 @@ import Foundation
 ///
 ///     observer.cancel()
 class DeinitObserver {
-    
+
     private var associateKey: Void = ()
-    
+
     private(set) weak var observed: AnyObject?
 
     private var block: (() -> Void)?

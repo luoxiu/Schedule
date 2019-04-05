@@ -1,6 +1,6 @@
 import Foundation
 
-/// Type used to represents a date-based amount of time in the ISO-8601 calendar system,
+/// Type used to represent a date-based amount of time in the ISO-8601 calendar system,
 /// such as '2 years, 3 months and 4 days'.
 ///
 /// It's a little different from `Interval`:
@@ -65,18 +65,26 @@ public struct Period {
         for (word, number) in Period.quantifiers.read({ $0 }) {
             str = str.replacingOccurrences(of: word, with: "\(number)")
         }
+
+        // swiftlint:disable force_try
         let regexp = try! NSRegularExpression(pattern: "( and |, )")
-        str = regexp.stringByReplacingMatches(in: str, range: NSRange(location: 0, length: str.count), withTemplate: "$")
+
+        let mark: Character = "秋"
+        str = regexp.stringByReplacingMatches(
+            in: str,
+            range: NSRange(location: 0, length: str.count),
+            withTemplate: String(mark)
+        )
 
         var period = 0.year
-        for pair in str.split(separator: "$").map({ $0.split(separator: " ") }) {
+        for pair in str.split(separator: mark).map({ $0.split(separator: " ") }) {
             guard
                 pair.count == 2,
                 let number = Int(pair[0])
             else {
                 return nil
             }
-            
+
             var unit = String(pair[1])
             if unit.last == "s" { unit.removeLast() }
             switch unit {
@@ -141,27 +149,27 @@ public struct Period {
     ///     Period(hours: 25).tidied(to .day) => Period(days: 1, hours: 1)
     public func tidied(to level: TideLevel) -> Period {
         var period = self
-        
+
         if case .nanosecond = level { return period }
-        
+
         if period.nanoseconds.magnitude >= UInt(1.second.nanoseconds) {
             period.seconds += period.nanoseconds / Int(1.second.nanoseconds)
             period.nanoseconds %= Int(1.second.nanoseconds)
         }
         if case .second = level { return period }
-        
+
         if period.seconds.magnitude >= 60 {
             period.minutes += period.seconds / 60
             period.seconds %= 60
         }
         if case .minute = level { return period }
-        
+
         if period.minutes.magnitude >= 60 {
             period.hours += period.minutes / 60
             period.minutes %= 60
         }
         if case .hour = level { return period }
-        
+
         if period.hours.magnitude >= 24 {
             period.days += period.hours / 24
             period.hours %= 24
@@ -171,10 +179,18 @@ public struct Period {
 
     /// Returns a dateComponenets of this period, using gregorian calender and
     /// current time zone.
-    public func asDateComponents() -> DateComponents {
-        return DateComponents(year: years, month: months, day: days,
-                              hour: hours, minute: minutes, second: seconds,
-                              nanosecond: nanoseconds)
+    public func asDateComponents(_ timeZone: TimeZone = .current) -> DateComponents {
+        return DateComponents(
+            calendar: Calendar.gregorian,
+            timeZone: timeZone,
+            year: years,
+            month: months,
+            day: days,
+            hour: hours,
+            minute: minutes,
+            second: seconds,
+            nanosecond: nanoseconds
+        )
     }
 }
 

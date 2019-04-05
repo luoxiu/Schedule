@@ -37,7 +37,6 @@
 		OBJ_59 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* Task.swift */; };
 		OBJ_60 /* TaskCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* TaskCenter.swift */; };
 		OBJ_61 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* Time.swift */; };
-		OBJ_62 /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* Timeline.swift */; };
 		OBJ_63 /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* Weekday.swift */; };
 		OBJ_70 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_81 /* AtomicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* AtomicTests.swift */; };
@@ -86,7 +85,6 @@
 		OBJ_19 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		OBJ_20 /* TaskCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCenter.swift; sourceTree = "<group>"; };
 		OBJ_21 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
-		OBJ_22 /* Timeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
 		OBJ_23 /* Weekday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekday.swift; sourceTree = "<group>"; };
 		OBJ_26 /* AtomicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicTests.swift; sourceTree = "<group>"; };
 		OBJ_27 /* BagTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BagTests.swift; sourceTree = "<group>"; };
@@ -205,7 +203,6 @@
 				OBJ_19 /* Task.swift */,
 				OBJ_20 /* TaskCenter.swift */,
 				OBJ_21 /* Time.swift */,
-				OBJ_22 /* Timeline.swift */,
 				OBJ_23 /* Weekday.swift */,
 			);
 			name = Schedule;
@@ -309,7 +306,6 @@
 				OBJ_59 /* Task.swift in Sources */,
 				OBJ_60 /* TaskCenter.swift in Sources */,
 				OBJ_61 /* Time.swift in Sources */,
-				OBJ_62 /* Timeline.swift in Sources */,
 				OBJ_63 /* Weekday.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

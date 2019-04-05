@@ -29,7 +29,7 @@ public enum Monthday {
 
     /// Returns a dateComponenets of this monthday, using gregorian calender and
     /// current time zone.
-    public func asDateComponents() -> DateComponents {
+    public func asDateComponents(_ timeZone: TimeZone = .current) -> DateComponents {
         var month, day: Int
         switch self {
         case .january(let n):       month = 1; day = n
@@ -47,7 +47,7 @@ public enum Monthday {
         }
         return DateComponents(
             calendar: Calendar.gregorian,
-            timeZone: TimeZone.current,
+            timeZone: timeZone,
             month: month,
             day: day)
     }
@@ -56,8 +56,8 @@ public enum Monthday {
 extension Date {
 
     /// Returns a Boolean value indicating whether this date is the monthday in current time zone..
-    public func `is`(_ monthday: Monthday) -> Bool {
-        let components = monthday.asDateComponents()
+    public func `is`(_ monthday: Monthday, in timeZone: TimeZone = .current) -> Bool {
+        let components = monthday.asDateComponents(timeZone)
 
         let m = Calendar.gregorian.component(.month, from: self)
         let d = Calendar.gregorian.component(.day, from: self)

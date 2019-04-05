@@ -2,7 +2,7 @@ import XCTest
 @testable import Schedule
 
 final class TimeTests: XCTestCase {
-    
+
     func testTime() {
         let t1 = Time("11:12:13.456")
         XCTAssertNotNil(t1)
@@ -24,11 +24,11 @@ final class TimeTests: XCTestCase {
         let t4 = Time("schedule")
         XCTAssertNil(t4)
     }
-    
+
     func testIntervalSinceStartOfDay() {
         XCTAssertEqual(Time(hour: 1)!.intervalSinceStartOfDay, 1.hour)
     }
-    
+
     func testAsDateComponents() {
         let time = Time(hour: 11, minute: 12, second: 13, nanosecond: 456)
         let components = time?.asDateComponents()
@@ -37,7 +37,7 @@ final class TimeTests: XCTestCase {
         XCTAssertEqual(components?.second, 13)
         XCTAssertEqual(components?.nanosecond, 456)
     }
-    
+
     func testDescription() {
         let time = Time("11:12:13.456")
         XCTAssertEqual(time!.debugDescription, "Time: 11:12:13.456")

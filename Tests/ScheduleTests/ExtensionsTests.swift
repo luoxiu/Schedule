@@ -18,14 +18,14 @@ final class ExtensionsTests: XCTestCase {
 
     func testStartOfToday() {
         let components = Date().startOfToday.dateComponents
-        guard
-            let h = components.hour,
-            let m = components.minute,
-            let s = components.second
-        else {
-            XCTFail()
-            return
-        }
+
+        let h = components.hour
+        let m = components.minute
+        let s = components.second
+        XCTAssertNotNil(h)
+        XCTAssertNotNil(m)
+        XCTAssertNotNil(s)
+
         XCTAssertEqual(h, 0)
         XCTAssertEqual(m, 0)
         XCTAssertEqual(s, 0)

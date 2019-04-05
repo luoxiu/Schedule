@@ -13,7 +13,7 @@ public struct Interval {
 }
 
 extension Interval: Hashable {
-    
+
     /// Returns a boolean value indicating whether two intervals are equal.
     public static func == (lhs: Interval, rhs: Interval) -> Bool {
         return lhs.nanoseconds == rhs.nanoseconds
@@ -72,7 +72,7 @@ extension Interval: Comparable {
     /// A positive interval is always ordered ascending to a negative interval.
     public func compare(_ other: Interval) -> ComparisonResult {
         let d = nanoseconds - other.nanoseconds
-        
+
         if d < 0 { return .orderedAscending }
         if d > 0 { return .orderedDescending }
         return .orderedSame
@@ -102,7 +102,7 @@ extension Interval: Comparable {
 // MARK: - Adding & Subtracting
 
 extension Interval {
-    
+
     /// Returns a new interval by multipling this interval by the given number.
     ///
     ///     1.hour * 2 == 2.hours
@@ -331,7 +331,7 @@ extension Date {
 
 extension DispatchSourceTimer {
 
-    /// Schedule this timer later.
+    /// Schedule this timer after the given interval.
     func schedule(after timeout: Interval) {
         if timeout.isNegative { return }
         let ns = timeout.nanoseconds.clampedToInt()

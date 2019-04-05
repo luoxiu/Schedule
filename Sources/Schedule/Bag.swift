@@ -28,9 +28,7 @@ struct BagKeyGenerator: Sequence, IteratorProtocol {
 
     /// Advances to the next key and returns it, or nil if no next key exists.
     mutating func next() -> BagKey? {
-        if k.i == UInt64.max {
-            return nil
-        }
+        if k.i == UInt64.max { return nil }
         defer { k = BagKey(underlying: k.i + 1) }
         return k
     }

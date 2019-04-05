@@ -48,8 +48,15 @@ public struct Time {
     public init?(_ string: String) {
         let pattern = "^(\\d{1,2})(:(\\d{1,2})(:(\\d{1,2})(.(\\d{1,3}))?)?)?( (am|AM|pm|PM))?$"
 
+        // swiftlint:disable force_try
         let regexp = try! NSRegularExpression(pattern: pattern, options: [])
-        guard let matches = regexp.matches(in: string, options: [], range: NSRange(location: 0, length: string.count)).first else { return nil }
+        guard let matches = regexp.matches(
+            in: string,
+            options: [],
+            range: NSRange(location: 0, length: string.count)).first
+        else {
+            return nil
+        }
 
         var hasAM = false
         var hasPM = false
@@ -87,9 +94,9 @@ public struct Time {
 
     /// Returns a dateComponenets of the time, using gregorian calender and
     /// current time zone.
-    public func asDateComponents() -> DateComponents {
+    public func asDateComponents(_ timeZone: TimeZone = .current) -> DateComponents {
         return DateComponents(calendar: Calendar.gregorian,
-                              timeZone: TimeZone.current,
+                              timeZone: timeZone,
                               hour: hour,
                               minute: minute,
                               second: second,

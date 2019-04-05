@@ -17,7 +17,7 @@ final class Atomic<T> {
     func read<U>(_ body: (T) -> U) -> U {
         return lock.withLock { body(val) }
     }
-    
+
     /// Reads the current value atomically.
     @inline(__always)
     func readVoid(_ body: (T) -> Void) {
@@ -29,7 +29,7 @@ final class Atomic<T> {
     func write<U>(_ body: (inout T) -> U) -> U {
         return lock.withLock { body(&val) }
     }
-    
+
     /// Writes the current value atomically.
     @inline(__always)
     func writeVoid(_ body: (inout T) -> Void) {
