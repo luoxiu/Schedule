@@ -60,10 +60,7 @@ struct Bag<Element> {
 
     /// Returns the element associated with a given key.
     func value(for key: BagKey) -> Element? {
-        if let entry = entries.first(where: { $0.key == key }) {
-            return entry.val
-        }
-        return nil
+        return entries.first(where: { $0.key == key })?.val
     }
 
     /// Removes the given key and its associated element from this bag.

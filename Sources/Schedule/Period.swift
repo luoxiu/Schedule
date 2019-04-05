@@ -85,7 +85,7 @@ public struct Period {
                 return nil
             }
 
-            var unit = String(pair[1])
+            var unit = pair[1]
             if unit.last == "s" { unit.removeLast() }
             switch unit {
             case "year":            period = period + number.years
