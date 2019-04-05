@@ -12,13 +12,7 @@ public struct Interval {
     }
 }
 
-extension Interval: Hashable {
-
-    /// Returns a boolean value indicating whether two intervals are equal.
-    public static func == (lhs: Interval, rhs: Interval) -> Bool {
-        return lhs.nanoseconds == rhs.nanoseconds
-    }
-}
+extension Interval: Hashable { }
 
 extension Interval {
 

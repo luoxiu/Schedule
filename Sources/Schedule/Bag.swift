@@ -8,11 +8,6 @@ struct BagKey: Equatable {
     fileprivate init(underlying: UInt64) {
         self.i = underlying
     }
-
-    /// Returns a Boolean value indicating whether two BagKeys are equal.
-    static func == (lhs: BagKey, rhs: BagKey) -> Bool {
-        return lhs.i == rhs.i
-    }
 }
 
 /// A generator that can generate a sequence of unique `BagKey`.
