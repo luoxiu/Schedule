@@ -72,7 +72,7 @@ public struct Period {
         let mark: Character = "秋"
         str = regexp.stringByReplacingMatches(
             in: str,
-            range: NSRange(location: 0, length: str.count),
+            range: NSRange(str.startIndex..., in: str),
             withTemplate: String(mark)
         )
 
