@@ -62,6 +62,7 @@ public struct Time {
         var hasAM = false
         var hasPM = false
         var values: [Int] = []
+        values.reserveCapacity(matches.numberOfRanges)
 
         for i in 0..<matches.numberOfRanges {
             let range = matches.range(at: i)

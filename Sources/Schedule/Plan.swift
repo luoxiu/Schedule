@@ -473,10 +473,8 @@ extension Plan {
         guard !mondays.isEmpty else { return .init(plan: .never) }
 
         var plan = every(mondays[0]).plan
-        if mondays.count > 1 {
-            for i in 1..<mondays.count {
-                plan = plan.merge(Plan.every(mondays[i]).plan)
-            }
+        for monday in mondays.dropFirst() {
+            plan = plan.merge(Plan.every(monday).plan)
         }
         return DateMiddleware(plan: plan)
     }
