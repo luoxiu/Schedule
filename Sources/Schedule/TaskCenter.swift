@@ -8,15 +8,12 @@ extension TaskCenter {
 
         weak var task: Task?
 
-        let hash: Int
-
         init(_ task: Task) {
             self.task = task
-            self.hash = task.hashValue
         }
 
         func hash(into hasher: inout Hasher) {
-            hasher.combine(hash)
+            hasher.combine(task)
         }
 
         static func == (lhs: TaskBox, rhs: TaskBox) -> Bool {
