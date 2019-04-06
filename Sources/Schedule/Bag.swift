@@ -8,11 +8,6 @@ struct BagKey: Equatable {
     fileprivate init(underlying: UInt64) {
         self.i = underlying
     }
-
-    /// Returns a Boolean value indicating whether two BagKeys are equal.
-    static func == (lhs: BagKey, rhs: BagKey) -> Bool {
-        return lhs.i == rhs.i
-    }
 }
 
 /// A generator that can generate a sequence of unique `BagKey`.
@@ -65,10 +60,7 @@ struct Bag<Element> {
 
     /// Returns the element associated with a given key.
     func value(for key: BagKey) -> Element? {
-        if let entry = entries.first(where: { $0.key == key }) {
-            return entry.val
-        }
-        return nil
+        return entries.first(where: { $0.key == key })?.val
     }
 
     /// Removes the given key and its associated element from this bag.

@@ -50,10 +50,11 @@ public struct Time {
 
         // swiftlint:disable force_try
         let regexp = try! NSRegularExpression(pattern: pattern, options: [])
+        let nsString = NSString(string: string)
         guard let matches = regexp.matches(
             in: string,
             options: [],
-            range: NSRange(location: 0, length: string.count)).first
+            range: NSRange(location: 0, length: nsString.length)).first
         else {
             return nil
         }
@@ -61,11 +62,12 @@ public struct Time {
         var hasAM = false
         var hasPM = false
         var values: [Int] = []
+        values.reserveCapacity(matches.numberOfRanges)
 
         for i in 0..<matches.numberOfRanges {
             let range = matches.range(at: i)
             if range.length == 0 { continue }
-            let captured = NSString(string: string).substring(with: range)
+            let captured = nsString.substring(with: range)
             hasAM = ["am", "AM"].contains(captured)
             hasPM = ["pm", "PM"].contains(captured)
             if let value = Int(captured) {
