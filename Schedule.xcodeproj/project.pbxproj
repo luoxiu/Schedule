@@ -72,6 +72,7 @@
 		629FAA702255D14800ED5D67 /* WeekdayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayTests.swift; sourceTree = "<group>"; };
 		629FAA722255D1CA00ED5D67 /* PeriodTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodTests.swift; sourceTree = "<group>"; };
 		629FAA742255D6B100ED5D67 /* MonthdayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthdayTests.swift; sourceTree = "<group>"; };
+		66274E9B2258F61800964B93 /* Schedule.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Schedule.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		OBJ_10 /* Bag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bag.swift; sourceTree = "<group>"; };
 		OBJ_13 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		OBJ_14 /* Interval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interval.swift; sourceTree = "<group>"; };
@@ -163,6 +164,7 @@
 		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
+				66274E9B2258F61800964B93 /* Schedule.playground */,
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
 				OBJ_24 /* Tests */,
