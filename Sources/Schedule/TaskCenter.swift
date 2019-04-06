@@ -5,17 +5,22 @@ private let _default = TaskCenter()
 extension TaskCenter {
 
     private class TaskBox: Hashable {
-
+        
         weak var task: Task?
+        
+        // Used to find slot in dictionary/set
+        let hash: Int
 
         init(_ task: Task) {
             self.task = task
+            self.hash = task.hashValue
         }
 
         func hash(into hasher: inout Hasher) {
-            hasher.combine(task)
+            hasher.combine(hash)
         }
 
+        // Used to find task in a slot in dictionary/set
         static func == (lhs: TaskBox, rhs: TaskBox) -> Bool {
             return lhs.task == rhs.task
         }
