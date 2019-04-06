@@ -16,52 +16,91 @@ extension BagKey {
 /// `Task` represents a timing task.
 open class Task {
 
-    /// The unique id of this task.
-    public let id = UUID()
-
-    public typealias Action = (Task) -> Void
-
+    // MARK: - Private properties
+    
     private let _lock = NSRecursiveLock()
 
     private var _iterator: AnyIterator<Interval>
-    private var _timer: DispatchSourceTimer
+    private let _timer: DispatchSourceTimer
 
     private lazy var _actions = Bag<Action>()
 
-    private lazy var _suspensionCount: UInt64 = 0
+    private lazy var _suspensionCount: Int = 0
     private lazy var _executionCount: Int = 0
 
-    private var _firstExecutionDate: Date?
-    private var _lastExecutionDate: Date?
-    private var _estimatedNextExecutionDate: Date?
-
+    private lazy var _executionDates: [Date]? = nil
+    private lazy var _estimatedNextExecutionDate: Date? = nil
+    
+    private weak var _taskCenter: TaskCenter?
+    private let _taskCenterLock = NSRecursiveLock()
+    
+    private var associateKey = 1
+    
+    // MARK: - Public properties
+    
+    /// The unique id of this task.
+    public let id = UUID()
+    
+    public typealias Action = (Task) -> Void
+    
     /// The date of creation.
     public let creationDate = Date()
 
     /// The date of first execution.
     open var firstExecutionDate: Date? {
-        return _lock.withLock { _firstExecutionDate }
+        return _lock.withLock { _executionDates?.first }
     }
 
     /// The date of last execution.
     open var lastExecutionDate: Date? {
-        return _lock.withLock { _lastExecutionDate }
+        return _lock.withLock { _executionDates?.last }
+    }
+    
+    /// Histories of executions.
+    open var executionDates: [Date]? {
+        return _lock.withLock { _executionDates }
     }
 
     /// The date of estimated next execution.
     open var estimatedNextExecutionDate: Date? {
         return _lock.withLock { _estimatedNextExecutionDate }
     }
-
-    private weak var _taskCenter: TaskCenter?
+    
+    /// The number of task executions.
+    public var executionCount: Int {
+        return _lock.withLock {
+            _executionCount
+        }
+    }
+    
+    /// The number of task suspensions.
+    public var suspensionCount: Int {
+        return _lock.withLock {
+            _suspensionCount
+        }
+    }
+    
+    /// The number of actions in this task.
+    public var actionCount: Int {
+        return _lock.withLock {
+            _actions.count
+        }
+    }
+    
+    /// A Boolean indicating whether the task was canceled.
+    public var isCancelled: Bool {
+        return _lock.withLock {
+            _timer.isCancelled
+        }
+    }
 
     /// The task center to which this task currently belongs.
     open var taskCenter: TaskCenter? {
         return _lock.withLock { _taskCenter }
     }
 
-    private let _taskCenterLock = NSRecursiveLock()
-
+    // MARK: - Task center
+    
     /// Adds this task to the given task center.
     func addToTaskCenter(_ center: TaskCenter) {
         _taskCenterLock.lock()
@@ -85,22 +124,24 @@ open class Task {
         _taskCenter = nil
         center.remove(self)
     }
+    
+    // MARK: - Init
 
     /// Initializes a timing task.
     ///
     /// - Parameters:
     ///   - plan: The plan.
-    ///   - queue: The dispatch queue to which the block should be dispatched.
-    ///   - block: A block to be executed when time is up.
+    ///   - queue: The dispatch queue to which the action should be dispatched.
+    ///   - action: A block to be executed when time is up.
     init(
         plan: Plan,
         queue: DispatchQueue?,
-        block: @escaping (Task) -> Void
+        action: @escaping (Task) -> Void
     ) {
         _iterator = plan.makeIterator()
         _timer = DispatchSource.makeTimerSource(queue: queue)
 
-        _actions.append(block)
+        _actions.append(action)
 
         _timer.setEventHandler { [weak self] in
             guard let self = self else { return }
@@ -118,19 +159,18 @@ open class Task {
     }
 
     deinit {
+        print("deinit")
         while _suspensionCount > 0 {
             _timer.resume()
             _suspensionCount -= 1
         }
-
-        cancel()
 
         taskCenter?.remove(self)
     }
 
     private func elapse() {
         scheduleNextExecution()
-        execute()
+        executeNow()
     }
 
     private func scheduleNextExecution() {
@@ -151,60 +191,37 @@ open class Task {
     }
 
     /// Execute this task now, without interrupting its plan.
-    open func execute() {
+    open func executeNow() {
         let actions = _lock.withLock { () -> Bag<Task.Action> in
             let now = Date()
-            if _firstExecutionDate == nil {
-                _firstExecutionDate = now
+            if _executionDates == nil {
+                _executionDates = [now]
+            } else {
+                _executionDates?.append(now)
             }
-            _lastExecutionDate = now
             _executionCount += 1
             return _actions
         }
         actions.forEach { $0(self) }
     }
-
-    /// Host this task to an object, that is, when the object deallocates, this task will be cancelled.
-    #if canImport(ObjectiveC)
-    open func host(to target: AnyObject) {
-        DeinitObserver.observe(target) { [weak self] in
-            self?.cancel()
-        }
-    }
-    #endif
-
-    /// The number of task executions.
-    public var executionCount: Int {
-        return _lock.withLock {
-            _executionCount
-        }
-    }
-
-    /// A Boolean indicating whether the task was canceled.
-    public var isCancelled: Bool {
-        return _lock.withLock {
-            _timer.isCancelled
-        }
-    }
+    
+    // MARK: - Features
 
     /// Reschedules this task with the new plan.
     public func reschedule(_ new: Plan) {
         _lock.withLockVoid {
+            if _timer.isCancelled { return }
+            
             _iterator = new.makeIterator()
         }
         scheduleNextExecution()
     }
 
-    /// The number of task suspensions.
-    public var suspensionCount: UInt64 {
-        return _lock.withLock {
-            _suspensionCount
-        }
-    }
-
     /// Suspends this task.
     public func suspend() {
         _lock.withLockVoid {
+            if _timer.isCancelled { return }
+            
             if _suspensionCount < UInt64.max {
                 _timer.suspend()
                 _suspensionCount += 1
@@ -215,6 +232,8 @@ open class Task {
     /// Resumes this task.
     public func resume() {
         _lock.withLockVoid {
+            if _timer.isCancelled { return }
+            
             if _suspensionCount > 0 {
                 _timer.resume()
                 _suspensionCount -= 1
@@ -226,16 +245,7 @@ open class Task {
     public func cancel() {
         _lock.withLockVoid {
             _timer.cancel()
-        }
-        TaskCenter.default.remove(self)
-    }
-
-    // MARK: - Action
-
-    /// The number of actions in this task.
-    public var countOfActions: Int {
-        return _lock.withLock {
-            _actions.count
+            _suspensionCount = 0
         }
     }
 

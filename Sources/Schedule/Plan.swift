@@ -20,27 +20,27 @@ public struct Plan: Sequence {
     /// Schedules a task with this plan.
     ///
     /// - Parameters:
-    ///   - queue: The dispatch queue to which the block should be dispatched.
-    ///   - block: A block to be executed when time is up.
+    ///   - queue: The dispatch queue to which the action should be dispatched.
+    ///   - action: A block to be executed when time is up.
     /// - Returns: The task just created.
     public func `do`(
         queue: DispatchQueue,
-        block: @escaping (Task) -> Void
+        action: @escaping (Task) -> Void
     ) -> Task {
-        return Task(plan: self, queue: queue, block: block)
+        return Task(plan: self, queue: queue, action: action)
     }
 
     /// Schedules a task with this plan.
     ///
     /// - Parameters:
-    ///   - queue: The dispatch queue to which the block should be dispatched.
-    ///   - block: A block to be executed when time is up.
+    ///   - queue: The dispatch queue to which the action should be dispatched.
+    ///   - action: A block to be executed when time is up.
     /// - Returns: The task just created.
     public func `do`(
         queue: DispatchQueue,
-        block: @escaping () -> Void
+        action: @escaping () -> Void
     ) -> Task {
-        return self.do(queue: queue, block: { (_) in block() })
+        return self.do(queue: queue, action: { (_) in action() })
     }
 }
 

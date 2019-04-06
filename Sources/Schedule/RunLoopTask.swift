@@ -12,14 +12,14 @@ extension Plan {
     /// `do(queue: _, onElapse: _)`.
     ///
     /// - Parameters:
-    ///   - mode: The mode to which the block should be added.
-    ///   - block: A block to be executed when time is up.
+    ///   - mode: The mode to which the action should be added.
+    ///   - action: A block to be executed when time is up.
     /// - Returns: The task just created.
     public func `do`(
         mode: RunLoop.Mode = .common,
-        block: @escaping (Task) -> Void
+        action: @escaping (Task) -> Void
     ) -> Task {
-        return RunLoopTask(plan: self, mode: mode, block: block)
+        return RunLoopTask(plan: self, mode: mode, action: action)
     }
 
     /// Schedules a task with this plan.
@@ -32,15 +32,15 @@ extension Plan {
     /// `do(queue: _, onElapse: _)`.
     ///
     /// - Parameters:
-    ///   - mode: The mode to which the block should be added.
-    ///   - block: A block to be executed when time is up.
+    ///   - mode: The mode to which the action should be added.
+    ///   - action: A block to be executed when time is up.
     /// - Returns: The task just created.
     public func `do`(
         mode: RunLoop.Mode = .common,
-        block: @escaping () -> Void
+        action: @escaping () -> Void
     ) -> Task {
         return self.do(mode: mode) { _ in
-            block()
+            action()
         }
     }
 }
@@ -52,7 +52,7 @@ private final class RunLoopTask: Task {
     init(
         plan: Plan,
         mode: RunLoop.Mode,
-        block: @escaping (Task) -> Void
+        action: @escaping (Task) -> Void
     ) {
         super.init(plan: plan, queue: nil) { (task) in
             guard let task = task as? RunLoopTask, let timer = task.timer else { return }
@@ -65,7 +65,7 @@ private final class RunLoopTask: Task {
             repeats: false
         ) { [weak self] _ in
             guard let self = self else { return }
-            block(self)
+            action(self)
         }
 
         RunLoop.current.add(timer, forMode: mode)
