@@ -15,9 +15,7 @@ public struct Time {
     /// Nanosecond of second.
     public let nanosecond: Int
 
-    /// Creates a time with `hour`, `minute`, `second` and `nanosecond` fields.
-    ///
-    /// If any parameter is illegal, return nil.
+    /// Initializes a time with `hour`, `minute`, `second` and `nanosecond`.
     ///
     ///     Time(hour: 11, minute: 11)  => "11:11:00.000"
     ///     Time(hour: 25)              => nil
@@ -36,36 +34,40 @@ public struct Time {
         self.nanosecond = nanosecond
     }
 
-    /// Creates a time with a string.
+    /// Initializes a time with a string.
     ///
-    /// If the parameter is illegal, return nil.
-    ///
-    ///     Time("11") == Time(hour: 11)
-    ///     Time("11:12") == Time(hour: 11, minute: 12)
-    ///     Time("11:12:13") == Time(hour: 11, minute: 12, second: 13)
-    ///     Time("11:12:13.123") == Time(hour: 11, minute: 12, second: 13, nanosecond: 123000000)
+    ///     Time("11") -> Time(hour: 11)
+    ///     Time("11:12") -> Time(hour: 11, minute: 12)
+    ///     Time("11:12:13") -> Time(hour: 11, minute: 12, second: 13)
+    ///     Time("11:12:13.123") -> Time(hour: 11, minute: 12, second: 13, nanosecond: 123000000)
     ///
     ///     Time("-1.0") == nil
-    ///
-    /// Any of the previous examples can have a period suffix("am", "AM", "pm", "PM"),
-    /// separated by a space.
     ///
     ///     Time("11 pm") == Time(hour: 23)
     ///     Time("11:12:13 PM") == Time(hour: 23, minute: 12, second: 13)
     public init?(_ string: String) {
         let pattern = "^(\\d{1,2})(:(\\d{1,2})(:(\\d{1,2})(.(\\d{1,3}))?)?)?( (am|AM|pm|PM))?$"
 
-        guard let regexp = try? NSRegularExpression(pattern: pattern, options: []) else { return nil }
-        guard let result = regexp.matches(in: string, options: [], range: NSRange(location: 0, length: string.count)).first else { return nil }
+        // swiftlint:disable force_try
+        let regexp = try! NSRegularExpression(pattern: pattern, options: [])
+        let nsString = NSString(string: string)
+        guard let matches = regexp.matches(
+            in: string,
+            options: [],
+            range: NSRange(location: 0, length: nsString.length)).first
+        else {
+            return nil
+        }
 
         var hasAM = false
         var hasPM = false
         var values: [Int] = []
+        values.reserveCapacity(matches.numberOfRanges)
 
-        for i in 0..<result.numberOfRanges {
-            let range = result.range(at: i)
+        for i in 0..<matches.numberOfRanges {
+            let range = matches.range(at: i)
             if range.length == 0 { continue }
-            let captured = NSString(string: string).substring(with: range)
+            let captured = nsString.substring(with: range)
             hasAM = ["am", "AM"].contains(captured)
             hasPM = ["pm", "PM"].contains(captured)
             if let value = Int(captured) {
@@ -94,9 +96,9 @@ public struct Time {
 
     /// Returns a dateComponenets of the time, using gregorian calender and
     /// current time zone.
-    public func toDateComponents() -> DateComponents {
+    public func asDateComponents(_ timeZone: TimeZone = .current) -> DateComponents {
         return DateComponents(calendar: Calendar.gregorian,
-                              timeZone: TimeZone.current,
+                              timeZone: timeZone,
                               hour: hour,
                               minute: minute,
                               second: second,

@@ -16,21 +16,16 @@ final class ExtensionsTests: XCTestCase {
         XCTAssertEqual(i.clampedAdding(1), Int.max)
     }
 
-    func testClampedSubtracting() {
-        let i = Int.min
-        XCTAssertEqual(i.clampedSubtracting(1), Int.min)
-    }
-
     func testStartOfToday() {
         let components = Date().startOfToday.dateComponents
-        guard
-            let h = components.hour,
-            let m = components.minute,
-            let s = components.second
-        else {
-            XCTFail()
-            return
-        }
+
+        let h = components.hour
+        let m = components.minute
+        let s = components.second
+        XCTAssertNotNil(h)
+        XCTAssertNotNil(m)
+        XCTAssertNotNil(s)
+
         XCTAssertEqual(h, 0)
         XCTAssertEqual(m, 0)
         XCTAssertEqual(s, 0)
@@ -39,7 +34,6 @@ final class ExtensionsTests: XCTestCase {
     static var allTests = [
         ("testClampedToInt", testClampedToInt),
         ("testClampedAdding", testClampedAdding),
-        ("testClampedSubtracting", testClampedSubtracting),
         ("testStartOfToday", testStartOfToday)
     ]
 }

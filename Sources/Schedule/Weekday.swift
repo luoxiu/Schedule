@@ -7,20 +7,21 @@ public enum Weekday: Int {
 
     /// Returns dateComponenets of the weekday, using gregorian calender and
     /// current time zone.
-    public func toDateComponents() -> DateComponents {
+    public func asDateComponents(_ timeZone: TimeZone = .current) -> DateComponents {
         return DateComponents(
             calendar: Calendar.gregorian,
-            timeZone: TimeZone.current,
-            weekday: rawValue
-        )
+            timeZone: timeZone,
+            weekday: rawValue)
     }
 }
 
 extension Date {
 
-    /// Returns a boolean value indicating whether this day is the weekday.
-    public func `is`(_ weekday: Weekday) -> Bool {
-        return Calendar.gregorian.component(.weekday, from: self) == weekday.rawValue
+    /// Returns a Boolean value indicating whether this date is the weekday in current time zone.
+    public func `is`(_ weekday: Weekday, in timeZone: TimeZone = .current) -> Bool {
+        var cal = Calendar.gregorian
+        cal.timeZone = timeZone
+        return cal.component(.weekday, from: self) == weekday.rawValue
     }
 }
 
@@ -28,7 +29,7 @@ extension Weekday: CustomStringConvertible {
 
     /// A textual representation of this weekday.
     ///
-    ///     Weekday: Friday
+    ///     "Weekday: Friday"
     public var description: String {
         return "Weekday: \(Calendar.gregorian.weekdaySymbols[rawValue - 1])"
     }
@@ -38,7 +39,7 @@ extension Weekday: CustomDebugStringConvertible {
 
     /// A textual representation of this weekday for debugging.
     ///
-    ///     Weekday: Friday
+    ///     "Weekday: Friday"
     public var debugDescription: String {
         return description
     }

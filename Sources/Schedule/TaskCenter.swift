@@ -8,157 +8,168 @@ extension TaskCenter {
 
         weak var task: Task?
 
-        // To find slot
-        let hashValue: Int
+        // Used to find slot in dictionary/set
+        let hash: Int
 
         init(_ task: Task) {
             self.task = task
-            self.hashValue = task.hashValue
+            self.hash = task.hashValue
         }
 
-        // To find task
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(hash)
+        }
+
+        // Used to find task in a slot in dictionary/set
         static func == (lhs: TaskBox, rhs: TaskBox) -> Bool {
             return lhs.task == rhs.task
         }
     }
 }
 
+/// A task center that enables batch operation.
 open class TaskCenter {
 
-    private let mutex = NSRecursiveLock()
+    private let lock = NSLock()
 
-    private var taskMap: [String: Set<TaskBox>] = [:]
-    private var tagMap: [TaskBox: Set<String>] = [:]
+    private var tags: [String: Set<TaskBox>] = [:]
+    private var tasks: [TaskBox: Set<String>] = [:]
 
+    /// Default task center.
     open class var `default`: TaskCenter {
         return _default
     }
 
+    /// Adds the given task to this center.
     open func add(_ task: Task) {
-        task.taskCenterMutex.lock()
-        defer {
-            task.taskCenterMutex.unlock()
-        }
+        task.addToTaskCenter(self)
 
-        if let center = task.taskCenter {
-            if center === self { return }
-            center.remove(task)
-        }
-        task.taskCenter = self
-
-        mutex.withLock {
+        lock.withLockVoid {
             let box = TaskBox(task)
-            tagMap[box] = []
-        }
-
-        task.onDeinit { [weak self] (t) in
-            guard let self = self else { return }
-            self.remove(t)
+            self.tasks[box] = []
         }
     }
 
+    /// Removes the given task from this center.
     open func remove(_ task: Task) {
-        task.taskCenterMutex.lock()
-        defer {
-            task.taskCenterMutex.unlock()
-        }
+        task.removeFromTaskCenter(self)
 
-        guard task.taskCenter === self else {
-            return
-        }
-        task.taskCenter = nil
-
-        mutex.withLock {
+        lock.withLockVoid {
             let box = TaskBox(task)
-            if let tags = self.tagMap[box] {
+            if let tags = self.tasks[box] {
                 for tag in tags {
-                    self.taskMap[tag]?.remove(box)
+                    self.tags[tag]?.remove(box)
+                    if self.tags[tag]?.count == 0 {
+                        self.tags[tag] = nil
+                    }
                 }
-                self.tagMap[box] = nil
+                self.tasks[box] = nil
             }
         }
     }
 
+    /// Adds a tag to the task.
+    ///
+    /// If the task is not in this center, do nothing.
     open func addTag(_ tag: String, to task: Task) {
         addTags([tag], to: task)
     }
 
+    /// Adds tags to the task.
+    ///
+    /// If the task is not in this center, do nothing.
     open func addTags(_ tags: [String], to task: Task) {
         guard task.taskCenter === self else { return }
 
-        mutex.withLock {
+        lock.withLockVoid {
             let box = TaskBox(task)
-            if tagMap[box] == nil {
-                tagMap[box] = []
-            }
             for tag in tags {
-                tagMap[box]?.insert(tag)
-                if taskMap[tag] == nil {
-                    taskMap[tag] = []
+                tasks[box]?.insert(tag)
+                if self.tags[tag] == nil {
+                    self.tags[tag] = []
                 }
-                taskMap[tag]?.insert(box)
+                self.tags[tag]?.insert(box)
             }
         }
     }
 
+    /// Removes a tag from the task.
+    ///
+    /// If the task is not in this center, do nothing.
     open func removeTag(_ tag: String, from task: Task) {
         removeTags([tag], from: task)
     }
 
+    /// Removes tags from the task.
+    ///
+    /// If the task is not in this center, do nothing.
     open func removeTags(_ tags: [String], from task: Task) {
         guard task.taskCenter === self else { return }
 
-        mutex.withLock {
+        lock.withLockVoid {
             let box = TaskBox(task)
             for tag in tags {
-                tagMap[box]?.remove(tag)
-                taskMap[tag]?.remove(box)
+                self.tasks[box]?.remove(tag)
+                self.tags[tag]?.remove(box)
+                if self.tags[tag]?.count == 0 {
+                    self.tags[tag] = nil
+                }
             }
         }
     }
 
-    open func tagsForTask(_ task: Task) -> [String] {
+    /// Returns all tags for the task.
+    ///
+    /// If the task is not in this center, return an empty array.
+    open func tags(forTask task: Task) -> [String] {
         guard task.taskCenter === self else { return [] }
 
-        return mutex.withLock {
-            Array(tagMap[TaskBox(task)] ?? [])
+        return lock.withLock {
+            Array(tasks[TaskBox(task)] ?? [])
         }
     }
 
-    open func tasksForTag(_ tag: String) -> [Task] {
-        return mutex.withLock {
-            taskMap[tag]?.compactMap { $0.task } ?? []
+    /// Returns all tasks for the tag.
+    open func tasks(forTag tag: String) -> [Task] {
+        return lock.withLock {
+            tags[tag]?.compactMap { $0.task } ?? []
         }
     }
 
+    /// Returns all tasks in this center.
     open var allTasks: [Task] {
-        return mutex.withLock {
-            tagMap.compactMap { $0.key.task }
+        return lock.withLock {
+            tasks.compactMap { $0.key.task }
         }
     }
 
+    /// Returns all tags in this center.
     open var allTags: [String] {
-        return mutex.withLock {
-            taskMap.map { $0.key }
+        return lock.withLock {
+            tags.map { $0.key }
         }
     }
 
-    open func clear() {
-        mutex.withLock {
-            tagMap = [:]
-            taskMap = [:]
+    /// Removes all tasks from this center.
+    open func removeAll() {
+        lock.withLockVoid {
+            tasks = [:]
+            tags = [:]
         }
     }
 
-    open func suspendByTag(_ tag: String) {
-        tasksForTag(tag).forEach { $0.suspend() }
+    /// Suspends all tasks by tag.
+    open func suspend(byTag tag: String) {
+        tasks(forTag: tag).forEach { $0.suspend() }
     }
 
-    open func resumeByTag(_ tag: String) {
-        tasksForTag(tag).forEach { $0.resume() }
+    /// Resumes all tasks by tag.
+    open func resume(byTag tag: String) {
+        tasks(forTag: tag).forEach { $0.resume() }
     }
 
-    open func cancelByTag(_ tag: String) {
-        tasksForTag(tag).forEach { $0.cancel() }
+    /// Cancels all tasks by tag.
+    open func cancel(byTag tag: String) {
+        tasks(forTag: tag).forEach { $0.cancel() }
     }
 }

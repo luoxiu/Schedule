@@ -3,29 +3,42 @@ import XCTest
 
 final class AtomicTests: XCTestCase {
 
-    func testSnapshot() {
-        let i = Atomic<Int>(1)
-        XCTAssertEqual(i.snapshot(), 1)
-    }
-
     func testRead() {
         let i = Atomic<Int>(1)
-        i.read {
-            XCTAssertEqual($0, 1)
-        }
+        let val = i.read { $0 }
+        XCTAssertEqual(val, 1)
+    }
+
+    func testReadVoid() {
+        let i = Atomic<Int>(1)
+        var val = 0
+        i.readVoid { val = $0 }
+        XCTAssertEqual(val, 1)
     }
 
     func testWrite() {
         let i = Atomic<Int>(1)
-        i.write {
-            $0 += 1
+        let val = i.write { v -> Int in
+            v += 1
+            return v
         }
-        XCTAssertEqual(i.snapshot(), 2)
+        XCTAssertEqual(i.read { $0 }, val)
+    }
+
+    func testWriteVoid() {
+        let i = Atomic<Int>(1)
+        var val = 0
+        i.writeVoid {
+            $0 += 1
+            val = $0
+        }
+        XCTAssertEqual(i.read { $0 }, val)
     }
 
     static var allTests = [
-        ("testSnapshot", testSnapshot),
         ("testRead", testRead),
-        ("testWrite", testWrite)
+        ("testReadVoid", testReadVoid),
+        ("testWrite", testWrite),
+        ("testWriteVoid", testWriteVoid)
     ]
 }

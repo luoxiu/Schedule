@@ -1,6 +1,6 @@
 import Foundation
 
-/// `Monthday` represents a day of a month.
+/// `Monthday` represents the combination of a month and day-of-month.
 public enum Monthday {
 
     case january(Int)
@@ -27,9 +27,9 @@ public enum Monthday {
 
     case december(Int)
 
-    /// Returns a dateComponenets of the monthday, using gregorian calender and
+    /// Returns a dateComponenets of this monthday, using gregorian calender and
     /// current time zone.
-    public func toDateComponents() -> DateComponents {
+    public func asDateComponents(_ timeZone: TimeZone = .current) -> DateComponents {
         var month, day: Int
         switch self {
         case .january(let n):       month = 1; day = n
@@ -47,18 +47,17 @@ public enum Monthday {
         }
         return DateComponents(
             calendar: Calendar.gregorian,
-            timeZone: TimeZone.current,
+            timeZone: timeZone,
             month: month,
-            day: day
-        )
+            day: day)
     }
 }
 
 extension Date {
 
-    /// Returns a boolean value indicating whether today is the monthday.
-    public func `is`(_ monthday: Monthday) -> Bool {
-        let components = monthday.toDateComponents()
+    /// Returns a Boolean value indicating whether this date is the monthday in current time zone..
+    public func `is`(_ monthday: Monthday, in timeZone: TimeZone = .current) -> Bool {
+        let components = monthday.asDateComponents(timeZone)
 
         let m = Calendar.gregorian.component(.month, from: self)
         let d = Calendar.gregorian.component(.day, from: self)
@@ -72,7 +71,7 @@ extension Monthday: CustomStringConvertible {
     ///
     ///     "Monthday: May 1st"
     public var description: String {
-        let components = toDateComponents()
+        let components = asDateComponents()
 
         let m = components.month!
         let d = components.day!
@@ -80,6 +79,7 @@ extension Monthday: CustomStringConvertible {
         let ms = Calendar.gregorian.monthSymbols[m - 1]
 
         let fmt = NumberFormatter()
+        fmt.locale = Locale.posix
         fmt.numberStyle = .ordinal
         let ds = fmt.string(from: NSNumber(value: d))!
 

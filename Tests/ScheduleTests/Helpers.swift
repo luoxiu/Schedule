@@ -11,7 +11,7 @@ extension Date {
         year: Int, month: Int, day: Int,
         hour: Int = 0, minute: Int = 0, second: Int = 0,
         nanosecond: Int = 0
-    ) {
+        ) {
         let components = DateComponents(
             calendar: Calendar.gregorian,
             timeZone: TimeZone.current,
@@ -26,7 +26,7 @@ extension Date {
 extension Interval {
 
     func isAlmostEqual(to interval: Interval, leeway: Interval) -> Bool {
-        return (interval - self).magnitude <= leeway.magnitude
+        return (interval - self).abs <= leeway.abs
     }
 }
 
@@ -75,4 +75,9 @@ extension DispatchQueue {
 
         return DispatchQueue.getSpecific(key: key) != nil
     }
+}
+
+extension TimeZone {
+
+    static let shanghai = TimeZone(identifier: "Asia/Shanghai")!
 }
