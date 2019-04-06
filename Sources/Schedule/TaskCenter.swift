@@ -5,9 +5,9 @@ private let _default = TaskCenter()
 extension TaskCenter {
 
     private class TaskBox: Hashable {
-        
+
         weak var task: Task?
-        
+
         // Used to find slot in dictionary/set
         let hash: Int
 

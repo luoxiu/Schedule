@@ -21,7 +21,7 @@ final class TaskTests: XCTestCase {
 
         XCTAssertNotNil(task.lastExecutionDate)
         XCTAssertTrue(task.lastExecutionDate!.interval(since: date).isAlmostEqual(to: 0.01.second, leeway: leeway))
-        
+
         XCTAssertEqual(task.executionDates!.count, 1)
     }
 
@@ -118,7 +118,7 @@ final class TaskTests: XCTestCase {
         }
         waitForExpectations(timeout: 0.1)
     }
-    
+
     func testSuspendResume() {
         let task = Plan.never.do { }
         XCTAssertEqual(task.suspensionCount, 0)
@@ -129,7 +129,7 @@ final class TaskTests: XCTestCase {
         task.resume()
         XCTAssertEqual(task.suspensionCount, 2)
     }
-    
+
     func testCancel() {
         let task = Plan.never.do { }
         XCTAssertFalse(task.isCancelled)

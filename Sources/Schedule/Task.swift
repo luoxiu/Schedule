@@ -17,7 +17,7 @@ extension BagKey {
 open class Task {
 
     // MARK: - Private properties
-    
+
     private let _lock = NSRecursiveLock()
 
     private var _iterator: AnyIterator<Interval>
@@ -30,19 +30,19 @@ open class Task {
 
     private lazy var _executionDates: [Date]? = nil
     private lazy var _estimatedNextExecutionDate: Date? = nil
-    
+
     private weak var _taskCenter: TaskCenter?
     private let _taskCenterLock = NSRecursiveLock()
-    
+
     private var associateKey = 1
-    
+
     // MARK: - Public properties
-    
+
     /// The unique id of this task.
     public let id = UUID()
-    
+
     public typealias Action = (Task) -> Void
-    
+
     /// The date of creation.
     public let creationDate = Date()
 
@@ -55,7 +55,7 @@ open class Task {
     open var lastExecutionDate: Date? {
         return _lock.withLock { _executionDates?.last }
     }
-    
+
     /// Histories of executions.
     open var executionDates: [Date]? {
         return _lock.withLock { _executionDates }
@@ -65,28 +65,28 @@ open class Task {
     open var estimatedNextExecutionDate: Date? {
         return _lock.withLock { _estimatedNextExecutionDate }
     }
-    
+
     /// The number of task executions.
     public var executionCount: Int {
         return _lock.withLock {
             _executionCount
         }
     }
-    
+
     /// The number of task suspensions.
     public var suspensionCount: Int {
         return _lock.withLock {
             _suspensionCount
         }
     }
-    
+
     /// The number of actions in this task.
     public var actionCount: Int {
         return _lock.withLock {
             _actions.count
         }
     }
-    
+
     /// A Boolean indicating whether the task was canceled.
     public var isCancelled: Bool {
         return _lock.withLock {
@@ -100,7 +100,7 @@ open class Task {
     }
 
     // MARK: - Task center
-    
+
     /// Adds this task to the given task center.
     func addToTaskCenter(_ center: TaskCenter) {
         _taskCenterLock.lock()
@@ -124,7 +124,7 @@ open class Task {
         _taskCenter = nil
         center.remove(self)
     }
-    
+
     // MARK: - Init
 
     /// Initializes a timing task.
@@ -204,14 +204,14 @@ open class Task {
         }
         actions.forEach { $0(self) }
     }
-    
+
     // MARK: - Features
 
     /// Reschedules this task with the new plan.
     public func reschedule(_ new: Plan) {
         _lock.withLockVoid {
             if _timer.isCancelled { return }
-            
+
             _iterator = new.makeIterator()
         }
         scheduleNextExecution()
@@ -221,7 +221,7 @@ open class Task {
     public func suspend() {
         _lock.withLockVoid {
             if _timer.isCancelled { return }
-            
+
             if _suspensionCount < UInt64.max {
                 _timer.suspend()
                 _suspensionCount += 1
@@ -233,7 +233,7 @@ open class Task {
     public func resume() {
         _lock.withLockVoid {
             if _timer.isCancelled { return }
-            
+
             if _suspensionCount > 0 {
                 _timer.resume()
                 _suspensionCount -= 1

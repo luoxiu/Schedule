@@ -3,23 +3,25 @@ branches:
     - master
 
 language: objective-c
-osx_image: xcode10
+osx_image: xcode10.2
+
+env:
+  global: 
+    - PROJECT="Schedule.xcodeproj"
+    - SCHEME="Schedule-Package"
 
 matrix:
   include:
     - os: osx
       env:
-        - SCHEME="Schedule-iOS"
-        - SDK="iphonesimulator12.0"
-        - DESTINATION="OS=12.0,name=iPhone X"
+        - SDK="iphonesimulator12.2"
+        - DESTINATION="platform=iOS Simulator,name=iPhone 8,OS=12.2"
     - os: osx
       env:
-        - SCHEME="Schedule-macOS"
-        - SDK="macosx10.13"
+        - SDK="macosx10.14"
         - DESTINATION="arch=x86_64"
     - os: osx
       env:
-        - SCHEME="Schedule-tvOS"
         - SDK="appletvsimulator12.0"
         - DESTINATION="OS=12.0,name=Apple TV 4K"
     - os: linux
@@ -28,7 +30,7 @@ matrix:
 
 before_install:
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
-      gem install xcpretty --no-rdoc --no-ri --no-document --quiet;
+      gen install xcpretty
     fi
   - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
       eval "$(curl -sL https://swiftenv.fuller.li/install.sh)";
@@ -36,11 +38,10 @@ before_install:
 
 script:
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
-      xcodebuild clean build test -project Schedule.xcodeproj -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -enableCodeCoverage YES | xcpretty;
+      xcodebuild clean build test -project "$PROJECT" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -enableCodeCoverage YES | xcpretty
     fi
   - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
-      swift build;
-      swift test;
+      swift test
     fi
 
 after_success:
