@@ -2,23 +2,23 @@ import XCTest
 @testable import Schedule
 
 final class TaskTests: XCTestCase {
-    
+
     let leeway = 0.01.second
-    
+
     func testMetrics() {
         let e = expectation(description: "testMetrics")
         let date = Date()
-        
+
         let task = Plan.after(0.01.second, repeating: 0.01.second).do(queue: .global()) {
             e.fulfill()
         }
         XCTAssertTrue(task.creationDate.interval(since: date).isAlmostEqual(to: 0.second, leeway: leeway))
-        
+
         waitForExpectations(timeout: 0.1)
-        
+
         XCTAssertNotNil(task.firstExecutionDate)
         XCTAssertTrue(task.firstExecutionDate!.interval(since: date).isAlmostEqual(to: 0.01.second, leeway: leeway))
-        
+
         XCTAssertNotNil(task.lastExecutionDate)
         XCTAssertTrue(task.lastExecutionDate!.interval(since: date).isAlmostEqual(to: 0.01.second, leeway: leeway))
     }
@@ -31,7 +31,7 @@ final class TaskTests: XCTestCase {
             e.fulfill()
         }
         waitForExpectations(timeout: 0.1)
-        
+
         _ = task
     }
 
@@ -43,20 +43,20 @@ final class TaskTests: XCTestCase {
             if count == 3 { e.fulfill() }
         }
         waitForExpectations(timeout: 0.1)
-        
+
         _ = task
     }
-    
+
     func testTaskCenter() {
         let task = Plan.never.do { }
         XCTAssertTrue(task.taskCenter === TaskCenter.default)
-        
+
         task.removeFromTaskCenter(TaskCenter())
         XCTAssertNotNil(task.taskCenter)
-        
+
         task.removeFromTaskCenter(task.taskCenter!)
         XCTAssertNil(task.taskCenter)
-        
+
         let center = TaskCenter()
         task.addToTaskCenter(center)
         XCTAssertTrue(task.taskCenter === center)
@@ -71,7 +71,7 @@ final class TaskTests: XCTestCase {
             e.fulfill()
         }
         waitForExpectations(timeout: 0.1)
-        
+
         _ = task
     }
 
@@ -100,14 +100,14 @@ final class TaskTests: XCTestCase {
         task.resume()
         XCTAssertEqual(task.suspensionCount, 2)
     }
-    
+
     func testCancel() {
         let task = Plan.never.do { }
         XCTAssertFalse(task.isCancelled)
         task.cancel()
         XCTAssertTrue(task.isCancelled)
     }
-    
+
     func testExecuteNow() {
         let e = expectation(description: "testExecuteNow")
         let task = Plan.never.do {
@@ -132,7 +132,7 @@ final class TaskTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
     }
-    
+
     func testReschedule() {
         let e = expectation(description: "testReschedule")
         var i = 0
@@ -150,7 +150,7 @@ final class TaskTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
     }
-    
+
     func testAddAndRemoveActions() {
         let e = expectation(description: "testAddAndRemoveActions")
         let task = Plan.after(0.1.second).do { }

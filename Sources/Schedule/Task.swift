@@ -7,7 +7,7 @@ public struct ActionKey {
 }
 
 extension BagKey {
-    
+
     fileprivate func asActionKey() -> ActionKey {
         return ActionKey(bagKey: self)
     }
@@ -30,24 +30,24 @@ open class Task {
 
     private lazy var _suspensionCount: UInt64 = 0
     private lazy var _executionCount: Int = 0
-    
+
     private var _firstExecutionDate: Date?
     private var _lastExecutionDate: Date?
     private var _estimatedNextExecutionDate: Date?
-    
+
     /// The date of creation.
     public let creationDate = Date()
-    
+
     /// The date of first execution.
     open var firstExecutionDate: Date? {
         return _lock.withLock { _firstExecutionDate }
     }
-    
+
     /// The date of last execution.
     open var lastExecutionDate: Date? {
         return _lock.withLock { _lastExecutionDate }
     }
-    
+
     /// The date of estimated next execution.
     open var estimatedNextExecutionDate: Date? {
         return _lock.withLock { _estimatedNextExecutionDate }
@@ -111,7 +111,7 @@ open class Task {
             _timer.schedule(after: interval)
             _estimatedNextExecutionDate = Date().adding(interval)
         }
-        
+
         _timer.resume()
 
         TaskCenter.default.add(self)
@@ -127,7 +127,7 @@ open class Task {
 
         taskCenter?.remove(self)
     }
-    
+
     private func elapse() {
         scheduleNextExecution()
         execute()
@@ -229,7 +229,6 @@ open class Task {
         }
         TaskCenter.default.remove(self)
     }
-
 
     // MARK: - Action
 

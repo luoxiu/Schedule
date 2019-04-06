@@ -282,12 +282,12 @@ extension Plan {
     public static func after(_ delay: Interval) -> Plan {
         return Plan.of(delay)
     }
-    
+
     /// Creates a plan that executes the task after the given interval then repeat the execution.
     public static func after(_ delay: Interval, repeating interval: Interval) -> Plan {
         return Plan.after(delay).concat(Plan.every(interval))
     }
-    
+
     /// Creates a plan that executes the task at the given date.
     public static func at(_ date: Date) -> Plan {
         return Plan.of(date)

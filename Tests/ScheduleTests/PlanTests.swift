@@ -4,43 +4,42 @@ import XCTest
 final class PlanTests: XCTestCase {
 
     private let leeway = 0.01.seconds
-    
+
     func testOfIntervals() {
         let ints = [1.second, 2.hours, 3.days, 4.weeks]
         let p = Plan.of(ints)
         XCTAssertTrue(p.makeIterator().isAlmostEqual(to: ints, leeway: leeway))
     }
-    
+
     func testOfDates() {
         let ints = [1.second, 2.hours, 3.days, 4.weeks]
-        
+
         let d0 = Date() + ints[0]
         let d1 = d0 + ints[1]
         let d2 = d1 + ints[2]
         let d3 = d2 + ints[3]
-        
+
         let p = Plan.of(d0, d1, d2, d3)
         XCTAssertTrue(p.makeIterator().isAlmostEqual(to: ints, leeway: leeway))
     }
-    
+
     func testDates() {
         let dates = Plan.of(1.days, 2.weeks).dates.makeIterator()
-        
+
         var n = dates.next()
         XCTAssertNotNil(n)
         XCTAssertTrue(n!.intervalSinceNow.isAlmostEqual(to: 1.days, leeway: leeway))
-        
+
         n = dates.next()
         XCTAssertNotNil(n)
         XCTAssertTrue(n!.intervalSinceNow.isAlmostEqual(to: 2.weeks + 1.days, leeway: leeway))
     }
 
-    
     func testDistant() {
         let distantPast = Plan.distantPast.makeIterator().next()
         XCTAssertNotNil(distantPast)
         XCTAssertTrue(distantPast!.isAlmostEqual(to: Date.distantPast.intervalSinceNow, leeway: leeway))
-        
+
         let distantFuture = Plan.distantFuture.makeIterator().next()
         XCTAssertNotNil(distantFuture)
         XCTAssertTrue(distantFuture!.isAlmostEqual(to: Date.distantFuture.intervalSinceNow, leeway: leeway))
@@ -65,7 +64,7 @@ final class PlanTests: XCTestCase {
         let p1 = Plan.of(1.second, 1.second, 1.minutes, 1.seconds, 58.seconds, 1.hour)
         XCTAssertTrue(p0.isAlmostEqual(to: p1, leeway: leeway))
     }
-    
+
     func testFirst() {
         var count = 10
         let p = Plan.every(1.second).first(count)
@@ -76,7 +75,7 @@ final class PlanTests: XCTestCase {
         }
         XCTAssertNil(i.next())
     }
-    
+
     func testUntil() {
         let until = Date() + 10.seconds
         let p = Plan.every(1.second).until(until).dates
@@ -91,7 +90,7 @@ final class PlanTests: XCTestCase {
         let p1 = Plan.of(Date())
         XCTAssertTrue(p0.isAlmostEqual(to: p1, leeway: leeway))
     }
-    
+
     func testAt() {
         let p = Plan.at(Date() + 1.second)
         let next = p.makeIterator().next()
@@ -136,7 +135,7 @@ final class PlanTests: XCTestCase {
     func testOffset() {
         let p1 = Plan.after(1.second).first(100)
         let p2 = p1.offset(by: 1.second).first(100)
-    
+
         for (d1, d2) in zip(p1.dates, p2.dates) {
             XCTAssertTrue(d2.interval(since: d1).isAlmostEqual(to: 1.second, leeway: leeway))
         }

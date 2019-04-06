@@ -78,6 +78,6 @@ extension DispatchQueue {
 }
 
 extension TimeZone {
-    
+
     static let shanghai = TimeZone(identifier: "Asia/Shanghai")!
 }

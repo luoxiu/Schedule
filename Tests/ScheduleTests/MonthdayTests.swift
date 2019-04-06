@@ -4,7 +4,6 @@ import XCTest
 final class MonthdayTests: XCTestCase {
 
     func testIs() {
-        // ! Be careful the time zone problem.
         let d = Date(year: 2019, month: 1, day: 1)
         XCTAssertTrue(d.is(.january(1), in: TimeZone.shanghai))
     }
