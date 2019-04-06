@@ -30,7 +30,7 @@ matrix:
 
 before_install:
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
-      gem install xcpretty
+      gem install xcpretty;
     fi
   - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
       eval "$(curl -sL https://swiftenv.fuller.li/install.sh)";
@@ -38,10 +38,10 @@ before_install:
 
 script:
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
-      xcodebuild clean build test -project "$PROJECT" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -enableCodeCoverage YES | xcpretty
+      xcodebuild clean build test -project "$PROJECT" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -enableCodeCoverage YES | xcpretty;
     fi
   - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
-      swift test
+      swift test;
     fi
 
 after_success:
