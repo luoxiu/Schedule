@@ -3,29 +3,20 @@ import Foundation
 /// A unique key for removing an element from a bag.
 struct BagKey: Equatable {
 
-    fileprivate let i: UInt64
+    private let i: UInt64
 
-    fileprivate init(underlying: UInt64) {
-        self.i = underlying
-    }
-}
-
-/// A generator that can generate a sequence of unique `BagKey`.
-///
-///     let k1 = gen.next()
-///     let k2 = gen.next()
-///     ...
-struct BagKeyGenerator: Sequence, IteratorProtocol {
-
-    typealias Element = BagKey
-
-    private var k = BagKey(underlying: 0)
-
-    /// Advances to the next key and returns it, or nil if no next key exists.
-    mutating func next() -> BagKey? {
-        if k.i == UInt64.max { return nil }
-        defer { k = BagKey(underlying: k.i + 1) }
-        return k
+    /// A generator that can generate a sequence of unique `BagKey`.
+    ///
+    ///     let k1 = gen.next()
+    ///     let k2 = gen.next()
+    ///     ...
+    struct Gen {
+        private var key = BagKey(i: 0)
+        init() { }
+        mutating func next() -> BagKey {
+            defer { key = BagKey(i: key.i + 1) }
+            return key
+        }
     }
 }
 
@@ -44,13 +35,13 @@ struct Bag<Element> {
 
     private typealias Entry = (key: BagKey, val: Element)
 
-    private var keyGen = BagKeyGenerator()
+    private var keyGen = BagKey.Gen()
     private var entries: [Entry] = []
 
     /// Appends a new element at the end of this bag.
     @discardableResult
     mutating func append(_ new: Element) -> BagKey {
-        let key = keyGen.next()!
+        let key = keyGen.next()
 
         let entry = (key: key, val: new)
         entries.append(entry)

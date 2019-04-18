@@ -6,7 +6,7 @@ final class BagTests: XCTestCase {
     typealias Fn = () -> Int
 
     func testBagKey() {
-        var g = BagKeyGenerator()
+        var g = BagKey.Gen()
         let k1 = g.next()
         let k2 = g.next()
         XCTAssertNotNil(k1)
