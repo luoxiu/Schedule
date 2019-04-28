@@ -159,13 +159,12 @@ open class Task {
     }
 
     deinit {
-        print("deinit")
         while _suspensionCount > 0 {
             _timer.resume()
             _suspensionCount -= 1
         }
 
-        taskCenter?.remove(self)
+        _taskCenter?.remove(self)
     }
 
     private func elapse() {
