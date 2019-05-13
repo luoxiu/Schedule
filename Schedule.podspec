@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Schedule"
-  s.version          = "2.0.1"
+  s.version          = "2.0.2"
   s.license          = { :type => "MIT" }
   s.homepage         = "https://github.com/jianstm/Schedule"
   s.author           = { "Quentin Jin" => "jianstm@gmail.com" }
