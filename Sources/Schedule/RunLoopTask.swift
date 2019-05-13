@@ -62,7 +62,7 @@ private final class RunLoopTask: Task {
         timer = Timer(
             fire: Date.distantFuture,
             interval: .greatestFiniteMagnitude,
-            repeats: false
+            repeats: true
         ) { [weak self] _ in
             guard let self = self else { return }
             action(self)
