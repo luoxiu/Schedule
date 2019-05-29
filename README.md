@@ -1,14 +1,14 @@
 # Schedule([简体中文](README.zh_cn.md))
 
 <p align="center">
-<a href="https://github.com/jianstm/Schedule/releases">
+<a href="https://github.com/luoxiu/Schedule/releases">
   <img src="https://img.shields.io/cocoapods/v/Schedule.svg">
 </a>
-<img src="https://img.shields.io/travis/jianstm/Schedule.svg">
-<img src="https://img.shields.io/codecov/c/github/jianstm/Schedule.svg">
+<img src="https://img.shields.io/travis/luoxiu/Schedule.svg">
+<img src="https://img.shields.io/codecov/c/github/luoxiu/Schedule.svg">
 <img src="https://img.shields.io/badge/support-CocoaPods%20%7C%20Carthage%20%7C%20SwiftPM-brightgreen.svg">
 <img src="https://img.shields.io/cocoapods/p/Schedule.svg">
-<img src="https://img.shields.io/github/license/jianstm/Schedule.svg">
+<img src="https://img.shields.io/github/license/luoxiu/Schedule.svg">
 </p>
 
 Schedule is a timing tasks scheduler written in Swift. It allows you run timing tasks with elegant and intuitive syntax.
@@ -248,7 +248,7 @@ end
 ### Carthage
 
 ```
-github "jianstm/Schedule" ~> 2.0
+github "luoxiu/Schedule" ~> 2.0
 ```
 
 ### Swift Package Manager
@@ -256,7 +256,7 @@ github "jianstm/Schedule" ~> 2.0
 ```swift
 dependencies: [
     .package(
-      url: "https://github.com/jianstm/Schedule", .upToNextMajor(from: "2.0.0")
+      url: "https://github.com/luoxiu/Schedule", .upToNextMajor(from: "2.0.0")
     )
 ]
 ```

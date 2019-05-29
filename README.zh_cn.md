@@ -1,14 +1,14 @@
 # Schedule
 
 <p align="center">
-<a href="https://github.com/jianstm/Schedule/releases">
+<a href="https://github.com/luoxiu/Schedule/releases">
   <img src="https://img.shields.io/cocoapods/v/Schedule.svg">
 </a>
-<img src="https://img.shields.io/travis/jianstm/Schedule.svg">
-<img src="https://img.shields.io/codecov/c/github/jianstm/Schedule.svg">
+<img src="https://img.shields.io/travis/luoxiu/Schedule.svg">
+<img src="https://img.shields.io/codecov/c/github/luoxiu/Schedule.svg">
 <img src="https://img.shields.io/badge/support-CocoaPods%20%7C%20Carthage%20%7C%20SwiftPM-brightgreen.svg">
 <img src="https://img.shields.io/cocoapods/p/Schedule.svg">
-<img src="https://img.shields.io/github/license/jianstm/Schedule.svg">
+<img src="https://img.shields.io/github/license/luoxiu/Schedule.svg">
 </p>
 
 Schedule 是一个用 Swift 编写的定时任务调度器，它能让你用优雅、直观的语法执行定时任务。
@@ -251,7 +251,7 @@ end
 
 ```
 # Cartfile
-github "jianstm/Schedule" ~> 2.0
+github "luoxiu/Schedule" ~> 2.0
 ```
 
 ### Swift Package Manager
@@ -259,7 +259,7 @@ github "jianstm/Schedule" ~> 2.0
 ```swift
 dependencies: [
     .package(
-      url: "https://github.com/jianstm/Schedule", .upToNextMajor(from: "2.0.0")
+      url: "https://github.com/luoxiu/Schedule", .upToNextMajor(from: "2.0.0")
     )
 ]
 ```
