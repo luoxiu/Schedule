@@ -17,24 +17,22 @@ extension BagKey {
 open class Task {
 
     // MARK: - Private properties
-
-    private let _lock = NSRecursiveLock()
+    
+    private let _lock = NSLock()
 
     private var _iterator: AnyIterator<Interval>
     private let _timer: DispatchSourceTimer
 
-    private lazy var _actions = Bag<Action>()
+    private var _actions = Bag<Action>()
 
-    private lazy var _suspensionCount: Int = 0
-    private lazy var _executionCount: Int = 0
+    private var _suspensionCount = 0
+    private var _executionCount = 0
 
-    private lazy var _executionDates: [Date]? = nil
-    private lazy var _estimatedNextExecutionDate: Date? = nil
+    private var _executionDates: [Date]?
+    private var _estimatedNextExecutionDate: Date?
 
-    private weak var _taskCenter: TaskCenter?
-    private let _taskCenterLock = NSRecursiveLock()
-
-    private var associateKey = 1
+    private var _taskCenter: TaskCenter?
+    private var _tags: Set<String> = []
 
     // MARK: - Public properties
 
@@ -99,31 +97,6 @@ open class Task {
         return _lock.withLock { _taskCenter }
     }
 
-    // MARK: - Task center
-
-    /// Adds this task to the given task center.
-    func addToTaskCenter(_ center: TaskCenter) {
-        _taskCenterLock.lock()
-        defer { _taskCenterLock.unlock() }
-
-        if _taskCenter === center { return }
-
-        let c = _taskCenter
-        _taskCenter = center
-
-        c?.remove(self)
-    }
-
-    /// Removes this task from the given task center.
-    func removeFromTaskCenter(_ center: TaskCenter) {
-        _taskCenterLock.lock()
-        defer { _taskCenterLock.unlock() }
-
-        if _taskCenter !== center { return }
-
-        _taskCenter = nil
-        center.remove(self)
-    }
 
     // MARK: - Init
 
@@ -164,7 +137,7 @@ open class Task {
             _suspensionCount -= 1
         }
 
-        _taskCenter?.remove(self)
+        self.removeFromTaskCenter()
     }
 
     private func elapse() {
@@ -208,11 +181,14 @@ open class Task {
 
     /// Reschedules this task with the new plan.
     public func reschedule(_ new: Plan) {
-        _lock.withLockVoid {
-            if _timer.isCancelled { return }
-
-            _iterator = new.makeIterator()
+        _lock.lock()
+        if _timer.isCancelled {
+            _lock.unlock()
+            return
         }
+        
+        _iterator = new.makeIterator()
+        _lock.unlock()
         scheduleNextExecution()
     }
 
@@ -269,6 +245,29 @@ open class Task {
             _actions.removeAll()
         }
     }
+    
+    /// Adds this task to the given task center.
+    func addToTaskCenter(_ center: TaskCenter) {
+        _lock.lock(); defer { _lock.unlock() }
+        
+        if _taskCenter === center { return }
+        
+        let c = _taskCenter
+        _taskCenter = center
+        c?.removeSimply(self)
+        center.addSimply(self)
+    }
+    
+    /// Removes this task from the given task center.
+    public func removeFromTaskCenter() {
+        _lock.lock(); defer { _lock.unlock() }
+        
+        guard let center = self._taskCenter else {
+            return
+        }
+        _taskCenter = nil
+        center.removeSimply(self)
+    }
 }
 
 extension Task: Hashable {
@@ -280,6 +279,6 @@ extension Task: Hashable {
 
     /// Returns a boolean value indicating whether two tasks are equal.
     public static func == (lhs: Task, rhs: Task) -> Bool {
-        return lhs === rhs
+        return lhs.id == rhs.id
     }
 }

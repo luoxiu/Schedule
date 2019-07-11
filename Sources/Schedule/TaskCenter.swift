@@ -1,7 +1,5 @@
 import Foundation
 
-private let _default = TaskCenter()
-
 extension TaskCenter {
 
     private class TaskBox: Hashable {
@@ -27,6 +25,8 @@ extension TaskCenter {
     }
 }
 
+private let _default = TaskCenter()
+
 /// A task center that enables batch operation.
 open class TaskCenter {
 
@@ -41,29 +41,32 @@ open class TaskCenter {
     }
 
     /// Adds the given task to this center.
+    ///
+    /// Please note: task center will not retain tasks.
     open func add(_ task: Task) {
         task.addToTaskCenter(self)
-
+    }
+    
+    func addSimply(_ task: Task) {
         lock.withLockVoid {
             let box = TaskBox(task)
             self.tasks[box] = []
         }
     }
-
-    /// Removes the given task from this center.
-    open func remove(_ task: Task) {
-        task.removeFromTaskCenter(self)
-
+    
+    func removeSimply(_ task: Task) {
         lock.withLockVoid {
             let box = TaskBox(task)
-            if let tags = self.tasks[box] {
-                for tag in tags {
-                    self.tags[tag]?.remove(box)
-                    if self.tags[tag]?.count == 0 {
-                        self.tags[tag] = nil
-                    }
+            guard let tags = self.tasks[box] else {
+                return
+            }
+            
+            self.tasks[box] = nil
+            for tag in tags {
+                self.tags[tag]?.remove(box)
+                if self.tags[tag]?.count == 0 {
+                    self.tags[tag] = nil
                 }
-                self.tasks[box] = nil
             }
         }
     }
@@ -79,12 +82,14 @@ open class TaskCenter {
     ///
     /// If the task is not in this center, do nothing.
     open func addTags(_ tags: [String], to task: Task) {
-        guard task.taskCenter === self else { return }
-
         lock.withLockVoid {
             let box = TaskBox(task)
+            guard self.tasks[box] != nil else {
+                return
+            }
+            
             for tag in tags {
-                tasks[box]?.insert(tag)
+                self.tasks[box]?.insert(tag)
                 if self.tags[tag] == nil {
                     self.tags[tag] = []
                 }
@@ -104,10 +109,12 @@ open class TaskCenter {
     ///
     /// If the task is not in this center, do nothing.
     open func removeTags(_ tags: [String], from task: Task) {
-        guard task.taskCenter === self else { return }
-
         lock.withLockVoid {
             let box = TaskBox(task)
+            guard self.tasks[box] != nil else {
+                return
+            }
+            
             for tag in tags {
                 self.tasks[box]?.remove(tag)
                 self.tags[tag]?.remove(box)
@@ -122,8 +129,6 @@ open class TaskCenter {
     ///
     /// If the task is not in this center, return an empty array.
     open func tags(forTask task: Task) -> [String] {
-        guard task.taskCenter === self else { return [] }
-
         return lock.withLock {
             Array(tasks[TaskBox(task)] ?? [])
         }
@@ -152,9 +157,8 @@ open class TaskCenter {
 
     /// Removes all tasks from this center.
     open func removeAll() {
-        lock.withLockVoid {
-            tasks = [:]
-            tags = [:]
+        allTasks.forEach {
+            $0.removeFromTaskCenter()
         }
     }
 

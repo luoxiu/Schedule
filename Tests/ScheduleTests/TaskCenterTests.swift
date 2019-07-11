@@ -40,7 +40,7 @@ final class TaskCenterTests: XCTestCase {
         let tag = UUID().uuidString
         center.addTag(tag, to: task)
 
-        center.remove(task)
+        task.removeFromTaskCenter()
 
         XCTAssertFalse(center.allTasks.contains(task))
         XCTAssertFalse(center.allTags.contains(tag))

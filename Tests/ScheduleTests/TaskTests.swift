@@ -53,10 +53,7 @@ final class TaskTests: XCTestCase {
         let task = Plan.never.do { }
         XCTAssertTrue(task.taskCenter === TaskCenter.default)
 
-        task.removeFromTaskCenter(TaskCenter())
-        XCTAssertNotNil(task.taskCenter)
-
-        task.removeFromTaskCenter(task.taskCenter!)
+        task.removeFromTaskCenter()
         XCTAssertNil(task.taskCenter)
 
         let center = TaskCenter()
