@@ -58,3 +58,4 @@ extension NSLocking {
         try body()
     }
 }
+

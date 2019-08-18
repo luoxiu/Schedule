@@ -9,11 +9,11 @@
 /* Begin PBXAggregateTarget section */
 		"Schedule::SchedulePackageTests::ProductTarget" /* SchedulePackageTests */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = OBJ_69 /* Build configuration list for PBXAggregateTarget "SchedulePackageTests" */;
+			buildConfigurationList = OBJ_83 /* Build configuration list for PBXAggregateTarget "SchedulePackageTests" */;
 			buildPhases = (
 			);
 			dependencies = (
-				OBJ_72 /* PBXTargetDependency */,
+				OBJ_86 /* PBXTargetDependency */,
 			);
 			name = SchedulePackageTests;
 			productName = SchedulePackageTests;
@@ -21,45 +21,51 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		669225242309520E0078CE5E /* Scheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669225232309520E0078CE5E /* Scheduler.swift */; };
-		OBJ_49 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Atomic.swift */; };
-		OBJ_50 /* Bag.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Bag.swift */; };
-		OBJ_51 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Extensions.swift */; };
-		OBJ_52 /* Interval.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Interval.swift */; };
-		OBJ_53 /* Monthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* Monthday.swift */; };
-		OBJ_54 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* Period.swift */; };
-		OBJ_55 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* Plan.swift */; };
-		OBJ_56 /* RunLoopTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* RunLoopTask.swift */; };
-		OBJ_57 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* Task.swift */; };
-		OBJ_58 /* TaskCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* TaskCenter.swift */; };
-		OBJ_59 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* Time.swift */; };
-		OBJ_60 /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* Weekday.swift */; };
-		OBJ_67 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
-		OBJ_78 /* AtomicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* AtomicTests.swift */; };
-		OBJ_79 /* BagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* BagTests.swift */; };
-		OBJ_80 /* ExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* ExtensionsTests.swift */; };
-		OBJ_81 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* Helpers.swift */; };
-		OBJ_82 /* IntervalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* IntervalTests.swift */; };
-		OBJ_83 /* MonthdayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* MonthdayTests.swift */; };
-		OBJ_84 /* PeriodTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* PeriodTests.swift */; };
-		OBJ_85 /* PlanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* PlanTests.swift */; };
-		OBJ_86 /* TaskCenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* TaskCenterTests.swift */; };
-		OBJ_87 /* TaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* TaskTests.swift */; };
-		OBJ_88 /* TimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* TimeTests.swift */; };
-		OBJ_89 /* WeekdayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* WeekdayTests.swift */; };
-		OBJ_90 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* XCTestManifests.swift */; };
-		OBJ_92 /* Schedule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Schedule::Schedule::Product" /* Schedule.framework */; };
+		6692253D23095F5C0078CE5E /* DispatchScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6692253C23095F5C0078CE5E /* DispatchScheduler.swift */; };
+		OBJ_100 /* TaskCenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_39 /* TaskCenterTests.swift */; };
+		OBJ_101 /* TaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_40 /* TaskTests.swift */; };
+		OBJ_102 /* TimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_41 /* TimeTests.swift */; };
+		OBJ_103 /* WeekdayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_42 /* WeekdayTests.swift */; };
+		OBJ_104 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_43 /* XCTestManifests.swift */; };
+		OBJ_106 /* Schedule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Schedule::Schedule::Product" /* Schedule.framework */; };
+		OBJ_57 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Atomic.swift */; };
+		OBJ_58 /* Bag.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Bag.swift */; };
+		OBJ_59 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Extensions.swift */; };
+		OBJ_60 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* Global.swift */; };
+		OBJ_61 /* Interval.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* Interval.swift */; };
+		OBJ_62 /* Monthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* Monthday.swift */; };
+		OBJ_63 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* Period.swift */; };
+		OBJ_64 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* Plan.swift */; };
+		OBJ_65 /* RunLoopTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* RunLoopTask.swift */; };
+		OBJ_66 /* AnyCalcellable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* AnyCalcellable.swift */; };
+		OBJ_67 /* Cancellable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* Cancellable.swift */; };
+		OBJ_68 /* RunLoopScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* RunLoopScheduler.swift */; };
+		OBJ_69 /* Scheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* Scheduler.swift */; };
+		OBJ_70 /* cancelBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* cancelBy.swift */; };
+		OBJ_71 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* Task.swift */; };
+		OBJ_72 /* TaskCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* TaskCenter.swift */; };
+		OBJ_73 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* Time.swift */; };
+		OBJ_74 /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* Weekday.swift */; };
+		OBJ_81 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
+		OBJ_92 /* AtomicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* AtomicTests.swift */; };
+		OBJ_93 /* BagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* BagTests.swift */; };
+		OBJ_94 /* ExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* ExtensionsTests.swift */; };
+		OBJ_95 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* Helpers.swift */; };
+		OBJ_96 /* IntervalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* IntervalTests.swift */; };
+		OBJ_97 /* MonthdayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* MonthdayTests.swift */; };
+		OBJ_98 /* PeriodTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* PeriodTests.swift */; };
+		OBJ_99 /* PlanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_38 /* PlanTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		62CABDC722B9ECA400D8BDFE /* PBXContainerItemProxy */ = {
+		6692253A23095EFB0078CE5E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "Schedule::Schedule";
 			remoteInfo = Schedule;
 		};
-		62CABDC822B9ECA400D8BDFE /* PBXContainerItemProxy */ = {
+		6692253B23095EFD0078CE5E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
@@ -69,112 +75,141 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		669225232309520E0078CE5E /* Scheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scheduler.swift; sourceTree = "<group>"; };
+		6692253C23095F5C0078CE5E /* DispatchScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchScheduler.swift; sourceTree = "<group>"; };
 		OBJ_10 /* Bag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bag.swift; sourceTree = "<group>"; };
-		OBJ_11 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		OBJ_12 /* Interval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interval.swift; sourceTree = "<group>"; };
-		OBJ_13 /* Monthday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Monthday.swift; sourceTree = "<group>"; };
-		OBJ_14 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
-		OBJ_15 /* Plan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plan.swift; sourceTree = "<group>"; };
-		OBJ_16 /* RunLoopTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunLoopTask.swift; sourceTree = "<group>"; };
-		OBJ_17 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
-		OBJ_18 /* TaskCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCenter.swift; sourceTree = "<group>"; };
-		OBJ_19 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
-		OBJ_20 /* Weekday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekday.swift; sourceTree = "<group>"; };
-		OBJ_23 /* AtomicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicTests.swift; sourceTree = "<group>"; };
-		OBJ_24 /* BagTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BagTests.swift; sourceTree = "<group>"; };
-		OBJ_25 /* ExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsTests.swift; sourceTree = "<group>"; };
-		OBJ_26 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
-		OBJ_27 /* IntervalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalTests.swift; sourceTree = "<group>"; };
-		OBJ_28 /* MonthdayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthdayTests.swift; sourceTree = "<group>"; };
-		OBJ_29 /* PeriodTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodTests.swift; sourceTree = "<group>"; };
-		OBJ_30 /* PlanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanTests.swift; sourceTree = "<group>"; };
-		OBJ_31 /* TaskCenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCenterTests.swift; sourceTree = "<group>"; };
-		OBJ_32 /* TaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTests.swift; sourceTree = "<group>"; };
-		OBJ_33 /* TimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTests.swift; sourceTree = "<group>"; };
-		OBJ_34 /* WeekdayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayTests.swift; sourceTree = "<group>"; };
-		OBJ_35 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
-		OBJ_39 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = SOURCE_ROOT; };
-		OBJ_40 /* Schedule.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Schedule.podspec; sourceTree = "<group>"; };
-		OBJ_41 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		OBJ_42 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		OBJ_43 /* README.zh_cn.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.zh_cn.md; sourceTree = "<group>"; };
+		OBJ_12 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		OBJ_13 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
+		OBJ_14 /* Interval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interval.swift; sourceTree = "<group>"; };
+		OBJ_15 /* Monthday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Monthday.swift; sourceTree = "<group>"; };
+		OBJ_16 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
+		OBJ_17 /* Plan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plan.swift; sourceTree = "<group>"; };
+		OBJ_18 /* RunLoopTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunLoopTask.swift; sourceTree = "<group>"; };
+		OBJ_20 /* AnyCalcellable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCalcellable.swift; sourceTree = "<group>"; };
+		OBJ_21 /* Cancellable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cancellable.swift; sourceTree = "<group>"; };
+		OBJ_22 /* RunLoopScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunLoopScheduler.swift; sourceTree = "<group>"; };
+		OBJ_23 /* Scheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scheduler.swift; sourceTree = "<group>"; };
+		OBJ_24 /* cancelBy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cancelBy.swift; sourceTree = "<group>"; };
+		OBJ_25 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		OBJ_26 /* TaskCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCenter.swift; sourceTree = "<group>"; };
+		OBJ_27 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
+		OBJ_28 /* Weekday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekday.swift; sourceTree = "<group>"; };
+		OBJ_31 /* AtomicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicTests.swift; sourceTree = "<group>"; };
+		OBJ_32 /* BagTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BagTests.swift; sourceTree = "<group>"; };
+		OBJ_33 /* ExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsTests.swift; sourceTree = "<group>"; };
+		OBJ_34 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		OBJ_35 /* IntervalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalTests.swift; sourceTree = "<group>"; };
+		OBJ_36 /* MonthdayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthdayTests.swift; sourceTree = "<group>"; };
+		OBJ_37 /* PeriodTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodTests.swift; sourceTree = "<group>"; };
+		OBJ_38 /* PlanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanTests.swift; sourceTree = "<group>"; };
+		OBJ_39 /* TaskCenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCenterTests.swift; sourceTree = "<group>"; };
+		OBJ_40 /* TaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTests.swift; sourceTree = "<group>"; };
+		OBJ_41 /* TimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTests.swift; sourceTree = "<group>"; };
+		OBJ_42 /* WeekdayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayTests.swift; sourceTree = "<group>"; };
+		OBJ_43 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
+		OBJ_47 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = SOURCE_ROOT; };
+		OBJ_48 /* Schedule.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Schedule.podspec; sourceTree = "<group>"; };
+		OBJ_49 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		OBJ_50 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		OBJ_51 /* README.zh_cn.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.zh_cn.md; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		OBJ_9 /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
-		"Schedule::Schedule::Product" /* Schedule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Schedule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"Schedule::Schedule::Product" /* Schedule.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Schedule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Schedule::ScheduleTests::Product" /* ScheduleTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = ScheduleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		OBJ_61 /* Frameworks */ = {
+		OBJ_105 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
+				OBJ_106 /* Schedule.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_91 /* Frameworks */ = {
+		OBJ_75 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_92 /* Schedule.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		OBJ_21 /* Tests */ = {
+		OBJ_11 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_22 /* ScheduleTests */,
+				OBJ_12 /* Extensions.swift */,
+				OBJ_13 /* Global.swift */,
+			);
+			path = Internal;
+			sourceTree = "<group>";
+		};
+		OBJ_19 /* Scheduler */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_20 /* AnyCalcellable.swift */,
+				OBJ_21 /* Cancellable.swift */,
+				OBJ_22 /* RunLoopScheduler.swift */,
+				OBJ_23 /* Scheduler.swift */,
+				OBJ_24 /* cancelBy.swift */,
+				6692253C23095F5C0078CE5E /* DispatchScheduler.swift */,
+			);
+			path = Scheduler;
+			sourceTree = "<group>";
+		};
+		OBJ_29 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_30 /* ScheduleTests */,
 			);
 			name = Tests;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_22 /* ScheduleTests */ = {
+		OBJ_30 /* ScheduleTests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_23 /* AtomicTests.swift */,
-				OBJ_24 /* BagTests.swift */,
-				OBJ_25 /* ExtensionsTests.swift */,
-				OBJ_26 /* Helpers.swift */,
-				OBJ_27 /* IntervalTests.swift */,
-				OBJ_28 /* MonthdayTests.swift */,
-				OBJ_29 /* PeriodTests.swift */,
-				OBJ_30 /* PlanTests.swift */,
-				OBJ_31 /* TaskCenterTests.swift */,
-				OBJ_32 /* TaskTests.swift */,
-				OBJ_33 /* TimeTests.swift */,
-				OBJ_34 /* WeekdayTests.swift */,
-				OBJ_35 /* XCTestManifests.swift */,
+				OBJ_31 /* AtomicTests.swift */,
+				OBJ_32 /* BagTests.swift */,
+				OBJ_33 /* ExtensionsTests.swift */,
+				OBJ_34 /* Helpers.swift */,
+				OBJ_35 /* IntervalTests.swift */,
+				OBJ_36 /* MonthdayTests.swift */,
+				OBJ_37 /* PeriodTests.swift */,
+				OBJ_38 /* PlanTests.swift */,
+				OBJ_39 /* TaskCenterTests.swift */,
+				OBJ_40 /* TaskTests.swift */,
+				OBJ_41 /* TimeTests.swift */,
+				OBJ_42 /* WeekdayTests.swift */,
+				OBJ_43 /* XCTestManifests.swift */,
 			);
 			name = ScheduleTests;
 			path = Tests/ScheduleTests;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_36 /* Products */ = {
+		OBJ_44 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				"Schedule::Schedule::Product" /* Schedule.framework */,
 				"Schedule::ScheduleTests::Product" /* ScheduleTests.xctest */,
+				"Schedule::Schedule::Product" /* Schedule.framework */,
 			);
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		OBJ_5 = {
+		OBJ_5 /*  */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
-				OBJ_21 /* Tests */,
-				OBJ_36 /* Products */,
-				OBJ_39 /* assets */,
-				OBJ_40 /* Schedule.podspec */,
-				OBJ_41 /* LICENSE */,
-				OBJ_42 /* README.md */,
-				OBJ_43 /* README.zh_cn.md */,
+				OBJ_29 /* Tests */,
+				OBJ_44 /* Products */,
+				OBJ_47 /* assets */,
+				OBJ_48 /* Schedule.podspec */,
+				OBJ_49 /* LICENSE */,
+				OBJ_50 /* README.md */,
+				OBJ_51 /* README.zh_cn.md */,
 			);
+			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_7 /* Sources */ = {
@@ -190,17 +225,17 @@
 			children = (
 				OBJ_9 /* Atomic.swift */,
 				OBJ_10 /* Bag.swift */,
-				OBJ_11 /* Extensions.swift */,
-				OBJ_12 /* Interval.swift */,
-				OBJ_13 /* Monthday.swift */,
-				OBJ_14 /* Period.swift */,
-				OBJ_15 /* Plan.swift */,
-				OBJ_16 /* RunLoopTask.swift */,
-				OBJ_17 /* Task.swift */,
-				OBJ_18 /* TaskCenter.swift */,
-				OBJ_19 /* Time.swift */,
-				OBJ_20 /* Weekday.swift */,
-				669225232309520E0078CE5E /* Scheduler.swift */,
+				OBJ_11 /* Internal */,
+				OBJ_14 /* Interval.swift */,
+				OBJ_15 /* Monthday.swift */,
+				OBJ_16 /* Period.swift */,
+				OBJ_17 /* Plan.swift */,
+				OBJ_18 /* RunLoopTask.swift */,
+				OBJ_19 /* Scheduler */,
+				OBJ_25 /* Task.swift */,
+				OBJ_26 /* TaskCenter.swift */,
+				OBJ_27 /* Time.swift */,
+				OBJ_28 /* Weekday.swift */,
 			);
 			name = Schedule;
 			path = Sources/Schedule;
@@ -211,10 +246,10 @@
 /* Begin PBXNativeTarget section */
 		"Schedule::Schedule" /* Schedule */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_45 /* Build configuration list for PBXNativeTarget "Schedule" */;
+			buildConfigurationList = OBJ_53 /* Build configuration list for PBXNativeTarget "Schedule" */;
 			buildPhases = (
-				OBJ_48 /* Sources */,
-				OBJ_61 /* Frameworks */,
+				OBJ_56 /* Sources */,
+				OBJ_75 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -227,15 +262,15 @@
 		};
 		"Schedule::ScheduleTests" /* ScheduleTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_74 /* Build configuration list for PBXNativeTarget "ScheduleTests" */;
+			buildConfigurationList = OBJ_88 /* Build configuration list for PBXNativeTarget "ScheduleTests" */;
 			buildPhases = (
-				OBJ_77 /* Sources */,
-				OBJ_91 /* Frameworks */,
+				OBJ_91 /* Sources */,
+				OBJ_105 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				OBJ_93 /* PBXTargetDependency */,
+				OBJ_107 /* PBXTargetDependency */,
 			);
 			name = ScheduleTests;
 			productName = ScheduleTests;
@@ -244,9 +279,9 @@
 		};
 		"Schedule::SwiftPMPackageDescription" /* SchedulePackageDescription */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_63 /* Build configuration list for PBXNativeTarget "SchedulePackageDescription" */;
+			buildConfigurationList = OBJ_77 /* Build configuration list for PBXNativeTarget "SchedulePackageDescription" */;
 			buildPhases = (
-				OBJ_66 /* Sources */,
+				OBJ_80 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -267,14 +302,13 @@
 			};
 			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "Schedule" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 			);
-			mainGroup = OBJ_5;
-			productRefGroup = OBJ_36 /* Products */;
+			mainGroup = OBJ_5 /*  */;
+			productRefGroup = OBJ_44 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -287,66 +321,72 @@
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		OBJ_48 /* Sources */ = {
+		OBJ_56 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				669225242309520E0078CE5E /* Scheduler.swift in Sources */,
-				OBJ_49 /* Atomic.swift in Sources */,
-				OBJ_50 /* Bag.swift in Sources */,
-				OBJ_51 /* Extensions.swift in Sources */,
-				OBJ_52 /* Interval.swift in Sources */,
-				OBJ_53 /* Monthday.swift in Sources */,
-				OBJ_54 /* Period.swift in Sources */,
-				OBJ_55 /* Plan.swift in Sources */,
-				OBJ_56 /* RunLoopTask.swift in Sources */,
-				OBJ_57 /* Task.swift in Sources */,
-				OBJ_58 /* TaskCenter.swift in Sources */,
-				OBJ_59 /* Time.swift in Sources */,
-				OBJ_60 /* Weekday.swift in Sources */,
+				OBJ_57 /* Atomic.swift in Sources */,
+				OBJ_58 /* Bag.swift in Sources */,
+				OBJ_59 /* Extensions.swift in Sources */,
+				OBJ_60 /* Global.swift in Sources */,
+				OBJ_61 /* Interval.swift in Sources */,
+				OBJ_62 /* Monthday.swift in Sources */,
+				OBJ_63 /* Period.swift in Sources */,
+				OBJ_64 /* Plan.swift in Sources */,
+				OBJ_65 /* RunLoopTask.swift in Sources */,
+				OBJ_66 /* AnyCalcellable.swift in Sources */,
+				OBJ_67 /* Cancellable.swift in Sources */,
+				OBJ_68 /* RunLoopScheduler.swift in Sources */,
+				OBJ_69 /* Scheduler.swift in Sources */,
+				6692253D23095F5C0078CE5E /* DispatchScheduler.swift in Sources */,
+				OBJ_70 /* cancelBy.swift in Sources */,
+				OBJ_71 /* Task.swift in Sources */,
+				OBJ_72 /* TaskCenter.swift in Sources */,
+				OBJ_73 /* Time.swift in Sources */,
+				OBJ_74 /* Weekday.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_66 /* Sources */ = {
+		OBJ_80 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_67 /* Package.swift in Sources */,
+				OBJ_81 /* Package.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_77 /* Sources */ = {
+		OBJ_91 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_78 /* AtomicTests.swift in Sources */,
-				OBJ_79 /* BagTests.swift in Sources */,
-				OBJ_80 /* ExtensionsTests.swift in Sources */,
-				OBJ_81 /* Helpers.swift in Sources */,
-				OBJ_82 /* IntervalTests.swift in Sources */,
-				OBJ_83 /* MonthdayTests.swift in Sources */,
-				OBJ_84 /* PeriodTests.swift in Sources */,
-				OBJ_85 /* PlanTests.swift in Sources */,
-				OBJ_86 /* TaskCenterTests.swift in Sources */,
-				OBJ_87 /* TaskTests.swift in Sources */,
-				OBJ_88 /* TimeTests.swift in Sources */,
-				OBJ_89 /* WeekdayTests.swift in Sources */,
-				OBJ_90 /* XCTestManifests.swift in Sources */,
+				OBJ_92 /* AtomicTests.swift in Sources */,
+				OBJ_93 /* BagTests.swift in Sources */,
+				OBJ_94 /* ExtensionsTests.swift in Sources */,
+				OBJ_95 /* Helpers.swift in Sources */,
+				OBJ_96 /* IntervalTests.swift in Sources */,
+				OBJ_97 /* MonthdayTests.swift in Sources */,
+				OBJ_98 /* PeriodTests.swift in Sources */,
+				OBJ_99 /* PlanTests.swift in Sources */,
+				OBJ_100 /* TaskCenterTests.swift in Sources */,
+				OBJ_101 /* TaskTests.swift in Sources */,
+				OBJ_102 /* TimeTests.swift in Sources */,
+				OBJ_103 /* WeekdayTests.swift in Sources */,
+				OBJ_104 /* XCTestManifests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		OBJ_72 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = "Schedule::ScheduleTests" /* ScheduleTests */;
-			targetProxy = 62CABDC822B9ECA400D8BDFE /* PBXContainerItemProxy */;
-		};
-		OBJ_93 /* PBXTargetDependency */ = {
+		OBJ_107 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Schedule::Schedule" /* Schedule */;
-			targetProxy = 62CABDC722B9ECA400D8BDFE /* PBXContainerItemProxy */;
+			targetProxy = 6692253A23095EFB0078CE5E /* PBXContainerItemProxy */;
+		};
+		OBJ_86 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "Schedule::ScheduleTests" /* ScheduleTests */;
+			targetProxy = 6692253B23095EFD0078CE5E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -368,7 +408,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_SWIFT_FLAGS = "-DXcode";
+				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
@@ -392,7 +432,7 @@
 					"SWIFT_PACKAGE=1",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				OTHER_SWIFT_FLAGS = "-DXcode";
+				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
@@ -402,7 +442,7 @@
 			};
 			name = Release;
 		};
-		OBJ_46 /* Debug */ = {
+		OBJ_54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
@@ -412,10 +452,9 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Schedule.xcodeproj/Schedule_Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MARKETING_VERSION = 2.0.3;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -426,12 +465,12 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
 				TARGET_NAME = Schedule;
-				TVOS_DEPLOYMENT_TARGET = 9.0;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
-		OBJ_47 /* Release */ = {
+		OBJ_55 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
@@ -441,10 +480,9 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Schedule.xcodeproj/Schedule_Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MARKETING_VERSION = 2.0.3;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -455,42 +493,42 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
 				TARGET_NAME = Schedule;
-				TVOS_DEPLOYMENT_TARGET = 9.0;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};
-		OBJ_64 /* Debug */ = {
+		OBJ_78 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				LD = /usr/bin/true;
-				OTHER_SWIFT_FLAGS = "-swift-version 5 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
+				OTHER_SWIFT_FLAGS = "-swift-version 5 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -package-description-version 5";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
-		OBJ_65 /* Release */ = {
+		OBJ_79 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				LD = /usr/bin/true;
-				OTHER_SWIFT_FLAGS = "-swift-version 5 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
+				OTHER_SWIFT_FLAGS = "-swift-version 5 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -package-description-version 5";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
-		OBJ_70 /* Debug */ = {
+		OBJ_84 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 			};
 			name = Debug;
 		};
-		OBJ_71 /* Release */ = {
+		OBJ_85 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 			};
 			name = Release;
 		};
-		OBJ_75 /* Debug */ = {
+		OBJ_89 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -501,21 +539,21 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Schedule.xcodeproj/ScheduleTests_Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
 				TARGET_NAME = ScheduleTests;
-				TVOS_DEPLOYMENT_TARGET = 9.0;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
-		OBJ_76 /* Release */ = {
+		OBJ_90 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -526,17 +564,17 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Schedule.xcodeproj/ScheduleTests_Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
 				TARGET_NAME = ScheduleTests;
-				TVOS_DEPLOYMENT_TARGET = 9.0;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};
@@ -552,38 +590,38 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_45 /* Build configuration list for PBXNativeTarget "Schedule" */ = {
+		OBJ_53 /* Build configuration list for PBXNativeTarget "Schedule" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_46 /* Debug */,
-				OBJ_47 /* Release */,
+				OBJ_54 /* Debug */,
+				OBJ_55 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_63 /* Build configuration list for PBXNativeTarget "SchedulePackageDescription" */ = {
+		OBJ_77 /* Build configuration list for PBXNativeTarget "SchedulePackageDescription" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_64 /* Debug */,
-				OBJ_65 /* Release */,
+				OBJ_78 /* Debug */,
+				OBJ_79 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_69 /* Build configuration list for PBXAggregateTarget "SchedulePackageTests" */ = {
+		OBJ_83 /* Build configuration list for PBXAggregateTarget "SchedulePackageTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_70 /* Debug */,
-				OBJ_71 /* Release */,
+				OBJ_84 /* Debug */,
+				OBJ_85 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_74 /* Build configuration list for PBXNativeTarget "ScheduleTests" */ = {
+		OBJ_88 /* Build configuration list for PBXNativeTarget "ScheduleTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_75 /* Debug */,
-				OBJ_76 /* Release */,
+				OBJ_89 /* Debug */,
+				OBJ_90 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
