@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		669225242309520E0078CE5E /* Scheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669225232309520E0078CE5E /* Scheduler.swift */; };
 		OBJ_49 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Atomic.swift */; };
 		OBJ_50 /* Bag.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Bag.swift */; };
 		OBJ_51 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Extensions.swift */; };
@@ -68,6 +69,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		669225232309520E0078CE5E /* Scheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scheduler.swift; sourceTree = "<group>"; };
 		OBJ_10 /* Bag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bag.swift; sourceTree = "<group>"; };
 		OBJ_11 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		OBJ_12 /* Interval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interval.swift; sourceTree = "<group>"; };
@@ -160,7 +162,7 @@
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -173,7 +175,6 @@
 				OBJ_42 /* README.md */,
 				OBJ_43 /* README.zh_cn.md */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_7 /* Sources */ = {
@@ -199,6 +200,7 @@
 				OBJ_18 /* TaskCenter.swift */,
 				OBJ_19 /* Time.swift */,
 				OBJ_20 /* Weekday.swift */,
+				669225232309520E0078CE5E /* Scheduler.swift */,
 			);
 			name = Schedule;
 			path = Sources/Schedule;
@@ -271,7 +273,7 @@
 				English,
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_36 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -289,6 +291,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				669225242309520E0078CE5E /* Scheduler.swift in Sources */,
 				OBJ_49 /* Atomic.swift in Sources */,
 				OBJ_50 /* Bag.swift in Sources */,
 				OBJ_51 /* Extensions.swift in Sources */,
