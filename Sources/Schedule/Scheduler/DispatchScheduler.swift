@@ -1,13 +1,11 @@
 import Foundation
 
 extension DispatchQueue: Scheduler {
-    
-    public typealias ScheduleOptions = DispatchQoS
-    
-    public func schedule(after seconds: Double, options: ScheduleOptions?, _ action: @escaping () -> Void) -> Cancellable {
+
+    public func schedule(after seconds: Double, _ action: @escaping () -> Void) -> Cancellable {
         let timer = DispatchSource.makeTimerSource(queue: self)
         
-        timer.setEventHandler(qos: options ?? .unspecified, handler: action)
+        timer.setEventHandler(handler: action)
         timer.schedule(deadline: .now() + seconds)
         timer.resume()
         

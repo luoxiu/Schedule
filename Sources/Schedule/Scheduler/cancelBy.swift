@@ -4,7 +4,7 @@ import Foundation
 extension Cancellable where Self: AnyObject {
     
     public func cancel(by obj: AnyObject) {
-        Lifetime.of(obj).whenEnd(self.cancel)
+        Lifetime.of(obj).onEnd(self.cancel)
     }
 }
 
@@ -20,22 +20,14 @@ private class Lifetime {
     }
     
     private let lock = NSLock()
-    private var _hasEnded = false
-    private var _callbacks: [() -> Void] = []
-    
-    var hasEnded: Bool {
-        return self.lock.withLock {
-            self._hasEnded
-        }
-    }
+    private var hasEnded = false
+    private var callbacks: [() -> Void] = []
     
     private func end() {
         self.lock.lock()
-        
-        self._hasEnded = true
-        let callbacks = self._callbacks
-        self._callbacks = []
-        
+        self.hasEnded = true
+        let callbacks = self.callbacks
+        self.callbacks = []
         self.lock.unlock()
         
         callbacks.forEach {
@@ -44,10 +36,15 @@ private class Lifetime {
     }
     
     
-    func whenEnd(_ callback: @escaping () -> Void) {
-        self.lock.withLockVoid {
-            self._callbacks.append(callback)
+    func onEnd(_ callback: @escaping () -> Void) {
+        self.lock.lock()
+        if self.hasEnded {
+            self.lock.unlock()
+            callback()
+            return
         }
+        self.callbacks.append(callback)
+        self.lock.unlock()
     }
     
     static func of(_ obj: AnyObject) -> Lifetime {
