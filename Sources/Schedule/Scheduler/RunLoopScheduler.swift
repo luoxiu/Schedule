@@ -7,7 +7,6 @@ extension RunLoop: Scheduler {
             action()
         }
         self.add(timer, forMode: .default)
-        
         return AnyCancellable(timer.invalidate)
     }
 }

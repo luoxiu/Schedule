@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		625F435D2313D0E30068A8D9 /* do.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625F435C2313D0E30068A8D9 /* do.swift */; };
+		625F435F2313D4720068A8D9 /* SuspendableScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625F435E2313D4720068A8D9 /* SuspendableScheduler.swift */; };
 		6692253D23095F5C0078CE5E /* DispatchScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6692253C23095F5C0078CE5E /* DispatchScheduler.swift */; };
 		OBJ_100 /* TaskCenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_39 /* TaskCenterTests.swift */; };
 		OBJ_101 /* TaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_40 /* TaskTests.swift */; };
@@ -37,7 +39,7 @@
 		OBJ_63 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* Period.swift */; };
 		OBJ_64 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* Plan.swift */; };
 		OBJ_65 /* RunLoopTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* RunLoopTask.swift */; };
-		OBJ_66 /* AnyCalcellable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* AnyCalcellable.swift */; };
+		OBJ_66 /* AnyCancellable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* AnyCancellable.swift */; };
 		OBJ_67 /* Cancellable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* Cancellable.swift */; };
 		OBJ_68 /* RunLoopScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* RunLoopScheduler.swift */; };
 		OBJ_69 /* Scheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* Scheduler.swift */; };
@@ -75,6 +77,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		625F435C2313D0E30068A8D9 /* do.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = do.swift; sourceTree = "<group>"; };
+		625F435E2313D4720068A8D9 /* SuspendableScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuspendableScheduler.swift; sourceTree = "<group>"; };
 		6692253C23095F5C0078CE5E /* DispatchScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchScheduler.swift; sourceTree = "<group>"; };
 		OBJ_10 /* Bag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bag.swift; sourceTree = "<group>"; };
 		OBJ_12 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -84,7 +88,7 @@
 		OBJ_16 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
 		OBJ_17 /* Plan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plan.swift; sourceTree = "<group>"; };
 		OBJ_18 /* RunLoopTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunLoopTask.swift; sourceTree = "<group>"; };
-		OBJ_20 /* AnyCalcellable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCalcellable.swift; sourceTree = "<group>"; };
+		OBJ_20 /* AnyCancellable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCancellable.swift; sourceTree = "<group>"; };
 		OBJ_21 /* Cancellable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cancellable.swift; sourceTree = "<group>"; };
 		OBJ_22 /* RunLoopScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunLoopScheduler.swift; sourceTree = "<group>"; };
 		OBJ_23 /* Scheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scheduler.swift; sourceTree = "<group>"; };
@@ -162,12 +166,13 @@
 		OBJ_19 /* Scheduler */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_20 /* AnyCalcellable.swift */,
+				OBJ_20 /* AnyCancellable.swift */,
+				OBJ_24 /* cancelBy.swift */,
 				OBJ_21 /* Cancellable.swift */,
+				6692253C23095F5C0078CE5E /* DispatchScheduler.swift */,
 				OBJ_22 /* RunLoopScheduler.swift */,
 				OBJ_23 /* Scheduler.swift */,
-				OBJ_24 /* cancelBy.swift */,
-				6692253C23095F5C0078CE5E /* DispatchScheduler.swift */,
+				625F435E2313D4720068A8D9 /* SuspendableScheduler.swift */,
 			);
 			path = Scheduler;
 			sourceTree = "<group>";
@@ -243,6 +248,7 @@
 				OBJ_26 /* TaskCenter.swift */,
 				OBJ_11 /* Internal */,
 				OBJ_19 /* Scheduler */,
+				625F435C2313D0E30068A8D9 /* do.swift */,
 			);
 			name = Schedule;
 			path = Sources/Schedule;
@@ -334,6 +340,7 @@
 			files = (
 				OBJ_57 /* Atomic.swift in Sources */,
 				OBJ_58 /* Bag.swift in Sources */,
+				625F435D2313D0E30068A8D9 /* do.swift in Sources */,
 				OBJ_59 /* Extensions.swift in Sources */,
 				OBJ_60 /* Global.swift in Sources */,
 				OBJ_61 /* Interval.swift in Sources */,
@@ -341,7 +348,7 @@
 				OBJ_63 /* Period.swift in Sources */,
 				OBJ_64 /* Plan.swift in Sources */,
 				OBJ_65 /* RunLoopTask.swift in Sources */,
-				OBJ_66 /* AnyCalcellable.swift in Sources */,
+				OBJ_66 /* AnyCancellable.swift in Sources */,
 				OBJ_67 /* Cancellable.swift in Sources */,
 				OBJ_68 /* RunLoopScheduler.swift in Sources */,
 				OBJ_69 /* Scheduler.swift in Sources */,
@@ -350,6 +357,7 @@
 				OBJ_71 /* Task.swift in Sources */,
 				OBJ_72 /* TaskCenter.swift in Sources */,
 				OBJ_73 /* Time.swift in Sources */,
+				625F435F2313D4720068A8D9 /* SuspendableScheduler.swift in Sources */,
 				OBJ_74 /* Weekday.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
