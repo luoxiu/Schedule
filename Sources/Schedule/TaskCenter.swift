@@ -39,6 +39,8 @@ open class TaskCenter {
     open class var `default`: TaskCenter {
         return _default
     }
+    
+    public init() { }
 
     /// Adds the given task to this center.
     ///
