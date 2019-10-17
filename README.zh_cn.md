@@ -98,7 +98,7 @@ let t1 = Plan.every("one hour and ten minutes").do { }
 
 let t2 = Plan.every("1 hour, 5 minutes and 10 seconds").do { }
 
-let t3 = Plan.every(.firday).at("9:00 pm").do { }
+let t3 = Plan.every(.friday).at("9:00 pm").do { }
 
 Period.registerQuantifier("many", for: 100 * 1000)
 let t4 = Plan.every("many days").do { }
