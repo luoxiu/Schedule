@@ -1,12 +1,12 @@
 Pod::Spec.new do |s|
   s.name             = "Schedule"
-  s.version          = "2.0.3"
+  s.version          = "2.1.0"
   s.license          = { :type => "MIT" }
-  s.homepage         = "https://github.com/jianstm/Schedule"
-  s.author           = { "Quentin Jin" => "jianstm@gmail.com" }
+  s.homepage         = "https://github.com/luoxiu/Schedule"
+  s.author           = { "Quentin Jin" => "luoxiustm@gmail.com" }
   s.summary          = "Schedule timing task in Swift using a fluent API"
 
-  s.source           = { :git => "https://github.com/jianstm/Schedule.git", :tag => "#{s.version}" }
+  s.source           = { :git => "https://github.com/luoxiu/Schedule.git", :tag => "#{s.version}" }
   s.source_files     = "Sources/Schedule/*.swift"
   
   s.swift_version    = "5.0"
