@@ -58,11 +58,22 @@ private final class RunLoopTask: Task {
             guard let task = task as? RunLoopTask, let timer = task.timer else { return }
             timer.fireDate = Date()
         }
+
+        #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
         
         timer = CFRunLoopTimerCreateWithHandler(kCFAllocatorDefault, Date.distantFuture.timeIntervalSinceReferenceDate, .greatestFiniteMagnitude, 0, 0, { [weak self] _ in
             guard let self = self else { return }
             action(self)
         })
+
+        #elseif os(Linux)
+
+        timer = Timer(fire: Date.distantFuture, interval: .greatestFiniteMagnitude, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            action(self)
+        }
+
+        #endif
 
         RunLoop.current.add(timer, forMode: mode)
     }
