@@ -4,7 +4,6 @@
 <a href="https://github.com/luoxiu/Schedule/releases">
   <img src="https://img.shields.io/cocoapods/v/Schedule.svg">
 </a>
-<img src="https://img.shields.io/travis/luoxiu/Schedule.svg">
 <img src="https://img.shields.io/codecov/c/github/luoxiu/Schedule.svg">
 <img src="https://img.shields.io/badge/support-CocoaPods%20%7C%20Carthage%20%7C%20SwiftPM-brightgreen.svg">
 <img src="https://img.shields.io/cocoapods/p/Schedule.svg">
